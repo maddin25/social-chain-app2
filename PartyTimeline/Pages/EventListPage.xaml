@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="PartyTimeline.EventListPage">
+	<ContentPage.Content>
+		<StackLayout Orientation="Vertical">
+			<Label Text="Events" XAlign="Center" FontSize="30" />
+			<ListView x:Name="eventListView">
+				<ListView.ItemTemplate>
+					<DataTemplate>
+						<ViewCell>
+							<AbsoluteLayout>
+								<Image Source="{Binding GetPreviewURL}" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" AbsoluteLayout.LayoutFlags="All" Aspect="AspectFill"/>
+								<Label Text="{Binding Name}" AbsoluteLayout.LayoutBounds="0.03, 0.85, autosize, autosize" AbsoluteLayout.LayoutFlags="PositionProportional"/>
+								<Label Text="{Binding GetDateTimeString}" AbsoluteLayout.LayoutBounds="0.03, 0.95, autosize, autosize" AbsoluteLayout.LayoutFlags="PositionProportional" FontSize="10"/>
+								<Label Text="{Binding GetNrPicturesString}" AbsoluteLayout.LayoutBounds="0.97, 3, autosize, autosize" AbsoluteLayout.LayoutFlags="XProportional" HorizontalTextAlignment="End" FontSize="10"/>
+								<Label Text="{Binding GetNrContributorsString}" AbsoluteLayout.LayoutBounds="0.97, 15, autosize, autosize" AbsoluteLayout.LayoutFlags="XProportional" HorizontalTextAlignment="End" FontSize="10"/>
+							</AbsoluteLayout>
+						</ViewCell>
+					</DataTemplate>
+				</ListView.ItemTemplate>
+				<ListView.RowHeight>130</ListView.RowHeight>
+				<ListView.SeparatorVisibility>1</ListView.SeparatorVisibility>
+			</ListView>
+		</StackLayout>
+	</ContentPage.Content>
+	<ContentPage.Padding>
+		<OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" WinPhone="20,20,20,20"/>
+	</ContentPage.Padding>
+</ContentPage>

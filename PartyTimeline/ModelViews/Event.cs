@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace PartyTimeline
 {
@@ -31,13 +31,17 @@ namespace PartyTimeline
 
 		void InitializeDummy()
 		{
-			int maxNumberPictures = 30;
-			Random nrGenerator = new Random();
 			Images = new ObservableCollection<EventImage>();
-			for (int i = 0; i < nrGenerator.Next() % maxNumberPictures; i++)
+
+			int maxNumberPictures = 30;
+			var nrGenerator = new Random(DateTime.Now.Millisecond);
+			int numberPictures = nrGenerator.Next() % maxNumberPictures;
+
+			for (int i = 0; i < numberPictures; i++)
 			{
 				Images.Add(new EventImage());
 			}
+			Debug.WriteLine("Event '{0}' initialized with {1} images", Name, numberPictures);
 		}
 	}
 }

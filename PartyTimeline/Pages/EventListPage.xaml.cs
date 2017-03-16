@@ -39,8 +39,8 @@ namespace PartyTimeline
 		void Event_Tapped(object sender, ItemTappedEventArgs e)
 		{
 			var selectedEvent = e.Item as Event;
-			int indexOfSelectedEvent = events.IndexOf(selectedEvent);
-			Debug.WriteLine("Event nr {0} selected", indexOfSelectedEvent);
+			var indexOfSelectedEvent = events.IndexOf(selectedEvent);
+			Debug.WriteLine("Event nr {0} selected", indexOfSelectedEvent+1);
 			Navigation.PushAsync(new EventPageThumbnails(ref selectedEvent));
 		}
 	}

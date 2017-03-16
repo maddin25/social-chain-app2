@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+
 namespace PartyTimeline
 {
 	public class EventImage
@@ -29,12 +31,15 @@ namespace PartyTimeline
 
 		void InitializeDummyValues()
 		{
-			this.ShortAnnotation = "DefaultShortAnnotation";
-			this.DateTaken = DateTime.Now;
+			ShortAnnotation = "DefaultShortAnnotation";
+			DateTaken = DateTime.Now;
 			int nrImages = placeholderImages.Length;
-			var nrGenerator = new Random();
-			this.ID = nrGenerator.Next();
-			this.URI = placeholderImages[nrGenerator.Next() % nrImages];
+			var nrGenerator = new Random(DateTime.Now.Millisecond);
+			ID = nrGenerator.Next();
+			int imageIndex = nrGenerator.Next() % nrImages;
+			URI = placeholderImages[imageIndex];
+
+			Debug.WriteLine("Initialized Image with index {0} and URI {1}", imageIndex, URI);
 		}
 	}
 }

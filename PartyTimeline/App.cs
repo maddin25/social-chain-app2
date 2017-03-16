@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DLToolkit.Forms.Controls;
+
+using System;
 
 using Xamarin.Forms;
 
@@ -8,6 +10,7 @@ namespace PartyTimeline
 	{
 		public App()
 		{
+			FlowListView.Init();
 			MainPage = new NavigationPage(new LoginPage());
 		}
 

@@ -9,16 +9,19 @@ namespace PartyTimeline
 {
 	public partial class EventListPage : ContentPage
 	{
+		ObservableCollection<Event> events;
+
 		public EventListPage()
 		{
 			InitializeComponent();
 			NavigationPage.SetHasNavigationBar(this, false);
 
-			ObservableCollection<Event> events = new ObservableCollection<Event>();
+			events = new ObservableCollection<Event>();
 
-			events.Add(new Event{ Name="Development of cool app", NrPictures=10, NrContributors=4 });
-			events.Add(new Event{ Name="Call regarding future", NrPictures=2, NrContributors=2 });
-			events.Add(new Event{ Name="Drinking a lot of beer", NrPictures=3241, NrContributors=4 });
+			events.Add(new Event{ Name="Alone at Home" });
+			events.Add(new Event{ Name="Development of cool app" });
+			events.Add(new Event{ Name="Call regarding future" });
+			events.Add(new Event{ Name="Drinking a lot of beer" });
 
 			eventListView.ItemsSource = events;
 		}
@@ -31,6 +34,14 @@ namespace PartyTimeline
 				DependencyService.Get<SystemInterface>().Close();
 			}
 			return true;
+		}
+
+		void Event_Tapped(object sender, ItemTappedEventArgs e)
+		{
+			var selectedEvent = e.Item as Event;
+			int indexOfSelectedEvent = events.IndexOf(selectedEvent);
+			Debug.WriteLine("Event nr {0} selected", indexOfSelectedEvent);
+			Navigation.PushAsync(new EventPageThumbnails(ref selectedEvent));
 		}
 	}
 }

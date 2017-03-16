@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="PartyTimeline.EventListPage">
+<ContentPage
+	xmlns="http://xamarin.com/schemas/2014/forms"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	x:Class="PartyTimeline.EventListPage">
 	<ContentPage.Content>
 		<StackLayout Orientation="Vertical">
 			<Label Text="Events" XAlign="Center" FontSize="30" />
-			<ListView x:Name="eventListView">
+			<ListView x:Name="eventListView" ItemTapped="Event_Tapped">
 				<ListView.ItemTemplate>
 					<DataTemplate>
 						<ViewCell>
@@ -19,6 +22,7 @@
 				</ListView.ItemTemplate>
 				<ListView.RowHeight>130</ListView.RowHeight>
 				<ListView.SeparatorVisibility>1</ListView.SeparatorVisibility>
+
 			</ListView>
 		</StackLayout>
 	</ContentPage.Content>

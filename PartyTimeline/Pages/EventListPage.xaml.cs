@@ -18,6 +18,7 @@ namespace PartyTimeline
 
 			events = new ObservableCollection<Event>();
 
+			events.Add(new Event());
 			events.Add(new Event{ Name="Alone at Home" });
 			events.Add(new Event{ Name="Development of cool app" });
 			events.Add(new Event{ Name="Call regarding future" });

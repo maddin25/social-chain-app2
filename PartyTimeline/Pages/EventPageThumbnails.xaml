@@ -25,15 +25,22 @@
 								<ColumnDefinition Width="*" />
 							</Grid.ColumnDefinitions>
 
-							<ffimageloading:CachedImage
+                            <ffimageloading:CachedImage
 								HeightRequest="150"
 								Aspect="AspectFill"
 								DownsampleHeight="150"
 								DownsampleUseDipUnits="false"
 								LoadingPlaceholder="image_loading.png"
 								ErrorPlaceholder="image_error.png"
-								Source="{Binding URI}"
-							/>
+								Source="{Binding URI}">
+                                <ffimageloading:CachedImage.GestureRecognizers>
+                                    <TapGestureRecognizer
+                                        Command="{Binding DoSomething}"
+                                        CommandParameter="{Binding .}"
+                                      />
+                                </ffimageloading:CachedImage.GestureRecognizers>
+                            </ffimageloading:CachedImage>
+							
 							
 							<Label x:Name="Label" HorizontalOptions="Fill" HorizontalTextAlignment="Center" VerticalOptions="End"
 								BackgroundColor="Silver" Opacity="0.8" Text="{Binding ShortAnnotation}"/>

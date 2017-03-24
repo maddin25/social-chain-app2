@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace PartyTimeline
 {
@@ -11,7 +13,18 @@ namespace PartyTimeline
 		public string LongAnnotation { get; set; }
 		public string URI { get; set; }
 
-		string[] placeholderImages = {
+        public ICommand DoSomething
+        {
+            get
+            {
+                return new Command<EventImage>((eventImage) =>
+                {
+                    Debug.WriteLine("Event Hamza" + eventImage.ID + "selected");
+                });
+            }
+        }
+
+        string[] placeholderImages = {
 			"https://farm9.staticflickr.com/8625/15806486058_7005d77438.jpg",
 			"https://farm5.staticflickr.com/4011/4308181244_5ac3f8239b.jpg",
 			"https://farm8.staticflickr.com/7423/8729135907_79599de8d8.jpg",

@@ -1,0 +1,50 @@
+﻿@model PartyTimeLineWebServices.Models.EventImage
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>EventImage</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DateTaken)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateTaken)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ShortAnnotation)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ShortAnnotation)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LongAnnotation)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LongAnnotation)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.URI)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.URI)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

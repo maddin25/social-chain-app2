@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PartyTimeline.iOS", "iOS\Pa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PartyTimeline.Droid", "Droid\PartyTimeline.Droid.csproj", "{C3EBBF62-16A7-43E4-BDC8-C60D2A3BB7D9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PartyTimelineWebServices", "PartyTimeLineWebServices\PartyTimelineWebServices.csproj", "{8FD88116-92CD-45C0-8593-84D7FE9414A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +32,7 @@ Global
 		{221409DB-7BAE-4BAF-A941-A4DA6FA68295}.Debug|x64.Build.0 = Debug|Any CPU
 		{221409DB-7BAE-4BAF-A941-A4DA6FA68295}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{221409DB-7BAE-4BAF-A941-A4DA6FA68295}.Release|Any CPU.Build.0 = Release|Any CPU
+		{221409DB-7BAE-4BAF-A941-A4DA6FA68295}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{221409DB-7BAE-4BAF-A941-A4DA6FA68295}.Release|iPhone.ActiveCfg = Release|Any CPU
 		{221409DB-7BAE-4BAF-A941-A4DA6FA68295}.Release|iPhone.Build.0 = Release|Any CPU
 		{221409DB-7BAE-4BAF-A941-A4DA6FA68295}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
@@ -52,6 +55,7 @@ Global
 		{90DC591E-640D-4BDF-AC18-CDB52AF9AA0F}.Release|x64.ActiveCfg = Release|iPhoneSimulator
 		{C3EBBF62-16A7-43E4-BDC8-C60D2A3BB7D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C3EBBF62-16A7-43E4-BDC8-C60D2A3BB7D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3EBBF62-16A7-43E4-BDC8-C60D2A3BB7D9}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{C3EBBF62-16A7-43E4-BDC8-C60D2A3BB7D9}.Debug|iPhone.ActiveCfg = Debug|Any CPU
 		{C3EBBF62-16A7-43E4-BDC8-C60D2A3BB7D9}.Debug|iPhone.Build.0 = Debug|Any CPU
 		{C3EBBF62-16A7-43E4-BDC8-C60D2A3BB7D9}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
@@ -61,6 +65,7 @@ Global
 		{C3EBBF62-16A7-43E4-BDC8-C60D2A3BB7D9}.Debug|x64.Deploy.0 = Debug|x64
 		{C3EBBF62-16A7-43E4-BDC8-C60D2A3BB7D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3EBBF62-16A7-43E4-BDC8-C60D2A3BB7D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3EBBF62-16A7-43E4-BDC8-C60D2A3BB7D9}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{C3EBBF62-16A7-43E4-BDC8-C60D2A3BB7D9}.Release|iPhone.ActiveCfg = Release|Any CPU
 		{C3EBBF62-16A7-43E4-BDC8-C60D2A3BB7D9}.Release|iPhone.Build.0 = Release|Any CPU
 		{C3EBBF62-16A7-43E4-BDC8-C60D2A3BB7D9}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
@@ -68,6 +73,22 @@ Global
 		{C3EBBF62-16A7-43E4-BDC8-C60D2A3BB7D9}.Release|x64.ActiveCfg = Release|x64
 		{C3EBBF62-16A7-43E4-BDC8-C60D2A3BB7D9}.Release|x64.Build.0 = Release|x64
 		{C3EBBF62-16A7-43E4-BDC8-C60D2A3BB7D9}.Release|x64.Deploy.0 = Release|x64
+		{8FD88116-92CD-45C0-8593-84D7FE9414A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FD88116-92CD-45C0-8593-84D7FE9414A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FD88116-92CD-45C0-8593-84D7FE9414A1}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{8FD88116-92CD-45C0-8593-84D7FE9414A1}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{8FD88116-92CD-45C0-8593-84D7FE9414A1}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{8FD88116-92CD-45C0-8593-84D7FE9414A1}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{8FD88116-92CD-45C0-8593-84D7FE9414A1}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8FD88116-92CD-45C0-8593-84D7FE9414A1}.Debug|x64.Build.0 = Debug|Any CPU
+		{8FD88116-92CD-45C0-8593-84D7FE9414A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FD88116-92CD-45C0-8593-84D7FE9414A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FD88116-92CD-45C0-8593-84D7FE9414A1}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{8FD88116-92CD-45C0-8593-84D7FE9414A1}.Release|iPhone.Build.0 = Release|Any CPU
+		{8FD88116-92CD-45C0-8593-84D7FE9414A1}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{8FD88116-92CD-45C0-8593-84D7FE9414A1}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{8FD88116-92CD-45C0-8593-84D7FE9414A1}.Release|x64.ActiveCfg = Release|Any CPU
+		{8FD88116-92CD-45C0-8593-84D7FE9414A1}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

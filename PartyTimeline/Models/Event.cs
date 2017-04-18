@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using Plugin.Media.Abstractions;
 
 namespace PartyTimeline
 {
@@ -24,6 +25,17 @@ namespace PartyTimeline
 			}
 		}
 
+	    public void AddEventImage(String path)
+	    {
+	        EventImage newEventImage = new EventImage();
+	        newEventImage.ShortAnnotation = "Default Short Annotation";
+	        newEventImage.DateTaken = DateTime.Now;
+	        Random nrGenerator = new Random(DateTime.Now.Millisecond);
+	        newEventImage.Id = nrGenerator.Next();
+	        newEventImage.URI = path;
+
+            Images.Add(newEventImage);
+        }
 		public Event()
 		{
 		}

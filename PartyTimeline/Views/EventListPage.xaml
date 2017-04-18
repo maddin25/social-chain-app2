@@ -11,7 +11,7 @@
                     <DataTemplate>
                         <ViewCell>
                             <Frame Padding="0,0,0,3">
-                                <Frame.Content>
+                                <Frame.Content> 
                                     <Frame Padding="15,15,15,15" OutlineColor="Gray" BackgroundColor="White">
                                         <Frame.Content>
                                             <StackLayout Padding="10,0,0,10"  Orientation="Horizontal" HorizontalOptions="CenterAndExpand">

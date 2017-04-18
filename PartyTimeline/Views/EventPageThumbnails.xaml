@@ -39,7 +39,11 @@
 					</DataTemplate>
 				</flv:FlowListView.FlowColumnTemplate>
 			</flv:FlowListView>
-			<Button Text="Take Photo" />
-		</StackLayout>
+            <Image x:Name="testImage"></Image>
+			<Button Text="Take Photo" Clicked="TakePhotoButton_OnClicked"/>
+            <Button Text="Pick Photo" Clicked="PickPhotoButton_OnClicked"/>
+            <Button Text="Take Video" Clicked="TakeVideoButton_OnClicked"/>
+            <Button Text="Pick Video" Clicked="PickVideoButton_OnClicked"/>
+        </StackLayout>
 	</ContentPage.Content>
 </ContentPage>

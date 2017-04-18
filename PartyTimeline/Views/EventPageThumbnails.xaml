@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"
+	xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+	x:Class="PartyTimeline.EventPageThumbnails">
+
+    <ContentPage.Content>
+		<StackLayout Orientation="Vertical">
+			<Label x:Name="EventNameLabel" Text="No Eventname Assigned" XAlign="Center" FontSize="30"/>
+			<flv:FlowListView
+				x:Name="EventImageList"
+				SeparatorVisibility="None"
+				HasUnevenRows="true"
+				FlowColumnMinWidth="150">
+			
+				<flv:FlowListView.FlowColumnTemplate>
+					<DataTemplate>
+                        <Grid Padding="3">
+                            <Grid.RowDefinitions>
+								<RowDefinition Height="*" />
+							</Grid.RowDefinitions>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="*" />
+							</Grid.ColumnDefinitions>
+
+                            <ffimageloading:CachedImage
+								HeightRequest="150"
+								Aspect="AspectFill"
+								DownsampleHeight="150"
+								DownsampleUseDipUnits="false"
+								LoadingPlaceholder="image_loading.png"
+								ErrorPlaceholder="image_error.png"
+								Source="{Binding URI}">
+                            </ffimageloading:CachedImage>
+                            <Label x:Name="Label" HorizontalOptions="Fill" HorizontalTextAlignment="Center" VerticalOptions="End"
+								BackgroundColor="Silver" Opacity="0.8" Text="{Binding ShortAnnotation}"/>
+						</Grid>
+					</DataTemplate>
+				</flv:FlowListView.FlowColumnTemplate>
+			</flv:FlowListView>
+			<Button Text="Take Photo" Clicked="TakePhotoButton_OnClicked"/>
+            <Button Text="Pick Photo" Clicked="PickPhotoButton_OnClicked"/>
+            <Button Text="Take Video" Clicked="TakeVideoButton_OnClicked"/>
+            <Button Text="Pick Video" Clicked="PickVideoButton_OnClicked"/>
+        </StackLayout>
+	</ContentPage.Content>
+</ContentPage>

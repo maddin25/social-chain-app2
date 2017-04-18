@@ -2,11 +2,16 @@
 <ContentPage
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-	x:Class="PartyTimeline.EventListPage">
+    xmlns:local="clr-namespace:PartyTimeline"
+	x:Class="PartyTimeline.EventListPage"
+    xmlns:viewModels="clr-namespace:PartyTimeline.ViewModels;assembly=PartyTimeline">
+    <ContentPage.BindingContext>
+        <viewModels:EventListPageViewModel />
+    </ContentPage.BindingContext>
     <ContentPage.Content>
         <StackLayout Orientation="Vertical">
             <Label Text="Events" XAlign="Center" FontSize="30" />
-            <ListView x:Name="eventListView" ItemTapped="Event_Tapped">
+            <ListView x:Name="EventListView" ItemsSource="{Binding EventsList}" ItemTapped="{Binding EventTappedCommand}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>

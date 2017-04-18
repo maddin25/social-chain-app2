@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="PartyTimeline.LoginPage">
-	<ContentPage.Content>
-		<StackLayout>
-			<Label Text="Party Timeline" FontSize="20" />
+    <ContentPage.Content>
+        <StackLayout Padding="20, 20, 20, 0">
+            <Label Text="Party Timeline" FontSize="20" />
 			<Entry Placeholder="Username" Keyboard="Email" Completed="Username_Completed" TextChanged="Username_TextChanged" />
 			<Entry IsPassword="true" Placeholder="Password" Completed="Password_Completed" TextChanged="Password_TextChanged" />
-			<Button Text="Login" Clicked="Login_Clicked"/>
-			<Label Text="I forgot my Password" x:Name="LabelForgotPassword"/>
-		</StackLayout>
+			<Button Text="Login" Clicked="Login_Clicked" />
+
+            <Frame Padding="20, 20, 20, 20" OutlineColor="White" HorizontalOptions="Fill" CornerRadius="3">
+                <Label HorizontalTextAlignment="Center" Text="Sign Up" x:Name="LabelSignUp"/>
+            </Frame>
+            <Frame Padding="20, 20, 20, 20" OutlineColor="White" HorizontalOptions="Fill" CornerRadius="3">
+                <Label HorizontalTextAlignment="Center" Text="Forgot Password?" x:Name="LabelForgotPassword"/>
+            </Frame>
+        </StackLayout>
 	</ContentPage.Content>
-	<ContentPage.Padding>
-		<OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" WinPhone="20,20,20,20" />
-	</ContentPage.Padding>
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" WinPhone="20,20,20,20" />
+    </ContentPage.Padding>
 </ContentPage>

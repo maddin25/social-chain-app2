@@ -32,6 +32,7 @@ namespace PartyTimeline.Services
             events.Add(new Event { Name = "Development of cool app", Images = GenerateImagesForEvent() });
             events.Add(new Event { Name = "Call regarding future", Images = GenerateImagesForEvent() });
             events.Add(new Event { Name = "Drinking a lot of beer", Images = GenerateImagesForEvent() });
+			events.Add(new Event { Images = GenerateImagesForEvent() });
 
             return events;
         }

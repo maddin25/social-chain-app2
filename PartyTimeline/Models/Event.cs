@@ -7,15 +7,20 @@ namespace PartyTimeline
 {
 	public class Event
 	{
-		public string Name { get; set; }
+		private string _name = "Unnamed Event";
+
+		public string Name
+		{
+			get { return _name; }
+			set { _name = value; }
+		}
 		public ObservableCollection<Contributor> Contributors { get; set; }
 		public ObservableCollection<EventImage> Images { get; set; }
 		public DateTime Date { get; set; }
 		public string GetDateTimeString { get { return Date.ToString(); } }
 		public int NrPictures { get { return 1234; /* return Images.Count; */ } }
-		public string GetNrPicturesString { get { return (NrPictures.ToString() + " Picture" + (NrPictures > 1 ? "s" : "")); } }
 		public int NrContributors { get { return 4; /* return Contributors.Count; */ } }
-		public string GetNrContributorsString { get { return (NrContributors.ToString() + " User" + (NrContributors > 1 ? "s" : "")); } }
+
 		// The image should be in dimensions 3:1 (width:height)
 		public string GetPreviewURL 
 		{
@@ -36,9 +41,10 @@ namespace PartyTimeline
 
             Images.Add(newEventImage);
         }
+
 		public Event()
 		{
+			
 		}
-
 	}
 }

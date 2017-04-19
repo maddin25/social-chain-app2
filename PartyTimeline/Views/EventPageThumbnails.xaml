@@ -7,12 +7,14 @@
 
     <ContentPage.Content>
 		<StackLayout Orientation="Vertical">
-			<Label x:Name="EventNameLabel" Text="No Eventname Assigned" XAlign="Center" FontSize="30"/>
+			<Label x:Name="EventNameLabel" Text="{Binding Name}" XAlign="Center" FontSize="30"/>
 			<flv:FlowListView
 				x:Name="EventImageList"
 				SeparatorVisibility="None"
 				HasUnevenRows="true"
-				FlowColumnMinWidth="150">
+				FlowColumnMinWidth="150"
+				ItemsSource="{Binding Images}"
+				>
 			
 				<flv:FlowListView.FlowColumnTemplate>
 					<DataTemplate>

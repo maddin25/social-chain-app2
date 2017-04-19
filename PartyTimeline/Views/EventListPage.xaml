@@ -5,13 +5,11 @@
     xmlns:local="clr-namespace:PartyTimeline"
 	x:Class="PartyTimeline.EventListPage"
     xmlns:viewModels="clr-namespace:PartyTimeline.ViewModels;assembly=PartyTimeline">
-    <ContentPage.BindingContext>
-        <viewModels:EventListPageViewModel />
-    </ContentPage.BindingContext>
+	
     <ContentPage.Content>
         <StackLayout Orientation="Vertical">
             <Label Text="Events" XAlign="Center" FontSize="30" />
-            <ListView x:Name="EventListView" ItemsSource="{Binding EventsList}" ItemTapped="{Binding EventTappedCommand}">
+            <ListView x:Name="EventListView" ItemsSource="{Binding EventsList}" SelectedItem="{Binding SelectedEvent}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -38,7 +36,9 @@
             </ListView>
         </StackLayout>
     </ContentPage.Content>
+	
     <ContentPage.Padding>
         <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" WinPhone="20,20,20,20"/>
     </ContentPage.Padding>
+	
 </ContentPage>

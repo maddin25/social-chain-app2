@@ -8,51 +8,65 @@ using Xamarin.Forms;
 
 namespace PartyTimeline.ViewModels
 {
-    public class EventListPageViewModel : INotifyPropertyChanged
-    {
+	public class EventListPageViewModel : INotifyPropertyChanged
+	{
+		private List<Event> _eventsList;
+		private Event _selectedEvent;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+		public EventListPageViewModel()
+		{
+			EventService eventService = new EventService();
+			EventsList = eventService.GetEvents();
+			EventTappedCommand = new Command<Event>((selectedEvent) =>
+			{
+				if (selectedEvent == null)
+				{
+					return;
+				}
+				var indexOfSelectedEvent = EventsList.IndexOf(selectedEvent);
+				Debug.WriteLine("Event nr {0} selected", indexOfSelectedEvent + 1);
+				Xamarin.Forms.Application.Current.MainPage.Navigation.PushAsync(
+					new EventPageThumbnails(ref selectedEvent));
+			});
+		}
 
-        public Command EventTappedCommand
-        {
-            get
-            { 
-                return new Command<ItemTappedEventArgs> ((e) =>
-                {
-                    //specify a parameter type like above 
-                    // and 'p' will be the item which was tapped
-                    var selectedEvent = e.Item as Event;
-                    var indexOfSelectedEvent = EventsList.IndexOf(selectedEvent);
-                    Debug.WriteLine("Event nr {0} selected", indexOfSelectedEvent + 1);
-                    Xamarin.Forms.Application.Current.MainPage.Navigation.PushAsync(
-                        new EventPageThumbnails(ref selectedEvent));
-                });
-                
-            }
-        }
+		public event PropertyChangedEventHandler PropertyChanged;
 
-        private List<Event> _eventsList;
+		public Command EventTappedCommand { get; }
 
-        public List<Event> EventsList
-        {
-            get { return _eventsList; }
-            set
-            {
-                _eventsList = value;
-                OnPropertyChanged();
-            }
-        }
+		public List<Event> EventsList
+		{
+			get { return _eventsList; }
+			set
+			{
+				_eventsList = value;
+				OnPropertyChanged();
+			}
+		}
 
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+		public Event SelectedEvent
+		{
+			get
+			{
+				return _selectedEvent;
+			}
+			set
+			{
+				_selectedEvent = value;
+				if (_selectedEvent != null)
+				{
+					EventTappedCommand.Execute(_selectedEvent);
+					SelectedEvent = null;
+				}
+			}
+		}
 
-        public EventListPageViewModel()
-        {
-            EventService eventService = new EventService();
-            EventsList = eventService.GetEvents();
-        }
-    }
+		[NotifyPropertyChangedInvocator]
+		protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
+
+
+	}
 }

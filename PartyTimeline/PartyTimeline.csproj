@@ -54,6 +54,7 @@
     <Compile Include="Views\ImageGalleryPage.xaml.cs">
       <DependentUpon>ImageGalleryPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\LoginPageViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="CarouselView.FormsPlugin.Abstractions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">

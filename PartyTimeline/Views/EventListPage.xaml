@@ -9,7 +9,7 @@
     <ContentPage.Content>
         <StackLayout Orientation="Vertical">
             <Label Text="Events" XAlign="Center" FontSize="30" />
-            <ListView x:Name="EventListView" ItemsSource="{Binding EventsList}" SelectedItem="{Binding SelectedEvent}">
+            <ListView x:Name="EventListView" ItemsSource="{Binding EventsList}" SelectedItem="{Binding SelectedEvent}" >
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -17,7 +17,7 @@
                                 <Frame.Content> 
                                     <Frame Padding="15,15,15,15" OutlineColor="Gray" BackgroundColor="White">
                                         <Frame.Content>
-                                            <StackLayout Padding="10,0,0,10"  Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                                            <StackLayout Padding="0,0,0,0"  Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
                                                     <Image Source="{Binding GetPreviewURL}" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" AbsoluteLayout.LayoutFlags="All" Aspect="AspectFill"/>
                                                     <Label Text="{Binding Name}" AbsoluteLayout.LayoutBounds="0.03, 0.85, autosize, autosize" AbsoluteLayout.LayoutFlags="PositionProportional"/>
                                                     <Label Text="{Binding GetDateTimeString}" AbsoluteLayout.LayoutBounds="0.03, 0.95, autosize, autosize" AbsoluteLayout.LayoutFlags="PositionProportional" FontSize="10"/>

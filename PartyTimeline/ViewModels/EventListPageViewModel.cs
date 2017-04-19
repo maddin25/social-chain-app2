@@ -17,21 +17,9 @@ namespace PartyTimeline.ViewModels
 		{
 			EventService eventService = new EventService();
 			EventsList = eventService.GetEvents();
-			EventTappedCommand = new Command<Event>((selectedEvent) =>
-			{
-				if (selectedEvent == null)
-				{
-					return;
-				}
-				var indexOfSelectedEvent = EventsList.IndexOf(selectedEvent);
-				Debug.WriteLine("Event nr {0} selected", indexOfSelectedEvent + 1);
-				Application.Current.MainPage.Navigation.PushAsync(new EventPageThumbnails(ref selectedEvent));
-			});
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;
-
-		public Command EventTappedCommand { get; }
 
 		public List<Event> EventsList
 		{
@@ -45,16 +33,15 @@ namespace PartyTimeline.ViewModels
 
 		public Event SelectedEvent
 		{
-			get
-			{
-				return _selectedEvent;
-			}
+			get { return _selectedEvent; }
 			set
 			{
 				_selectedEvent = value;
 				if (_selectedEvent != null)
 				{
-					EventTappedCommand.Execute(_selectedEvent);
+					var indexOfSelectedEvent = EventsList.IndexOf(_selectedEvent);
+					Debug.WriteLine($"Event Nr. {indexOfSelectedEvent + 1} selected");
+					Application.Current.MainPage.Navigation.PushAsync(new EventPageThumbnails(ref _selectedEvent));
 				}
 			}
 		}

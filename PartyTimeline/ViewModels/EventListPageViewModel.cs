@@ -25,8 +25,7 @@ namespace PartyTimeline.ViewModels
 				}
 				var indexOfSelectedEvent = EventsList.IndexOf(selectedEvent);
 				Debug.WriteLine("Event nr {0} selected", indexOfSelectedEvent + 1);
-				Xamarin.Forms.Application.Current.MainPage.Navigation.PushAsync(
-					new EventPageThumbnails(ref selectedEvent));
+				Application.Current.MainPage.Navigation.PushAsync(new EventPageThumbnails(ref selectedEvent));
 			});
 		}
 
@@ -56,7 +55,6 @@ namespace PartyTimeline.ViewModels
 				if (_selectedEvent != null)
 				{
 					EventTappedCommand.Execute(_selectedEvent);
-					SelectedEvent = null;
 				}
 			}
 		}

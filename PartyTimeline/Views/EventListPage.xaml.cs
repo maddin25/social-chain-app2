@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Collections.Generic;
-using CarouselView.FormsPlugin.Abstractions;
-using PartyTimeline.Services;
+﻿using System.Diagnostics;
 using PartyTimeline.ViewModels;
 using Xamarin.Forms;
 

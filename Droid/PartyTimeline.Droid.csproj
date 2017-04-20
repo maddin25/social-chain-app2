@@ -218,6 +218,8 @@
     <Compile Include="Services\EventSyncService.cs" />
     <Compile Include="Services\EventSyncBinder.cs" />
     <Compile Include="Services\EventSyncServiceConnection.cs" />
+    <Compile Include="InterfaceImplementations\EventListInterface_Android.cs" />
+    <Compile Include="Services\EventDatabase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

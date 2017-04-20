@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
@@ -12,26 +13,16 @@ namespace PartyTimeline.ViewModels
 {
 	public class EventListPageViewModel : INotifyPropertyChanged
 	{
-		private List<Event> _eventsList;
 		private Event _selectedEvent;
 
 		public EventListPageViewModel()
 		{
-			EventService eventService = new EventService();
-			EventsList = eventService.GetEvents();
+			EventsList = EventService.INSTANCE.GetEvents();
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		public List<Event> EventsList
-		{
-			get { return _eventsList; }
-			set
-			{
-				_eventsList = value;
-				OnPropertyChanged();
-			}
-		}
+		public ObservableCollection<Event> EventsList;
 
 		public Event SelectedEvent
 		{

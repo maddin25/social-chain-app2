@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using Plugin.Media.Abstractions;
-
-using Xamarin.Forms;
 
 namespace PartyTimeline
 {

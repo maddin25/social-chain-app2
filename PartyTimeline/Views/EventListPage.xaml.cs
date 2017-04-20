@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
+
 using PartyTimeline.ViewModels;
+
 using Xamarin.Forms;
 
 namespace PartyTimeline
@@ -10,7 +12,7 @@ namespace PartyTimeline
 		{
 			InitializeComponent();
 			BindingContext = new EventListPageViewModel();
-            NavigationPage.SetHasNavigationBar(this, false);
+			NavigationPage.SetHasBackButton(this, false);
 		}
 
 		protected override bool OnBackButtonPressed()

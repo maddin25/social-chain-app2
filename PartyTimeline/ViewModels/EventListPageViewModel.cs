@@ -18,11 +18,17 @@ namespace PartyTimeline.ViewModels
 		public EventListPageViewModel()
 		{
 			EventsList = EventService.INSTANCE.GetEvents();
+
+			AddEventCommand = new Command(() => Application.Current.MainPage.Navigation.PushAsync(new AddEventPage()));
+			RefreshEventListCommand = new Command(EventService.INSTANCE.QueryLocalEventList);
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		public ObservableCollection<Event> EventsList;
+		public ObservableCollection<Event> EventsList { get; set; }
+
+		public Command AddEventCommand { get; set; }
+		public Command RefreshEventListCommand { get; set; }
 
 		public Event SelectedEvent
 		{

@@ -42,9 +42,6 @@ namespace PartyTimeline.Services
 		{
 			EventList = new ObservableCollection<Event>();
 
-			EventList.Add(new Event { Name = "Alone at Home", Images = GenerateImagesForEvent() });
-			EventList.Add(new Event { Name = "Development of cool app", Images = GenerateImagesForEvent() });
-			EventList.Add(new Event { Name = "Call regarding future", Images = GenerateImagesForEvent() });
 			EventList.Add(new Event { Name = "Drinking a lot of beer", Images = GenerateImagesForEvent() });
 			EventList.Add(new Event { Images = GenerateImagesForEvent() });
 		}
@@ -82,7 +79,13 @@ namespace PartyTimeline.Services
 
 		public void QueryLocalEventList()
 		{
-			EventList = new ObservableCollection<Event>(DependencyService.Get<EventListInterface>().ReadLocalEvents());
+			foreach (Event eventReference in DependencyService.Get<EventListInterface>().ReadLocalEvents())
+			{
+				if (!EventList.Contains(eventReference))
+				{
+					EventList.Add(eventReference);
+				}
+			}
 		}
 
 		public void AddNewEvent(Event eventReference)

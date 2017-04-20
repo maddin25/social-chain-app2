@@ -61,6 +61,10 @@
     <Compile Include="Database\TableTemplate.cs" />
     <Compile Include="Database\Column.cs" />
     <Compile Include="Database\DatabaseEnums.cs" />
+    <Compile Include="Views\AddEventPage.xaml.cs">
+      <DependentUpon>AddEventPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\AddEventPageViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Plugin.Media, Version=2.6.3.14, Culture=neutral, processorArchitecture=MSIL">
@@ -146,6 +150,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\EventPageThumbnails.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\AddEventPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

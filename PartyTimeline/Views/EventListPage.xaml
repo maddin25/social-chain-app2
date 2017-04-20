@@ -37,6 +37,11 @@
         </StackLayout>
     </ContentPage.Content>
 	
+	<ContentPage.ToolbarItems>
+	    <ToolbarItem Name="AddEvent" Order="Primary" Icon="plus.png" Priority="0" Command="{Binding AddEventCommand}"/>
+	    <ToolbarItem Name="RefreshEventList" Order="Primary" Icon="refresh.png" Priority="1" Command="{Binding RefreshEventListCommand}"/>
+	</ContentPage.ToolbarItems>
+	
     <ContentPage.Padding>
         <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" WinPhone="20,20,20,20"/>
     </ContentPage.Padding>

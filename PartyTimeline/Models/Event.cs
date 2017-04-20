@@ -18,8 +18,8 @@ namespace PartyTimeline
 		public ObservableCollection<EventImage> Images { get; set; }
 		public DateTime Date { get; set; }
 		public string GetDateTimeString { get { return Date.ToString(); } }
-		public int NrPictures { get { return 1234; /* return Images.Count; */ } }
-		public int NrContributors { get { return 4; /* return Contributors.Count; */ } }
+		public int NrPictures { get { return Images == null ? 0 : Images.Count; } }
+		public int NrContributors { get { return Contributors == null ? 0 : Contributors.Count; } }
 		public string GetNrPicturesString { get { return (NrPictures.ToString() + " Picture" + (NrPictures > 1 ? "s" : "")); } }
 		public string GetNrContributorsString { get { return (NrContributors.ToString() + " User" + (NrContributors > 1 ? "s" : "")); } }
 

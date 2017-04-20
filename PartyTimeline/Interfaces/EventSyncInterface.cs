@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 using PartyTimeline;
 
 public interface EventSyncInterface

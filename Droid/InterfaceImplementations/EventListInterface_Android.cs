@@ -2,7 +2,7 @@
 
 using Xamarin.Forms;
 
-[assembly: Dependency(typeof(PartyTimeline.Droid.EventSyncInterface_Android))]
+[assembly: Dependency(typeof(PartyTimeline.Droid.EventListInterface_Android))]
 namespace PartyTimeline.Droid
 {
 	public class EventListInterface_Android : EventListInterface
@@ -22,12 +22,12 @@ namespace PartyTimeline.Droid
 			return null;
 		}
 
-		public void WriteLocalEvent(Event eventReference)
+		public void WriteLocalEvent(ref Event eventReference)
 		{
 
 		}
 
-		public void PushServerEvent(Event eventReference)
+		public void PushServerEvent(ref Event eventReference)
 		{
 
 		}

@@ -6,6 +6,6 @@ public interface EventListInterface
 {
 	List<Event> ReadLocalEvents();
 	List<Event> PollServerEventList();
-	void WriteLocalEvent(Event eventReference);
-	void PushServerEvent(Event eventReference);
+	void PushServerEvent(ref Event eventReference);
+	void WriteLocalEvent(ref Event eventReference);
 }

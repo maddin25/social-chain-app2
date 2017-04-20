@@ -2,7 +2,7 @@
 
 using Xamarin.Forms;
 
-[assembly: Dependency(typeof(PartyTimeline.iOS.EventSyncInterface_iOS))]
+[assembly: Dependency(typeof(PartyTimeline.iOS.EventListInterface_iOS))]
 namespace PartyTimeline.iOS
 {
 	public class EventListInterface_iOS : EventListInterface
@@ -15,6 +15,15 @@ namespace PartyTimeline.iOS
 		public List<Event> PollServerEventList()
 		{
 			return null;
+		}
+
+		public void WriteLocalEvent(ref Event eventReference)
+		{
+
+		}
+
+		public void PushServerEvent(ref Event eventReference)
+		{
 		}
 	}
 }

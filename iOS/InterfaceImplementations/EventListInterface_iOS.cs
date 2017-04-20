@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 
+using Newtonsoft.Json;
+
 using Xamarin.Forms;
 
 [assembly: Dependency(typeof(PartyTimeline.iOS.EventListInterface_iOS))]
@@ -24,6 +26,7 @@ namespace PartyTimeline.iOS
 
 		public void PushServerEvent(ref Event eventReference)
 		{
+			string serializedEvent = JsonConvert.SerializeObject(eventReference);
 		}
 	}
 }

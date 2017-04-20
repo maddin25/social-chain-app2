@@ -11,8 +11,6 @@ namespace PartyTimeline.Droid
 	{
 		static readonly string TAG = typeof(EventSyncService).FullName;
 
-		private string id;
-
 		public override void OnCreate()
 		{
 			base.OnCreate();
@@ -20,21 +18,30 @@ namespace PartyTimeline.Droid
 
 		public override IBinder OnBind(Intent intent)
 		{
-			id = "default_id";
-			SDebug.WriteLine($"{id}: OnBind");
+			SDebug.WriteLine($"{TAG}: OnBind");
 			return new EventSyncBinder(this);
 		}
 
 		public override bool OnUnbind(Intent intent)
 		{
-			SDebug.WriteLine($"{id}: OnUnbind");
+			SDebug.WriteLine($"{TAG}: OnUnbind");
 			return base.OnUnbind(intent);
 		}
 
 		public override void OnDestroy()
 		{
-			SDebug.WriteLine($"{id}: OnDestroy");
+			SDebug.WriteLine($"{TAG}: OnDestroy");
 			base.OnDestroy();
+		}
+
+		public void UploadNewImageLowRes(ref EventImage image)
+		{
+			SDebug.WriteLine($"Uploading image {image.URI} to the server");
+		}
+
+		public void UpdateImageAnnotation(ref EventImage image)
+		{
+			SDebug.WriteLine($"Updating annotation of image {image.URI}");
 		}
 	}
 }

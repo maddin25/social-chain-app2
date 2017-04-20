@@ -3,6 +3,8 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using Plugin.Media.Abstractions;
 
+using Xamarin.Forms;
+
 namespace PartyTimeline
 {
 	public class Event
@@ -43,6 +45,8 @@ namespace PartyTimeline
 			newEventImage.URI = path;
 
 			Images.Add(newEventImage);
+
+			DependencyService.Get<EventSyncInterface>().UploadNewImageLowRes(ref newEventImage);
 		}
 
 		public Event()

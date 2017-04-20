@@ -31,5 +31,15 @@ namespace PartyTimeline.Droid
 		{
 			SDebug.WriteLine($"Stopping syncing service for event {eventReference.Name}");
 		}
+
+		public void UploadNewImageLowRes(ref EventImage image)
+		{
+			eventSyncingConnection.Binder.Service.UploadNewImageLowRes(ref image);
+		}
+
+		public void UpdateImageAnnotation(ref EventImage image)
+		{
+
+		}
 	}
 }

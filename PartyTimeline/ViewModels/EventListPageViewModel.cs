@@ -2,8 +2,10 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+
 using PartyTimeline.Annotations;
 using PartyTimeline.Services;
+
 using Xamarin.Forms;
 
 namespace PartyTimeline.ViewModels

@@ -166,6 +166,14 @@
     <ImageAsset Include="Assets.xcassets\Contents.json">
       <InProject>false</InProject>
     </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\refresh.png.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\refresh.png.imageset\refresh-1x.png" />
+    <ImageAsset Include="Assets.xcassets\refresh.png.imageset\refresh-2x.png" />
+    <ImageAsset Include="Assets.xcassets\refresh.png.imageset\refresh-3x.png" />
+    <ImageAsset Include="Assets.xcassets\plus.png.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\plus.png.imageset\plus-1x.png" />
+    <ImageAsset Include="Assets.xcassets\plus.png.imageset\plus-2x.png" />
+    <ImageAsset Include="Assets.xcassets\plus.png.imageset\plus-3x.png" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -189,6 +197,10 @@
   <ItemGroup>
     <BundleResource Include="Resources\image_error.png" />
     <BundleResource Include="Resources\image_loading.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets.xcassets\refresh.png.imageset\" />
+    <Folder Include="Assets.xcassets\plus.png.imageset\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.3.5.233-pre1\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.3.5.233-pre1\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />

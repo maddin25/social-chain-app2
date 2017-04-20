@@ -214,6 +214,10 @@
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="InterfaceImplementations\SystemInterface_Android.cs" />
+    <Compile Include="InterfaceImplementations\EventSyncInterface_Android.cs" />
+    <Compile Include="Services\EventSyncService.cs" />
+    <Compile Include="Services\EventSyncBinder.cs" />
+    <Compile Include="Services\EventSyncServiceConnection.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -237,6 +241,9 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\xml\file_paths.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

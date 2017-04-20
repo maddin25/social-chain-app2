@@ -183,6 +183,7 @@
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="InterfaceImplementations\SystemInterface_iOS.cs" />
+    <Compile Include="InterfaceImplementations\EventSyncInterface_iOS.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\image_error.png" />

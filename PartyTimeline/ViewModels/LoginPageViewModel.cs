@@ -54,6 +54,7 @@ namespace PartyTimeline
 			{
 				return;
 			}
+			// TODO: Start polling event list here
 			await Application.Current.MainPage.Navigation.PushAsync(new EventListPage());
 		}
 	}

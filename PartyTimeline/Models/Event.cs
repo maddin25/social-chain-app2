@@ -9,6 +9,7 @@ namespace PartyTimeline
 	{
 		private string _name = "Unnamed Event";
 
+		public string ID;
 		public string Name
 		{
 			get { return _name; }

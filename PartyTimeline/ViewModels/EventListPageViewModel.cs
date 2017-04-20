@@ -41,6 +41,7 @@ namespace PartyTimeline.ViewModels
 				{
 					var indexOfSelectedEvent = EventsList.IndexOf(_selectedEvent);
 					Debug.WriteLine($"Event Nr. {indexOfSelectedEvent + 1} selected");
+					DependencyService.Get<EventSyncInterface>().StartEventSyncing(ref _selectedEvent);
 					Application.Current.MainPage.Navigation.PushAsync(new EventPageThumbnails(ref _selectedEvent));
 				}
 			}

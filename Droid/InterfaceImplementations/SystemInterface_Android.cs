@@ -1,5 +1,4 @@
-﻿using System;
-using SDebug = System.Diagnostics.Debug;
+﻿using SDebug = System.Diagnostics.Debug;
 
 using Xamarin.Forms;
 

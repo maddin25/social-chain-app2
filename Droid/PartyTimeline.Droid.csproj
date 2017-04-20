@@ -240,7 +240,6 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
     <AndroidResource Include="Resources\drawable\image_error.png" />
     <AndroidResource Include="Resources\drawable\image_loading.png" />
-    <AndroidResource Include="Resources\drawable\.DS_Store" />
     <AndroidResource Include="Resources\drawable-hdpi\plus.png" />
     <AndroidResource Include="Resources\drawable-hdpi\refresh.png" />
     <AndroidResource Include="Resources\drawable-mdpi\plus.png" />

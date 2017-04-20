@@ -21,5 +21,15 @@ namespace PartyTimeline.Droid
 		{
 			return null;
 		}
+
+		public void WriteLocalEvent(Event eventReference)
+		{
+
+		}
+
+		public void PushServerEvent(Event eventReference)
+		{
+
+		}
 	}
 }

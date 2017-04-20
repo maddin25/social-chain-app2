@@ -88,8 +88,8 @@ namespace PartyTimeline.Services
 		public void AddNewEvent(Event eventReference)
 		{
 			EventList.Add(eventReference);
-			DependencyService.Get<EventListInterface>().WriteLocalEvent(eventReference);
-			DependencyService.Get<EventListInterface>().PushServerEvent(eventReference);
+			//DependencyService.Get<EventListInterface>().WriteLocalEvent(eventReference);
+			//DependencyService.Get<EventListInterface>().PushServerEvent(eventReference);
 		}
 	}
 }

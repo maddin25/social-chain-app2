@@ -3,17 +3,58 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"
 	xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
-	x:Class="PartyTimeline.EventPageThumbnails">
+	x:Class="PartyTimeline.EventPageThumbnails"
+	>
 
     <ContentPage.Content>
 		<StackLayout Orientation="Vertical">
-			<Label x:Name="EventNameLabel" Text="No Eventname Assigned" XAlign="Center" FontSize="30"/>
-			<flv:FlowListView
-				x:Name="EventImageList"
+			<Label Text="{Binding EventReference.Name}" XAlign="Center" FontSize="30"/>
+
+			<ListView
+				RowHeight="200"
+				ItemsSource="{Binding EventReference.Images}"
+				SelectedItem="{Binding SelectedImage}"
+				>
+				<ListView.ItemTemplate>
+					<DataTemplate>
+						<ViewCell>
+							<AbsoluteLayout Padding="0,0,0,6" >
+								<ffimageloading:CachedImage
+									AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+									AbsoluteLayout.LayoutFlags="All"
+									HeightRequest="200"
+									Aspect="AspectFill"
+									DownsampleHeight="200"
+									DownsampleUseDipUnits="false"
+									LoadingPlaceholder="image_loading.png"
+									ErrorPlaceholder="image_error.png"
+									Source="{Binding URI}">
+	                            </ffimageloading:CachedImage>
+								
+								<Label
+									AbsoluteLayout.LayoutBounds="0.5, 1, 1, 0.3"
+									AbsoluteLayout.LayoutFlags="All"
+									VerticalOptions="End"
+									HorizontalTextAlignment="Center"
+									VerticalTextAlignment="End"
+									BackgroundColor="Silver"
+									Opacity="0.8"
+									Text="{Binding ShortAnnotation}"
+									/>
+									
+							</AbsoluteLayout>
+                         </ViewCell>
+					</DataTemplate>
+				</ListView.ItemTemplate>
+			</ListView>
+			
+			<!--<flv:FlowListView
 				SeparatorVisibility="None"
 				HasUnevenRows="true"
-				FlowColumnMinWidth="150">
-			
+				FlowColumnMinWidth="150"
+				ItemsSource="{Binding EventReference.Images}"
+				>
+				
 				<flv:FlowListView.FlowColumnTemplate>
 					<DataTemplate>
                         <Grid Padding="3">
@@ -33,16 +74,18 @@
 								ErrorPlaceholder="image_error.png"
 								Source="{Binding URI}">
                             </ffimageloading:CachedImage>
-                            <Label x:Name="Label" HorizontalOptions="Fill" HorizontalTextAlignment="Center" VerticalOptions="End"
+							
+                            <Label HorizontalOptions="Fill" HorizontalTextAlignment="Center" VerticalOptions="End"
 								BackgroundColor="Silver" Opacity="0.8" Text="{Binding ShortAnnotation}"/>
 						</Grid>
 					</DataTemplate>
 				</flv:FlowListView.FlowColumnTemplate>
-			</flv:FlowListView>
-			<Button Text="Take Photo" Clicked="TakePhotoButton_OnClicked"/>
-            <Button Text="Pick Photo" Clicked="PickPhotoButton_OnClicked"/>
-            <Button Text="Take Video" Clicked="TakeVideoButton_OnClicked"/>
-            <Button Text="Pick Video" Clicked="PickVideoButton_OnClicked"/>
+			</flv:FlowListView>-->
+			
+			<Button Text="Take Photo" Command="{Binding TakePhotoButtonCommand}"/>
+            <Button Text="Pick Photo" Command="{Binding PickPhotoButtonCommand}"/>
+            <Button Text="Take Video" Command="{Binding TakeVideoButtonCommand}"/>
+            <Button Text="Pick Video" Command="{Binding PickVideoButtonCommand}"/>
         </StackLayout>
 	</ContentPage.Content>
 </ContentPage>

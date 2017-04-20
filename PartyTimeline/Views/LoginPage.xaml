@@ -3,17 +3,12 @@
     <ContentPage.Content>
         <StackLayout Padding="20, 20, 20, 0">
             <Label Text="Party Timeline" FontSize="20" />
-			<Entry Placeholder="Username" Keyboard="Email" Completed="Username_Completed" TextChanged="Username_TextChanged" />
-			<Entry IsPassword="true" Placeholder="Password" Completed="Password_Completed" TextChanged="Password_TextChanged" />
-			<Button Text="Login" Clicked="Login_Clicked" />
-
-            <Frame Padding="20, 20, 20, 20" OutlineColor="White" HorizontalOptions="Fill" CornerRadius="3">
-                <Label HorizontalTextAlignment="Center" Text="Sign Up" x:Name="LabelSignUp"/>
-            </Frame>
-            <Frame Padding="20, 20, 20, 20" OutlineColor="White" HorizontalOptions="Fill" CornerRadius="3">
-                <Label HorizontalTextAlignment="Center" Text="Forgot Password?" x:Name="LabelForgotPassword"/>
-            </Frame>
-        </StackLayout>
+			<Entry Placeholder="Username" Keyboard="Email" Text="{Binding Username}" />
+			<Entry IsPassword="true" Placeholder="Password" Text="{Binding Password}" />
+			<Button Text="Login" Command="{Binding LoginCommand}" />
+			<Button Text="Sign Up" Command="{Binding SignUpCommand}" />
+			<Button Text="Forgot Password" Command="{Binding ForgotPasswordCommand}" />
+          </StackLayout>
 	</ContentPage.Content>
     <ContentPage.Padding>
         <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" WinPhone="20,20,20,20" />

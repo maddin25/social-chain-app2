@@ -23,15 +23,16 @@ namespace PartyTimeline.Services
             "https://farm9.staticflickr.com/8351/8299022203_de0cb894b0.jpg"
         };
 
-        public ObservableCollection<Event> GetEvents()
+        public List<Event> GetEvents()
         {
-            ObservableCollection<Event> events;
-            events = new ObservableCollection<Event>();
+            List<Event> events;
+            events = new List<Event>();
 
             events.Add(new Event { Name = "Alone at Home", Images = GenerateImagesForEvent()});
             events.Add(new Event { Name = "Development of cool app", Images = GenerateImagesForEvent() });
             events.Add(new Event { Name = "Call regarding future", Images = GenerateImagesForEvent() });
             events.Add(new Event { Name = "Drinking a lot of beer", Images = GenerateImagesForEvent() });
+			events.Add(new Event { Images = GenerateImagesForEvent() });
 
             return events;
         }

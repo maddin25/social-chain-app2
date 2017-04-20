@@ -2,11 +2,14 @@
 <ContentPage
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-	x:Class="PartyTimeline.EventListPage">
+    xmlns:local="clr-namespace:PartyTimeline"
+	x:Class="PartyTimeline.EventListPage"
+    xmlns:viewModels="clr-namespace:PartyTimeline.ViewModels;assembly=PartyTimeline">
+	
     <ContentPage.Content>
         <StackLayout Orientation="Vertical">
             <Label Text="Events" XAlign="Center" FontSize="30" />
-            <ListView x:Name="eventListView" ItemTapped="Event_Tapped">
+            <ListView x:Name="EventListView" ItemsSource="{Binding EventsList}" SelectedItem="{Binding SelectedEvent}" >
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -14,7 +17,7 @@
                                 <Frame.Content> 
                                     <Frame Padding="15,15,15,15" OutlineColor="Gray" BackgroundColor="White">
                                         <Frame.Content>
-                                            <StackLayout Padding="10,0,0,10"  Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                                            <StackLayout Padding="0,0,0,0"  Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
                                                     <Image Source="{Binding GetPreviewURL}" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" AbsoluteLayout.LayoutFlags="All" Aspect="AspectFill"/>
                                                     <Label Text="{Binding Name}" AbsoluteLayout.LayoutBounds="0.03, 0.85, autosize, autosize" AbsoluteLayout.LayoutFlags="PositionProportional"/>
                                                     <Label Text="{Binding GetDateTimeString}" AbsoluteLayout.LayoutBounds="0.03, 0.95, autosize, autosize" AbsoluteLayout.LayoutFlags="PositionProportional" FontSize="10"/>
@@ -33,7 +36,9 @@
             </ListView>
         </StackLayout>
     </ContentPage.Content>
+	
     <ContentPage.Padding>
         <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" WinPhone="20,20,20,20"/>
     </ContentPage.Padding>
+	
 </ContentPage>

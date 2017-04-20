@@ -27,27 +27,7 @@ namespace PartyTimeline
 		public string GetNrContributorsString { get { return (NrContributors.ToString() + " User" + (NrContributors > 1 ? "s" : "")); } }
 
 		// The image should be in dimensions 3:1 (width:height)
-		public string GetPreviewURL
-		{
-			get
-			{
-				return "https://farm8.staticflickr.com/7351/16355627795_204bf423e9.jpg";
-			}
-		}
-
-		public void AddEventImage(String path)
-		{
-			EventImage newEventImage = new EventImage();
-			newEventImage.ShortAnnotation = "Default Short Annotation";
-			newEventImage.DateTaken = DateTime.Now;
-			Random nrGenerator = new Random(DateTime.Now.Millisecond);
-			newEventImage.Id = nrGenerator.Next();
-			newEventImage.URI = path;
-
-			Images.Add(newEventImage);
-
-			DependencyService.Get<EventSyncInterface>().UploadNewImageLowRes(ref newEventImage);
-		}
+		public string GetPreviewURL { get { return "https://farm8.staticflickr.com/7351/16355627795_204bf423e9.jpg"; } }
 
 		public Event()
 		{

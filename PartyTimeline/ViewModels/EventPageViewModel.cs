@@ -109,7 +109,7 @@ namespace PartyTimeline
 
 			Debug.WriteLine($"Photo file Location: {file.Path}");
 
-			EventReference.AddEventImage(file.Path);
+			AddEventImage(file.Path);
 
 			//            testImage.Source = ImageSource.FromStream(() =>
 			//	        {
@@ -133,7 +133,7 @@ namespace PartyTimeline
 			if (file == null)
 				return;
 
-			EventReference.AddEventImage(file.Path);
+			AddEventImage(file.Path);
 		}
 
 		private async void TakeVideo(bool permissionResult)
@@ -175,6 +175,20 @@ namespace PartyTimeline
 			Debug.WriteLine($"Video file Location: {file.Path}");
 			//EventReference.AddEventImage(file.Path);
 			//file.Dispose(
+		}
+
+		public void AddEventImage(String path)
+		{
+			EventImage newEventImage = new EventImage();
+			newEventImage.ShortAnnotation = "Default Short Annotation";
+			newEventImage.DateTaken = DateTime.Now;
+			Random nrGenerator = new Random(DateTime.Now.Millisecond);
+			newEventImage.Id = nrGenerator.Next();
+			newEventImage.URI = path;
+
+			EventReference.Images.Add(newEventImage);
+
+			DependencyService.Get<EventSyncInterface>().UploadNewImageLowRes(ref newEventImage);
 		}
 	}
 }

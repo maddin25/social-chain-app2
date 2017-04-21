@@ -30,7 +30,7 @@ namespace PartyTimeline.Droid
 
 		public override void OnUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
 		{
-
+			// TODO: implement OnUpgrade
 		}
 	}
 }

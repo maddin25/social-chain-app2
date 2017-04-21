@@ -17,6 +17,7 @@ namespace UnitTests
 			tables.Add(new EventTable());
 			tables.Add(new ImageTable());
 			tables.Add(new EventMemberTable());
+			tables.Add(new Event_EventMember_Table());
 		}
 
 		[Test()]

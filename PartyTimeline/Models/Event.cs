@@ -7,7 +7,7 @@ namespace PartyTimeline
 	{
 		private string _name = "";
 
-		public string ID;
+		public long ID;
 		public string Name
 		{
 			get { return _name; }

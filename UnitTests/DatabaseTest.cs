@@ -14,6 +14,7 @@ namespace UnitTests
 		{
 			Console.WriteLine(new EventTable().CreateTableQuery());
 			Console.WriteLine(new ImageTable().CreateTableQuery());
+			Console.WriteLine(new EventMemberTable().CreateTableQuery());
 			Assert.Pass();
 		}
 	}

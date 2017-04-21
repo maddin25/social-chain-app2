@@ -65,6 +65,7 @@
     <Compile Include="ViewModels\AddEventPageViewModel.cs" />
     <Compile Include="Database\Tables\EventTable.cs" />
     <Compile Include="Database\Tables\ImageTable.cs" />
+    <Compile Include="Database\Tables\EventMemberTable.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Plugin.Media, Version=2.6.3.14, Culture=neutral, processorArchitecture=MSIL">

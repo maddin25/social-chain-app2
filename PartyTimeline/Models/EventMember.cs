@@ -6,6 +6,9 @@ namespace PartyTimeline
 
 	public class EventMember
 	{
+		public static int ROLE_ID_MIN = 0;
+		public static int ROLE_ID_MAX = 3;
+
 		public static Dictionary<ROLES, string> RoleDescriptions = new Dictionary<ROLES, string>
 		{
 			{ROLES.Administrator, "Administrator"},
@@ -20,7 +23,7 @@ namespace PartyTimeline
 			{ROLES.Moderator, 1},
 			{ROLES.Contributor, 2},
 			{ROLES.Viewer, 3}
-		}
+		};
 
 		public long Id { get; set; }
 		public string EmailAddress { get; set; }

@@ -19,6 +19,7 @@ namespace PartyTimeline
 				DataType = Column.DATATYPES["INT"],
 				Constraint = Column.CONSTRAINTS["NOT_NULL"]
 			});
+			Columns.Add(new Column { Name = "date_modified", DataType = Column.DATATYPES["INT"], Constraint = Column.CONSTRAINTS["NOT_NULL"] });
 		}
 
 		public string CreateTableQuery()

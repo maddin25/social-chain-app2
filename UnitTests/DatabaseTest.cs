@@ -15,8 +15,8 @@ namespace UnitTests
 		public DatabaseTest()
 		{
 			tables.Add(new EventTable());
-			tables.Add(new ImageTable());
 			tables.Add(new EventMemberTable());
+			tables.Add(new ImageTable());
 			tables.Add(new Event_EventMember_Table());
 		}
 

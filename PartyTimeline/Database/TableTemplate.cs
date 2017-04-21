@@ -8,44 +8,44 @@ namespace PartyTimeline
 		private static string STATEMENT_CREATE_TABLE = "CREATE TABLE";
 		private static string STATEMENT_DROP_TABLE = "DROP TABLE";
 
-		public List<Column> COLUMNS = new List<Column>();
-		public string TABLE_NAME = string.Empty;
+		public List<Column> Columns = new List<Column>();
+		public string TableName = string.Empty;
 
 		public TableTemplate()
 		{
-			COLUMNS.Add(new Column {
-				NAME = "_id",
-				IS_PRIMARY_KEY = true,
-				DATATYPE = Column.DATATYPES["INT"],
-				CONSTRAINT = Column.CONSTRAINTS["NOT_NULL"]
+			Columns.Add(new Column {
+				Name = "_id",
+				IsPrimaryKey = true,
+				DataType = Column.DATATYPES["INT"],
+				Constraint = Column.CONSTRAINTS["NOT_NULL"]
 			});
 		}
 
 		public string CreateTableQuery()
 		{
-			if (string.IsNullOrWhiteSpace(TABLE_NAME))
+			if (string.IsNullOrWhiteSpace(TableName))
 			{
 				throw new InvalidOperationException("TABLE_NAME is null or only white space");
 			}
 
 			string column_create_statements = string.Empty;
-			foreach (Column column in COLUMNS)
+			foreach (Column column in Columns)
 			{
 				column_create_statements += "\t" + column.CreateColumnStatement();
-				if (column != COLUMNS[COLUMNS.Count - 1])
+				if (column != Columns[Columns.Count - 1])
 				{
 					column_create_statements += ",";
 				}
 				column_create_statements += "\n";
 			}
 
-			return STATEMENT_CREATE_TABLE + " " + TABLE_NAME +
+			return STATEMENT_CREATE_TABLE + " " + TableName +
 				" (\n" + column_create_statements + ");";
 		}
 
 		public string DropTableQuery()
 		{
-			return STATEMENT_DROP_TABLE + " " + TABLE_NAME + ";";
+			return STATEMENT_DROP_TABLE + " " + TableName + ";";
 		}
 	}
 }

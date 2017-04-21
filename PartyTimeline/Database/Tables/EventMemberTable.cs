@@ -5,17 +5,17 @@ namespace PartyTimeline
 	{
 		public EventMemberTable() : base()
 		{
-			TABLE_NAME = "event_members";
-			COLUMNS.Add(new Column { NAME = "email_address", DATATYPE = "VARCHAR(254)", CONSTRAINT = Column.CONSTRAINTS["UNIQUE"] });
-			COLUMNS.Add(new Column { NAME = "first_name", DATATYPE = Column.DATATYPES["TEXT"], CONSTRAINT = Column.CONSTRAINTS["NOT_NULL"] });
-			COLUMNS.Add(new Column { NAME = "last_name", DATATYPE = Column.DATATYPES["TEXT"], CONSTRAINT = Column.CONSTRAINTS["NOT_NULL"] });
-			COLUMNS.Add(new Column { NAME = "facebook_token", DATATYPE = "VARCHAR(256)", CONSTRAINT = Column.CONSTRAINTS["UNIQUE"] });
+			TableName = "event_members";
+			Columns.Add(new Column { Name = "email_address", DataType = "VARCHAR(254)", Constraint = Column.CONSTRAINTS["UNIQUE"] });
+			Columns.Add(new Column { Name = "first_name", DataType = Column.DATATYPES["TEXT"], Constraint = Column.CONSTRAINTS["NOT_NULL"] });
+			Columns.Add(new Column { Name = "last_name", DataType = Column.DATATYPES["TEXT"], Constraint = Column.CONSTRAINTS["NOT_NULL"] });
+			Columns.Add(new Column { Name = "facebook_token", DataType = "VARCHAR(256)", Constraint = Column.CONSTRAINTS["UNIQUE"] });
 			string role_column_name = "role";
-			COLUMNS.Add(new Column
+			Columns.Add(new Column
 			{
-				NAME = role_column_name,
-				DATATYPE = Column.DATATYPES["INT"],
-				CONSTRAINT = $"CHECK ({role_column_name} BETWEEN {EventMember.ROLE_ID_MIN} AND {EventMember.ROLE_ID_MAX})"
+				Name = role_column_name,
+				DataType = Column.DATATYPES["INT"],
+				Constraint = $"CHECK ({role_column_name} BETWEEN {EventMember.ROLE_ID_MIN} AND {EventMember.ROLE_ID_MAX})"
 			});
 		}
 	}

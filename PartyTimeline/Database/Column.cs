@@ -21,26 +21,26 @@ namespace PartyTimeline
 			// Missing: CHECK and DEFAULT constraints
 		};
 
-		public string NAME = string.Empty;
-		public bool IS_PRIMARY_KEY = false;
-		public string DATATYPE;
-		public string CONSTRAINT = CONSTRAINTS["NONE"];
+		public string Name = string.Empty;
+		public bool IsPrimaryKey = false;
+		public string DataType;
+		public string Constraint = CONSTRAINTS["NONE"];
 
 		public string CreateColumnStatement()
 		{
-			if (string.IsNullOrWhiteSpace(NAME))
+			if (string.IsNullOrWhiteSpace(Name))
 			{
 				throw new InvalidOperationException("Column NAME is null or has length 0");
 			}
-			else if (DATATYPE == null)
+			else if (DataType == null)
 			{
 				throw new InvalidOperationException("Column DATATYPE is null");
 			}
 
-			return NAME +
-				" " + DATATYPE +
-				(IS_PRIMARY_KEY ? " PRIMARY KEY" : "") +
-				" " + CONSTRAINT;
+			return Name +
+				" " + DataType +
+				(IsPrimaryKey ? " PRIMARY KEY" : "") +
+				" " + Constraint;
 		}
 	}
 }

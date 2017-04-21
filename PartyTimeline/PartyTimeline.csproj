@@ -60,7 +60,6 @@
     <Compile Include="Database\EventTable.cs" />
     <Compile Include="Database\TableTemplate.cs" />
     <Compile Include="Database\Column.cs" />
-    <Compile Include="Database\DatabaseEnums.cs" />
     <Compile Include="Views\AddEventPage.xaml.cs">
       <DependentUpon>AddEventPage.xaml</DependentUpon>
     </Compile>

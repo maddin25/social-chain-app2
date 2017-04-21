@@ -1,15 +1,40 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace PartyTimeline
 {
 	public class TableTemplate
 	{
-		public static List<Column> COLUMNS;
+		private static string STATEMENT_CREATE_TABLE = "CREATE TABLE";
+
+		public static List<Column> COLUMNS = new List<Column>();
 		public static string TABLE_NAME = string.Empty;
 
 		public TableTemplate()
 		{
-			COLUMNS.Add(new Column { NAME = "_id", IS_PRIMARY_KEY = true, DATATYPE = DATATYPES.TEXT });
+			COLUMNS.Add(new Column { NAME = "_id", IS_PRIMARY_KEY = true, DATATYPE = Column.DATATYPES["TEXT"] });
+		}
+
+		public string CreateTableQuery()
+		{
+			if (string.IsNullOrWhiteSpace(TABLE_NAME))
+			{
+				throw new InvalidOperationException("TABLE_NAME is null or only white space");
+			}
+
+			string column_create_statements = string.Empty;
+			foreach (Column column in COLUMNS)
+			{
+				column_create_statements += "\t" + column.CreateColumnStatement();
+				if (column != COLUMNS[COLUMNS.Count - 1])
+				{
+					column_create_statements += ",";
+				}
+				column_create_statements += "\n";
+			}
+
+			return STATEMENT_CREATE_TABLE + " " + TABLE_NAME +
+				" (\n" + column_create_statements + ")";
 		}
 	}
 }

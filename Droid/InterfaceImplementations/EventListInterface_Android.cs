@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using SDebug = System.Diagnostics.Debug;
 
+using Android.Database;
+using Android.Database.Sqlite;
+
 using Newtonsoft.Json;
 
 using Xamarin.Forms;
@@ -10,9 +13,13 @@ namespace PartyTimeline.Droid
 {
 	public class EventListInterface_Android : EventListInterface
 	{
+		private SQLiteDatabase db;
+		private SQLiteOpenHelper dbHelper;
+
 		public EventListInterface_Android()
 		{
-
+			dbHelper = new EventDatabase(Android.App.Application.Context);
+			db = dbHelper.WritableDatabase;
 		}
 
 		public List<Event> ReadLocalEvents()

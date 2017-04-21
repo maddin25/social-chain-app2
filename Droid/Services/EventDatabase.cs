@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
+using SDebug = System.Diagnostics.Debug;
 
 using Android.Content;
-using Android.Database;
 using Android.Database.Sqlite;
 
 namespace PartyTimeline.Droid
@@ -10,11 +10,12 @@ namespace PartyTimeline.Droid
 	{
 		private static string DATABASE_NAME = "PartyTimeline.db";
 		private static int DATABASE_VERSION = 1;
-		private List<TableTemplate> DATABASE_TABLES;
+		private List<TableTemplate> DATABASE_TABLES = new List<TableTemplate>();
 
 		public EventDatabase(Context context)
 			: base(context, DATABASE_NAME, null, DATABASE_VERSION)
 		{
+			SDebug.WriteLine("Adding table representations to internal list");
 			DATABASE_TABLES.Add(new EventTable());
 		}
 
@@ -22,7 +23,8 @@ namespace PartyTimeline.Droid
 		{
 			foreach (TableTemplate tableTemplate in DATABASE_TABLES)
 			{
-				// TODO: create table here
+				string query = tableTemplate.CreateTableQuery();
+				db.ExecSQL(query);
 			}
 		}
 

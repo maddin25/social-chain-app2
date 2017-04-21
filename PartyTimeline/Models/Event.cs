@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.ObjectModel;
 
 namespace PartyTimeline
@@ -14,7 +14,7 @@ namespace PartyTimeline
 			set { _name = value; }
 		}
 		public string Description { get; set; }
-		public ObservableCollection<Contributor> Contributors { get; set; }
+		public ObservableCollection<EventMember> Contributors { get; set; }
 		public ObservableCollection<EventImage> Images { get; set; }
 		public DateTime DateCreated { get; set; }
 		public DateTime DateLastChanged { get; set; }
@@ -30,7 +30,7 @@ namespace PartyTimeline
 		public Event()
 		{
 			Images = new ObservableCollection<EventImage>();
-			Contributors = new ObservableCollection<Contributor>();
+			Contributors = new ObservableCollection<EventMember>();
 		}
 	}
 }

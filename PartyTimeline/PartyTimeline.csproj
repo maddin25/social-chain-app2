@@ -45,7 +45,7 @@
     </Compile>
     <Compile Include="Interfaces\SystemInterface.cs" />
     <Compile Include="Models\Event.cs" />
-    <Compile Include="Models\Contributor.cs" />
+    <Compile Include="Models\EventMember.cs" />
     <Compile Include="Models\EventImage.cs" />
     <Compile Include="Views\EventPageThumbnails.xaml.cs">
       <DependentUpon>EventPageThumbnails.xaml</DependentUpon>

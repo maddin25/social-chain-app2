@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 
 namespace PartyTimeline
@@ -31,6 +32,7 @@ namespace PartyTimeline
 			string column_create_statements = string.Empty;
 			foreach (Column column in Columns)
 			{
+				// TODO: use string.Join
 				column_create_statements += "\t" + column.CreateColumnStatement();
 				if (column != Columns[Columns.Count - 1])
 				{
@@ -41,6 +43,7 @@ namespace PartyTimeline
 			string relationship_statements = string.Empty;
 			foreach (string relationship in Relationships)
 			{
+				// TODO: use string.Join
 				relationship_statements += ",\n\t" + relationship;
 			}
 
@@ -60,7 +63,8 @@ namespace PartyTimeline
 
 		protected void AddIdColumn()
 		{
-			Columns.Add(new Column {
+			Columns.Add(new Column
+			{
 				Name = COLUMNNAME_ID,
 				IsPrimaryKey = true,
 				DataType = COLUMNDATATYPE_ID,
@@ -71,6 +75,17 @@ namespace PartyTimeline
 		protected string RelationshipForeignKey(string column_name, string reference_table, string reference_column)
 		{
 			return $"FOREIGN KEY({column_name}) REFERENCES {reference_table}({reference_column})";
+		}
+
+		protected string StatementInsertInto(string table, List<string> columns, List<Object> values)
+		{
+			List<string> value_strings = new List<string>(values.Count);
+			foreach (Object value in values)
+			{
+				value_strings.Add(value.ToString());
+			}
+			Debug.Assert(columns.Count == values.Count);
+			return $"INSERT INTO {table}({string.Join(", ", columns)}) VALUES ({string.Join(", ", value_strings)});";
 		}
 	}
 }

@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace PartyTimeline
 {
 	public enum ROLES { Administrator, Moderator, Contributor, Viewer };
 
-	public class EventMember
+	public class EventMember : BaseModel
 	{
 		public static int ROLE_ID_MIN = 0;
 		public static int ROLE_ID_MAX = 3;
@@ -31,5 +32,10 @@ namespace PartyTimeline
 		public string LastName { get; set; }
 		public string FacebookToken { get; set; }
 		public int Role { get; set; }
+
+		public EventMember(DateTime dateCreated) : base(dateCreated)
+		{
+
+		}
 	}
 }

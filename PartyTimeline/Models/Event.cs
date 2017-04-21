@@ -3,11 +3,11 @@ using System.Collections.ObjectModel;
 
 namespace PartyTimeline
 {
-	public class Event
+	public class Event : BaseModel
 	{
 		private string _name = "";
 
-		public long ID;
+		public long Id;
 		public string Name
 		{
 			get { return _name; }
@@ -16,8 +16,6 @@ namespace PartyTimeline
 		public string Description { get; set; }
 		public ObservableCollection<EventMember> Contributors { get; set; }
 		public ObservableCollection<EventImage> Images { get; set; }
-		public DateTime DateCreated { get; set; }
-		public DateTime DateLastChanged { get; set; }
 		public string GetDateTimeString { get { return DateCreated.ToString(); } }
 		public int NrPictures { get { return Images == null ? 0 : Images.Count; } }
 		public int NrContributors { get { return Contributors == null ? 0 : Contributors.Count; } }
@@ -27,10 +25,15 @@ namespace PartyTimeline
 		// The image should be in dimensions 3:1 (width:height)
 		public string GetPreviewURL { get { return "https://farm8.staticflickr.com/7351/16355627795_204bf423e9.jpg"; } }
 
-		public Event()
+		public Event(DateTime dateCreated) : base(dateCreated)
 		{
 			Images = new ObservableCollection<EventImage>();
 			Contributors = new ObservableCollection<EventMember>();
+		}
+
+		public Event()
+		{
+
 		}
 	}
 }

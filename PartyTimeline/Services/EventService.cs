@@ -42,8 +42,8 @@ namespace PartyTimeline.Services
 		{
 			EventList = new ObservableCollection<Event>();
 
-			EventList.Add(new Event { Name = "Drinking a lot of beer", Images = GenerateImagesForEvent() });
-			EventList.Add(new Event { Images = GenerateImagesForEvent() });
+			EventList.Add(new Event (DateTime.Now) { Name = "Drinking a lot of beer", Images = GenerateImagesForEvent() });
+			EventList.Add(new Event (DateTime.Now) { Images = GenerateImagesForEvent() });
 		}
 
 		public ObservableCollection<Event> GetEvents()
@@ -61,9 +61,8 @@ namespace PartyTimeline.Services
 
 			for (int i = 0; i < numberPictures; i++)
 			{
-				EventImage newEventImage = new EventImage();
+				EventImage newEventImage = new EventImage(DateTime.Now);
 				newEventImage.Caption = "Default Short Annotation";
-				newEventImage.DateTaken = DateTime.Now;
 				int nrImages = _placeholderImages.Length;
 				nrGenerator = new Random(DateTime.Now.Millisecond);
 				newEventImage.Id = nrGenerator.Next();

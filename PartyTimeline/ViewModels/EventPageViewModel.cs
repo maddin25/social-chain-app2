@@ -179,9 +179,8 @@ namespace PartyTimeline
 
 		public void AddEventImage(String path)
 		{
-			EventImage newEventImage = new EventImage();
+			EventImage newEventImage = new EventImage(DateTime.Now);
 			newEventImage.Caption = "Default Short Annotation";
-			newEventImage.DateTaken = DateTime.Now;
 			Random nrGenerator = new Random(DateTime.Now.Millisecond);
 			newEventImage.Id = nrGenerator.Next();
 			newEventImage.URI = path;

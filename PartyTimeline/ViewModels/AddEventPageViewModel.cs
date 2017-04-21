@@ -8,14 +8,13 @@ namespace PartyTimeline
 {
 	public class AddEventPageViewModel : Event
 	{
-
 		public AddEventPageViewModel()
 		{
 			AddEventCommand = new Command(() =>
 			{
 				if (AllFieldsValid())
 				{
-					DateCreated = DateTime.Now;
+					SetDateCreated(DateTime.Now);
 					EventService.INSTANCE.AddNewEvent(this);
 					Application.Current.MainPage.Navigation.PopAsync(true);
 				}

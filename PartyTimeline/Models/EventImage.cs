@@ -2,12 +2,15 @@
 
 namespace PartyTimeline
 {
-	public class EventImage
+	public class EventImage : BaseModel
 	{
 		public long Id { get; set; }
-		public DateTime DateTaken { get; set; }
-		public DateTime DateLastModified { get; set; }
 		public string Caption { get; set; }
 		public string URI { get; set; }
+
+		public EventImage(DateTime dateCreated) : base(dateCreated)
+		{
+			
+		}
 	}
 }

@@ -6,6 +6,7 @@ namespace PartyTimeline
 	public class TableTemplate
 	{
 		private static string STATEMENT_CREATE_TABLE = "CREATE TABLE";
+		private static string STATEMENT_DROP_TABLE = "DROP TABLE";
 
 		public List<Column> COLUMNS = new List<Column>();
 		public string TABLE_NAME = string.Empty;
@@ -39,7 +40,12 @@ namespace PartyTimeline
 			}
 
 			return STATEMENT_CREATE_TABLE + " " + TABLE_NAME +
-				" (\n" + column_create_statements + ")";
+				" (\n" + column_create_statements + ");";
+		}
+
+		public string DropTableQuery()
+		{
+			return STATEMENT_DROP_TABLE + " " + TABLE_NAME + ";";
 		}
 	}
 }

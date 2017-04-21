@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 
 using System;
+using System.Collections.Generic;
 
 using PartyTimeline;
 
@@ -9,12 +10,32 @@ namespace UnitTests
 	[TestFixture()]
 	public class DatabaseTest
 	{
+		List<TableTemplate> tables = new List<TableTemplate>();
+
+		public DatabaseTest()
+		{
+			tables.Add(new EventTable());
+			tables.Add(new ImageTable());
+			tables.Add(new EventMemberTable());
+		}
+
 		[Test()]
 		public void TestCreateTableStatements()
 		{
-			Console.WriteLine(new EventTable().CreateTableQuery());
-			Console.WriteLine(new ImageTable().CreateTableQuery());
-			Console.WriteLine(new EventMemberTable().CreateTableQuery());
+			foreach (TableTemplate table in tables)
+			{
+				Console.WriteLine(table.CreateTableQuery());
+			}
+			Assert.Pass();
+		}
+
+		[Test()]
+		public void TestDropTableStatements()
+		{
+			foreach (TableTemplate table in tables)
+			{
+				Console.WriteLine(table.DropTableQuery());
+			}
 			Assert.Pass();
 		}
 	}

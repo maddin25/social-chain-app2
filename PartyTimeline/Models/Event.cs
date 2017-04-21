@@ -13,6 +13,7 @@ namespace PartyTimeline
 			get { return _name; }
 			set { _name = value; }
 		}
+		public string Description { get; set; }
 		public ObservableCollection<Contributor> Contributors { get; set; }
 		public ObservableCollection<EventImage> Images { get; set; }
 		public DateTime DateCreated { get; set; }

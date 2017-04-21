@@ -12,7 +12,12 @@ namespace PartyTimeline
 
 		public TableTemplate()
 		{
-			COLUMNS.Add(new Column { NAME = "_id", IS_PRIMARY_KEY = true, DATATYPE = Column.DATATYPES["TEXT"] });
+			COLUMNS.Add(new Column {
+				NAME = "_id",
+				IS_PRIMARY_KEY = true,
+				DATATYPE = Column.DATATYPES["INT"],
+				CONSTRAINT = Column.CONSTRAINTS["NOT_NULL"]
+			});
 		}
 
 		public string CreateTableQuery()

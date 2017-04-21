@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -180,7 +180,7 @@ namespace PartyTimeline
 		public void AddEventImage(String path)
 		{
 			EventImage newEventImage = new EventImage();
-			newEventImage.ShortAnnotation = "Default Short Annotation";
+			newEventImage.Caption = "Default Short Annotation";
 			newEventImage.DateTaken = DateTime.Now;
 			Random nrGenerator = new Random(DateTime.Now.Millisecond);
 			newEventImage.Id = nrGenerator.Next();

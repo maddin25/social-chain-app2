@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Windows.Input;
-using Xamarin.Forms;
 
 namespace PartyTimeline
 {
@@ -9,13 +6,8 @@ namespace PartyTimeline
 	{
 		public long Id { get; set; }
 		public DateTime DateTaken { get; set; }
-		public string ShortAnnotation { get; set; }
-		public string LongAnnotation { get; set; }
+		public DateTime DateLastModified { get; set; }
+		public string Caption { get; set; }
 		public string URI { get; set; }
-        public object Navigation { get; private set; }
-
-		public EventImage()
-		{
-		}
 	}
 }

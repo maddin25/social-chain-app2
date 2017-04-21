@@ -13,6 +13,8 @@ namespace UnitTests
 		public void TestCreateTableStatements()
 		{
 			Console.WriteLine(new EventTable().CreateTableQuery());
+			Console.WriteLine(new ImageTable().CreateTableQuery());
+			Assert.Pass();
 		}
 	}
 }

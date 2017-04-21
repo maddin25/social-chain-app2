@@ -7,8 +7,8 @@ namespace PartyTimeline
 	{
 		private static string STATEMENT_CREATE_TABLE = "CREATE TABLE";
 
-		public static List<Column> COLUMNS = new List<Column>();
-		public static string TABLE_NAME = string.Empty;
+		public List<Column> COLUMNS = new List<Column>();
+		public string TABLE_NAME = string.Empty;
 
 		public TableTemplate()
 		{

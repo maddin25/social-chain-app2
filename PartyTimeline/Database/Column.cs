@@ -7,7 +7,7 @@ namespace PartyTimeline
 	{
 		public static Dictionary<string, string> DATATYPES = new Dictionary<string, string>
 		{
-			{"INT", "INT"},
+			{"INT", "INTEGER"},
 			{"REAL", "REAL"},
 			{"TEXT", "TEXT"}
 		};

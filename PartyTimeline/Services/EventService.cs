@@ -62,7 +62,7 @@ namespace PartyTimeline.Services
 			for (int i = 0; i < numberPictures; i++)
 			{
 				EventImage newEventImage = new EventImage();
-				newEventImage.ShortAnnotation = "Default Short Annotation";
+				newEventImage.Caption = "Default Short Annotation";
 				newEventImage.DateTaken = DateTime.Now;
 				int nrImages = _placeholderImages.Length;
 				nrGenerator = new Random(DateTime.Now.Millisecond);

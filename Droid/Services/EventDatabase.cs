@@ -30,7 +30,12 @@ namespace PartyTimeline.Droid
 
 		public override void OnUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
 		{
-			// TODO: implement OnUpgrade
+			foreach (TableTemplate tableTemplate in DATABASE_TABLES)
+			{
+				string query = tableTemplate.DropTableQuery();
+				db.ExecSQL(query);
+			}
+			OnCreate(db);
 		}
 	}
 }

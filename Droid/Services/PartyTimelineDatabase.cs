@@ -9,7 +9,7 @@ using Xamarin.Forms;
 
 namespace PartyTimeline.Droid
 {
-	public class EventDatabase : SQLiteOpenHelper
+	public class PartyTimelineDatabase : SQLiteOpenHelper
 	{
 		private readonly string AlertDatabaseAccessFailed = "Database access failed";
 
@@ -21,7 +21,7 @@ namespace PartyTimeline.Droid
 		private readonly ImageTable imageTable = new ImageTable();
 		private readonly Event_EventMember_Table eventEventMemberTable = new Event_EventMember_Table();
 
-		public EventDatabase(Context context)
+		public PartyTimelineDatabase(Context context)
 			: base(context, "PartyTimeline.db", null, DatabaseVersion)
 		{
 			SDebug.WriteLine("Adding table representations to internal list");

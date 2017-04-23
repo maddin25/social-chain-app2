@@ -15,11 +15,11 @@ namespace PartyTimeline.Droid
 	public class EventListInterface_Android : EventListInterface
 	{
 		private SQLiteDatabase db;
-		private EventDatabase dbHelper;
+		private PartyTimelineDatabase dbHelper;
 
 		public EventListInterface_Android()
 		{
-			dbHelper = new EventDatabase(Android.App.Application.Context);
+			dbHelper = new PartyTimelineDatabase(Android.App.Application.Context);
 			db = dbHelper.WritableDatabase;
 		}
 

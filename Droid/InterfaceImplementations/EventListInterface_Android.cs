@@ -14,15 +14,8 @@ namespace PartyTimeline.Droid
 {
 	public class EventListInterface_Android : EventListInterface
 	{
-		private readonly string AlertDatabaseAccessFailed = "Database access failed";
-
 		private SQLiteDatabase db;
-		private SQLiteOpenHelper dbHelper;
-
-		private EventTable eventTable = new EventTable();
-		private readonly EventMemberTable eventMemberTable = new EventMemberTable();
-		private readonly ImageTable imageTable = new ImageTable();
-		private readonly Event_EventMember_Table eventEventMemberTable = new Event_EventMember_Table();
+		private EventDatabase dbHelper;
 
 		public EventListInterface_Android()
 		{
@@ -42,17 +35,7 @@ namespace PartyTimeline.Droid
 
 		public void WriteLocalEvent(ref Event eventReference)
 		{
-			db.BeginTransaction();
-			try
-			{
-				db.ExecSQL(eventTable.Insert(eventReference));
-				db.SetTransactionSuccessful();
-			}
-			catch (Exception e)
-			{
-				Application.Current.MainPage.DisplayAlert(AlertDatabaseAccessFailed, e.Message, "Ok");
-			}
-			db.EndTransaction();
+			dbHelper.WriteLocalEvent(db, ref eventReference);
 		}
 
 		public void PushServerEvent(ref Event eventReference)

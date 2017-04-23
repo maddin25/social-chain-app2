@@ -1,21 +1,34 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SDebug = System.Diagnostics.Debug;
 
 using Android.Content;
 using Android.Database.Sqlite;
 
+using Xamarin.Forms;
+
 namespace PartyTimeline.Droid
 {
 	public class EventDatabase : SQLiteOpenHelper
 	{
-		private static int DatabaseVersion = 2;
+		private readonly string AlertDatabaseAccessFailed = "Database access failed";
+
+		private static int DatabaseVersion = 1;
 		private List<TableTemplate> Tables = new List<TableTemplate>();
+
+		private readonly EventTable eventTable = new EventTable();
+		private readonly EventMemberTable eventMemberTable = new EventMemberTable();
+		private readonly ImageTable imageTable = new ImageTable();
+		private readonly Event_EventMember_Table eventEventMemberTable = new Event_EventMember_Table();
 
 		public EventDatabase(Context context)
 			: base(context, "PartyTimeline.db", null, DatabaseVersion)
 		{
 			SDebug.WriteLine("Adding table representations to internal list");
-			Tables.Add(new EventTable());
+			Tables.Add(eventTable);
+			Tables.Add(eventMemberTable);
+			Tables.Add(imageTable);
+			Tables.Add(eventEventMemberTable);
 		}
 
 		public override void OnCreate(SQLiteDatabase db)
@@ -43,6 +56,26 @@ namespace PartyTimeline.Droid
 				string query = tableTemplate.DropTableQuery();
 				db.ExecSQL(query);
 			}
+		}
+
+		public string ListTables(SQLiteDatabase db)
+		{
+			return string.Empty;
+		}
+
+		public void WriteLocalEvent(SQLiteDatabase db, ref Event eventReference)
+		{
+			db.BeginTransaction();
+			try
+			{
+				db.ExecSQL(eventTable.Insert(eventReference));
+				db.SetTransactionSuccessful();
+			}
+			catch (Exception e)
+			{
+				Application.Current.MainPage.DisplayAlert(AlertDatabaseAccessFailed, e.Message, "Ok");
+			}
+			db.EndTransaction();
 		}
 	}
 }

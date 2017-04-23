@@ -8,7 +8,7 @@ namespace PartyTimeline.Droid
 {
 	public class EventDatabase : SQLiteOpenHelper
 	{
-		private static int DatabaseVersion = 1;
+		private static int DatabaseVersion = 2;
 		private List<TableTemplate> Tables = new List<TableTemplate>();
 
 		public EventDatabase(Context context)
@@ -20,6 +20,7 @@ namespace PartyTimeline.Droid
 
 		public override void OnCreate(SQLiteDatabase db)
 		{
+			SDebug.WriteLine($"Creating tables for database {DatabaseName}");
 			foreach (TableTemplate tableTemplate in Tables)
 			{
 				string query = tableTemplate.CreateTableQuery();
@@ -29,12 +30,19 @@ namespace PartyTimeline.Droid
 
 		public override void OnUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
 		{
+			SDebug.WriteLine($"Upgrading database {DatabaseName}");
+			OnClear(db);
+			OnCreate(db);
+		}
+
+		public void OnClear(SQLiteDatabase db)
+		{
+			SDebug.WriteLine($"Clearing database {DatabaseName}");
 			foreach (TableTemplate tableTemplate in Tables)
 			{
 				string query = tableTemplate.DropTableQuery();
 				db.ExecSQL(query);
 			}
-			OnCreate(db);
 		}
 	}
 }

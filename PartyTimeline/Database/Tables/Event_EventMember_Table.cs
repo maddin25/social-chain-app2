@@ -20,6 +20,7 @@ namespace PartyTimeline
 				DataType = Column.DATATYPES["INT"],
 				Constraint = $"CHECK ({role_column_name} BETWEEN {EventMember.ROLE_ID_MIN} AND {EventMember.ROLE_ID_MAX})"
 			});
+			AddDateCreatedColumn();
 			AddDateModifiedColumn();
 
 			Relationships.Add(RelationshipForeignKey(column_event_member_id, new EventMemberTable().TableName, ColumnId));

@@ -91,7 +91,7 @@ namespace PartyTimeline
 			Debug.Assert(column_value_pairs.ContainsKey(ColumnId), $"Values for column {ColumnLastModified} must be inserted");
 			Debug.Assert(column_value_pairs.ContainsKey(ColumnLastModified), $"Values for column {ColumnLastModified} must be inserted");
 
-			return $"INSERT INTO {table}({string.Join(", ", column_value_pairs.Keys)}) VALUES ({string.Join(", ", column_value_pairs.Values)});";
+			return $"INSERT INTO {table} ({string.Join(", ", column_value_pairs.Keys)}) VALUES ({string.Join(", ", column_value_pairs.Values)});";
 		}
 	}
 }

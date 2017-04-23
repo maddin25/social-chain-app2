@@ -1,15 +1,40 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+
 namespace PartyTimeline
 {
 	public class EventMemberTable : TableTemplate
 	{
+		public readonly string ColumnEmailAddress = "email_address";
+		public readonly string ColumnFirstName = "first_name";
+		public readonly string ColumnLastName = "last_name";
+		public readonly string ColumnFacebookToken = "facebook_token";
+
 		public EventMemberTable() : base()
 		{
 			TableName = "event_members";
-			Columns.Add(new Column { Name = "email_address", DataType = "VARCHAR(254)", Constraint = Column.CONSTRAINTS["UNIQUE"] });
-			Columns.Add(new Column { Name = "first_name", DataType = Column.DATATYPES["TEXT"], Constraint = Column.CONSTRAINTS["NOT_NULL"] });
-			Columns.Add(new Column { Name = "last_name", DataType = Column.DATATYPES["TEXT"], Constraint = Column.CONSTRAINTS["NOT_NULL"] });
-			Columns.Add(new Column { Name = "facebook_token", DataType = "VARCHAR(256)", Constraint = Column.CONSTRAINTS["UNIQUE"] });
+			Columns.Add(new Column { Name = ColumnEmailAddress, DataType = "VARCHAR(254)", Constraint = Column.CONSTRAINTS["UNIQUE"] });
+			Columns.Add(new Column { Name = ColumnFirstName, DataType = Column.DATATYPES["TEXT"], Constraint = Column.CONSTRAINTS["NOT_NULL"] });
+			Columns.Add(new Column { Name = ColumnLastName, DataType = Column.DATATYPES["TEXT"], Constraint = Column.CONSTRAINTS["NOT_NULL"] });
+			Columns.Add(new Column { Name = ColumnFacebookToken, DataType = "VARCHAR(256)", Constraint = Column.CONSTRAINTS["UNIQUE"] });
+		}
+
+		public string Insert(EventMember eventMember)
+		{
+			string statement = StatementInsertInto(
+				TableName,
+				new Dictionary<string, object>
+				{
+				{ColumnId, eventMember.Id},
+				{ColumnDateCreated, eventMember.DateCreated},
+				{ColumnLastModified, eventMember.DateLastModified},
+				{ColumnEmailAddress, eventMember.EmailAddress},
+				{ColumnFirstName, eventMember.FirstName},
+				{ColumnLastName, eventMember.LastName},
+				{ColumnFacebookToken, eventMember.FacebookToken}
+				}
+			);
+			return statement;
 		}
 	}
 }

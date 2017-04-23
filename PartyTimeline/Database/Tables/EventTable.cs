@@ -17,16 +17,17 @@ namespace PartyTimeline
 
 		public string Insert(Event eventRef)
 		{
-			string statement = StatementInsertInto(
-				TableName,
-				new Dictionary<string, object> {
+			Dictionary<string, object> column_value_pairs = new Dictionary<string, object> {
 				{ColumnId, eventRef.Id},
 				{ColumnEventName, eventRef.Name},
-				{ColumnEventDescription, eventRef.Description},
 				{ColumnDateCreated, eventRef.DateCreated.ToFileTimeUtc()},
 				{ColumnLastModified, eventRef.DateLastModified.ToFileTimeUtc()}
-				}
-			);
+			};
+			if (!string.IsNullOrWhiteSpace(eventRef.Description))
+			{
+				column_value_pairs.Add(ColumnEventDescription, eventRef.Description);
+			}
+			string statement = StatementInsertInto(TableName, column_value_pairs);
 			return statement;
 		}
 	}

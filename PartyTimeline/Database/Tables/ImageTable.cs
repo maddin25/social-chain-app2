@@ -8,7 +8,6 @@ namespace PartyTimeline
 	{
 		public readonly string ColumnUri = "uri";
 		public readonly string ColumnCaption = "caption";
-		public readonly string ColumnDateTaken = "date_taken";
 		public readonly string ColumnEventmemberId = "event_member_id";
 		public readonly string ColumnEventId = "event_id";
 
@@ -17,7 +16,6 @@ namespace PartyTimeline
 			TableName = "event_images";
 			Columns.Add(new Column { Name = ColumnUri, DataType = "VARCHAR(256)", Constraint = Column.CONSTRAINTS["NOT_NULL_UNIQUE"] });
 			Columns.Add(new Column { Name = ColumnCaption, DataType = "VARCHAR(100)" });
-			Columns.Add(new Column { Name = ColumnDateTaken, DataType = Column.DATATYPES["INT"], Constraint = Column.CONSTRAINTS["NOT_NULL"] });
 			Columns.Add(new Column { Name = ColumnEventmemberId, DataType = ColumnDatatypeId, Constraint = Column.CONSTRAINTS["NOT_NULL_UNIQUE"] });
 			Columns.Add(new Column { Name = ColumnEventId, DataType = ColumnDatatypeId, Constraint = Column.CONSTRAINTS["NOT_NULL_UNIQUE"] });
 
@@ -33,7 +31,7 @@ namespace PartyTimeline
 				{ColumnId, image.Id},
 				{ColumnUri, image.URI},
 				{ColumnCaption, image.Caption},
-				{ColumnDateTaken, image.DateCreated.ToFileTimeUtc()},
+				{ColumnDateCreated, image.DateCreated.ToFileTimeUtc()},
 				{ColumnLastModified, image.DateLastModified.ToFileTimeUtc()},
 				{ColumnEventmemberId, eventMember.Id},
 				{ColumnEventId, eventReference.Id}

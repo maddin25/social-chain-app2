@@ -7,6 +7,7 @@ namespace PartyTimeline
 	public class TableTemplate
 	{
 		public readonly string ColumnId = "_id";
+		public readonly string ColumnDateCreated = "date_taken";
 		public readonly string ColumnLastModified = "date_modified";
 
 		public readonly string ColumnDatatypeId = Column.DATATYPES["INT"];
@@ -21,6 +22,7 @@ namespace PartyTimeline
 		public TableTemplate()
 		{
 			AddIdColumn();
+			AddDateCreatedColumn();
 			AddDateModifiedColumn();
 		}
 
@@ -56,6 +58,11 @@ namespace PartyTimeline
 		public string DropTableQuery()
 		{
 			return STATEMENT_DROP_TABLE + " " + TableName + ";";
+		}
+
+		protected void AddDateCreatedColumn()
+		{
+			Columns.Add(new Column { Name = ColumnDateCreated, DataType = Column.DATATYPES["INT"], Constraint = Column.CONSTRAINTS["NOT_NULL"] });
 		}
 
 		protected void AddDateModifiedColumn()

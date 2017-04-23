@@ -26,6 +26,7 @@ namespace PartyTimeline
 			{ROLES.Viewer, 3}
 		};
 
+		// TODO: how to create unique EventMember ID?
 		public long Id { get; set; }
 		public string EmailAddress { get; set; }
 		public string FirstName { get; set; }

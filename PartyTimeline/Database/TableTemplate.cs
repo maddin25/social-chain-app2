@@ -6,11 +6,13 @@ namespace PartyTimeline
 {
 	public class TableTemplate
 	{
-		protected static string COLUMNNAME_ID = "_id";
-		protected static string COLUMNDATATYPE_ID = Column.DATATYPES["INT"];
+		public readonly string ColumnId = "_id";
+		public readonly string ColumnLastModified = "date_modified";
 
-		private static string STATEMENT_CREATE_TABLE = "CREATE TABLE";
-		private static string STATEMENT_DROP_TABLE = "DROP TABLE";
+		public readonly string ColumnDatatypeId = Column.DATATYPES["INT"];
+
+		private readonly string STATEMENT_CREATE_TABLE = "CREATE TABLE";
+		private readonly string STATEMENT_DROP_TABLE = "DROP TABLE";
 
 		public List<Column> Columns = new List<Column>();
 		public List<string> Relationships = new List<string>();
@@ -58,16 +60,16 @@ namespace PartyTimeline
 
 		protected void AddDateModifiedColumn()
 		{
-			Columns.Add(new Column { Name = "date_modified", DataType = Column.DATATYPES["INT"], Constraint = Column.CONSTRAINTS["NOT_NULL"] });
+			Columns.Add(new Column { Name = ColumnLastModified, DataType = Column.DATATYPES["INT"], Constraint = Column.CONSTRAINTS["NOT_NULL"] });
 		}
 
 		protected void AddIdColumn()
 		{
 			Columns.Add(new Column
 			{
-				Name = COLUMNNAME_ID,
+				Name = ColumnId,
 				IsPrimaryKey = true,
-				DataType = COLUMNDATATYPE_ID,
+				DataType = ColumnDatatypeId,
 				Constraint = Column.CONSTRAINTS["NOT_NULL"]
 			});
 		}
@@ -77,15 +79,12 @@ namespace PartyTimeline
 			return $"FOREIGN KEY({column_name}) REFERENCES {reference_table}({reference_column})";
 		}
 
-		protected string StatementInsertInto(string table, List<string> columns, List<Object> values)
+		protected string StatementInsertInto(string table, Dictionary<string, Object> column_value_pairs)
 		{
-			List<string> value_strings = new List<string>(values.Count);
-			foreach (Object value in values)
-			{
-				value_strings.Add(value.ToString());
-			}
-			Debug.Assert(columns.Count == values.Count);
-			return $"INSERT INTO {table}({string.Join(", ", columns)}) VALUES ({string.Join(", ", value_strings)});";
+			Debug.Assert(column_value_pairs.ContainsKey(ColumnId), $"Values for column {ColumnLastModified} must be inserted");
+			Debug.Assert(column_value_pairs.ContainsKey(ColumnLastModified), $"Values for column {ColumnLastModified} must be inserted");
+
+			return $"INSERT INTO {table}({string.Join(", ", column_value_pairs.Keys)}) VALUES ({string.Join(", ", column_value_pairs.Values)});";
 		}
 	}
 }

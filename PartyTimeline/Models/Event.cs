@@ -6,7 +6,7 @@ namespace PartyTimeline
 	public class Event : BaseModel
 	{
 		private string _name = "";
-
+		// TODO: how to create unique Event ID?
 		public long Id;
 		public string Name
 		{

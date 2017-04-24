@@ -12,5 +12,10 @@ namespace PartyTimeline
 		{
 			Caption = string.Empty;
 		}
+
+		public EventImage()
+		{
+			Caption = string.Empty;
+		}
 	}
 }

@@ -29,6 +29,7 @@ namespace PartyTimeline
 			InitializeLists();
 		}
 
+		// TODO: replace with MemberwiseClone()
 		public Event(Event copy)
 		{
 			Id = copy.Id;

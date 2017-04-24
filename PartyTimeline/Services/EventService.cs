@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -9,6 +10,8 @@ using Xamarin.Forms;
 
 using PartyTimeline.Annotations;
 
+
+// TODO: implement the sqlite interface with mono.data.sqlite, see https://developer.xamarin.com/guides/cross-platform/application_fundamentals/data/
 namespace PartyTimeline.Services
 {
 	public class EventService : INotifyPropertyChanged
@@ -88,7 +91,7 @@ namespace PartyTimeline.Services
 				int index = EventList.IndexOf(eventReference);
 				if (index >= 0)
 				{
-					if (EventList[index].CreatedAfter(eventReference))
+					if (EventList[index].ModifiedAfter(eventReference))
 					{
 						/* The event in the EventList is somehow newer than the event stored in the local database. That
 						 * should not be. */
@@ -101,6 +104,32 @@ namespace PartyTimeline.Services
 				}
 			}
 			SortEventList();
+		}
+
+		public void QueryLocalEventImageList(Event eventReference)
+		{
+			foreach (EventImage image in DependencyService.Get<EventListInterface>().ReadLocalEventImages(eventReference))
+			{
+				int index = eventReference.Images.IndexOf(image);
+				if (index >= 0)
+				{
+					if (eventReference.Images[index].ModifiedAfter(image))
+					{
+						/* The image in the Event is somehow newer than the image stored in the local database. That
+						 * should not be. */
+						Debug.WriteLine($"WARNING: image with URI '{image.URI}' in local database is outdated!");
+					}
+					else
+					{
+						eventReference.Images[index] = image;
+					}
+				}
+				else
+				{
+					eventReference.Images.Add(image);
+				}
+			}
+			SortEventImageList(eventReference);
 		}
 
 		public void AddImageToEvent(EventImage image, Event eventReference)
@@ -123,6 +152,11 @@ namespace PartyTimeline.Services
 		{
 			EventList.Sort();
 			NotifyPropertyChanged(nameof(EventList));
+		}
+
+		private void SortEventImageList(Event eventReference)
+		{
+			eventReference.Images.OrderByDescending((image) => image.DateCreated.ToFileTimeUtc());
 		}
 	}
 }

@@ -79,6 +79,40 @@ namespace PartyTimeline.Droid
 			ExecuteSimpleTransaction(EventTable.INSTANCE.Insert(eventReference));
 		}
 
+		public List<EventImage> ReadLocalEventImages(Event eventReference)
+		{
+			List<EventImage> images = new List<EventImage>();
+			ICursor cursor = db.Query(
+				ImageTable.INSTANCE.TableName,
+				null,
+				$"{ImageTable.INSTANCE.ColumnEventId} = {eventReference.Id}",
+				null, null, null, null);
+			Dictionary<string, int> columnIndexMapping = GetColumnMappings(cursor, ImageTable.INSTANCE.Columns);
+			ExecuteCustomTransaction(new Command(() =>
+			{
+				cursor.MoveToFirst();
+				while (!cursor.IsAfterLast)
+				{
+					EventImage image = new EventImage
+					{
+						Id = cursor.GetLong(columnIndexMapping[ImageTable.INSTANCE.ColumnId]),
+						URI = cursor.GetString(columnIndexMapping[ImageTable.INSTANCE.ColumnUri]),
+						DateCreated = DateTime.FromFileTime(cursor.GetLong(columnIndexMapping[ImageTable.INSTANCE.ColumnDateCreated])),
+						DateLastModified = DateTime.FromFileTime(cursor.GetLong(columnIndexMapping[ImageTable.INSTANCE.ColumnLastModified]))
+					};
+					// TODO: make this code more generic and avoid repetitive checks
+					if (columnIndexMapping.ContainsKey(ImageTable.INSTANCE.ColumnCaption))
+					{
+						image.Caption = cursor.GetString(columnIndexMapping[ImageTable.INSTANCE.ColumnCaption]);
+					}
+					images.Add(image);
+					SDebug.Assert(cursor.MoveToNext(), "failed moving to the next row");
+				}
+			}));
+			SDebug.WriteLine($"Retrieved {images.Count} images from the local database");
+			return images;
+		}
+
 		public void WriteLocalEventImage(EventImage image, Event eventReference)
 		{
 			ExecuteSimpleTransaction(ImageTable.INSTANCE.Insert(image, defaultEventMember, eventReference));

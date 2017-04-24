@@ -31,7 +31,7 @@ namespace PartyTimeline
 		public void Initialize()
 		{
 			DependencyService.Get<EventSyncInterface>().StartEventSyncing(EventReference);
-			EventService.INSTANCE.PropertyChanged += OnEventServicePropertyChanged;
+			EventService.INSTANCE.QueryLocalEventImageList(EventReference);
 		}
 
 		public void Deinitialize()

@@ -75,9 +75,9 @@ namespace PartyTimeline
 			return (int) other.DateLastModified.Subtract(this.DateLastModified).TotalMilliseconds;
 		}
 
-		public bool CreatedAfter(BaseModel other)
+		public bool ModifiedAfter(BaseModel other)
 		{
-			return this.SortDateCreatedDescending(other) < 0;
+			return this.SortDateLastModifiedDescending(other) < 0;
 		}
 
 		private void SetRandomId()

@@ -5,10 +5,24 @@ namespace PartyTimeline
 {
 	public class EventTable : TableTemplate
 	{
+		private static EventTable _instance;
+
 		public readonly string ColumnEventName = "event_name";
 		public readonly string ColumnEventDescription = "event_description";
 
-		public EventTable() : base()
+		public static EventTable INSTANCE
+		{
+			get
+			{
+				if (_instance == null)
+				{
+					_instance = new EventTable();
+				}
+				return _instance;
+			}
+		}
+
+		private EventTable()
 		{
 			TableName = "events";
 			Columns.Add(new Column { Name = ColumnEventName, DataType = Column.DATATYPES["TEXT"], Constraint = Column.CONSTRAINTS["NOT_NULL"] });

@@ -3,7 +3,21 @@ namespace PartyTimeline
 {
 	public class Event_EventMember_Table : TableTemplate
 	{
-		public Event_EventMember_Table()
+		private static Event_EventMember_Table _instance;
+
+		public static Event_EventMember_Table INSTANCE
+		{
+			get
+			{
+				if (_instance == null)
+				{
+					_instance = new Event_EventMember_Table();
+				}
+				return _instance;
+			}
+		}
+
+		private Event_EventMember_Table()
 		{
 			TableName = "event_eventmember";
 
@@ -23,8 +37,8 @@ namespace PartyTimeline
 			AddDateCreatedColumn();
 			AddDateModifiedColumn();
 
-			Relationships.Add(RelationshipForeignKey(column_event_member_id, new EventMemberTable().TableName, ColumnId));
-			Relationships.Add(RelationshipForeignKey(column_event_id, new EventTable().TableName, ColumnId));
+			Relationships.Add(RelationshipForeignKey(column_event_member_id, EventMemberTable.INSTANCE.TableName, ColumnId));
+			Relationships.Add(RelationshipForeignKey(column_event_id, EventTable.INSTANCE.TableName, ColumnId));
 			Relationships.Add($"PRIMARY KEY({column_event_member_id}, {column_event_id})");
 		}
 	}

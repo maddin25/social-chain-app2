@@ -5,12 +5,26 @@ namespace PartyTimeline
 {
 	public class EventMemberTable : TableTemplate
 	{
+		private static EventMemberTable _instance;
+
 		public readonly string ColumnEmailAddress = "email_address";
 		public readonly string ColumnFirstName = "first_name";
 		public readonly string ColumnLastName = "last_name";
 		public readonly string ColumnFacebookToken = "facebook_token";
 
-		public EventMemberTable() : base()
+		public static EventMemberTable INSTANCE
+		{
+			get
+			{
+				if (_instance == null)
+				{
+					_instance = new EventMemberTable();
+				}
+				return _instance;
+			}
+		}
+
+		private EventMemberTable()
 		{
 			TableName = "event_members";
 			Columns.Add(new Column { Name = ColumnEmailAddress, DataType = "VARCHAR(254)", Constraint = Column.CONSTRAINTS["UNIQUE"] });

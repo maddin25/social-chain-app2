@@ -31,7 +31,7 @@ namespace PartyTimeline
 		public List<string> Relationships = new List<string>();
 		public string TableName = string.Empty;
 
-		public TableTemplate()
+		protected TableTemplate()
 		{
 			AddIdColumn();
 			AddDateCreatedColumn();

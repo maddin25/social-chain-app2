@@ -26,8 +26,7 @@ namespace PartyTimeline
 
 		public Event(DateTime dateCreated) : base(dateCreated)
 		{
-			Images = new ObservableCollection<EventImage>();
-			Contributors = new ObservableCollection<EventMember>();
+			InitializeLists();
 		}
 
 		public Event(Event copy)
@@ -43,7 +42,13 @@ namespace PartyTimeline
 
 		public Event()
 		{
+			InitializeLists();
+		}
 
+		private void InitializeLists()
+		{
+			Images = new ObservableCollection<EventImage>();
+			Contributors = new ObservableCollection<EventMember>();
 		}
 	}
 }

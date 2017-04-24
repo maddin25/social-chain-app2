@@ -14,10 +14,10 @@ using PartyTimeline.Annotations;
 // TODO: implement the sqlite interface with mono.data.sqlite, see https://developer.xamarin.com/guides/cross-platform/application_fundamentals/data/
 namespace PartyTimeline.Services
 {
-	public class EventService : INotifyPropertyChanged
+	public class EventService
 	{
 		private static EventService _instance;
-		public List<Event> EventList { get; private set; }
+		public ObservableCollection<Event> EventList { get; private set; }
 
 		static string[] _placeholderImages = {
 			"https://farm9.staticflickr.com/8625/15806486058_7005d77438.jpg",
@@ -45,43 +45,10 @@ namespace PartyTimeline.Services
 			private set { _instance = value; }
 		}
 
-		public event PropertyChangedEventHandler PropertyChanged;
-
 		private EventService()
 		{
-			EventList = new List<Event>();
+			EventList = new ObservableCollection<Event>();
 			QueryLocalEventList();
-		}
-
-		[NotifyPropertyChangedInvocator]
-		private void NotifyPropertyChanged([CallerMemberName] String propertyName = null)
-		{
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-		}
-
-		private static ObservableCollection<EventImage> GenerateImagesForEvent()
-		{
-			ObservableCollection<EventImage> images = new ObservableCollection<EventImage>();
-
-			int maxNumberPictures = 30;
-			Random nrGenerator = new Random(DateTime.Now.Millisecond);
-			int numberPictures = nrGenerator.Next() % maxNumberPictures;
-
-			for (int i = 0; i < numberPictures; i++)
-			{
-				EventImage newEventImage = new EventImage(DateTime.Now);
-				newEventImage.Caption = "Default Short Annotation";
-				int nrImages = _placeholderImages.Length;
-				nrGenerator = new Random(DateTime.Now.Millisecond);
-				newEventImage.Id = nrGenerator.Next();
-
-				int imageIndex = nrGenerator.Next() % nrImages;
-				newEventImage.URI = _placeholderImages[imageIndex];
-
-				images.Add(newEventImage);
-			}
-
-			return images;
 		}
 
 		public void QueryLocalEventList()
@@ -134,10 +101,10 @@ namespace PartyTimeline.Services
 
 		public void AddImageToEvent(EventImage image, Event eventReference)
 		{
-			EventList.Find((Event obj) => obj.Equals(eventReference))?.Images.Add(image);
+			// TODO: verify that also the "global" event list is being updated
+			eventReference.Images.Add(image);
 			DependencyService.Get<EventListInterface>().WriteLocalEventImage(image, eventReference);
 			DependencyService.Get<EventSyncInterface>().UploadNewImageLowRes(image);
-			NotifyPropertyChanged(eventReference.Name);
 		}
 
 		public void AddNewEvent(Event eventReference)
@@ -150,8 +117,7 @@ namespace PartyTimeline.Services
 
 		private void SortEventList()
 		{
-			EventList.Sort();
-			NotifyPropertyChanged(nameof(EventList));
+			EventList.OrderByDescending((arg) => arg.DateCreated.ToFileTimeUtc());
 		}
 
 		private void SortEventImageList(Event eventReference)

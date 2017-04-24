@@ -48,36 +48,12 @@ namespace PartyTimeline
 		/// <param name="other">Other instance of a <see cref="BaseModel"/></param>
 		public int CompareTo(BaseModel other)
 		{
-			return SortDateCreatedDescending(other);
-		}
-
-		/// <summary>
-		/// IComparable interface implementation sorting according to DateCreated in descending order. That is, if other
-		/// is newer than this instance, a positive value is returned. If other is older, a negative value is returned.
-		/// Otherwise 0 is returned.
-		/// </summary>
-		/// <returns>A comparison value (time difference in milliseconds)</returns>
-		/// <param name="other">Other instance of a <see cref="BaseModel"/></param>
-		public int SortDateCreatedDescending(BaseModel other)
-		{
-			return (int) other.DateLastModified.Subtract(this.DateLastModified).TotalMilliseconds;
-		}
-
-		/// <summary>
-		/// IComparable interface implementation sorting according to DateLastModified in descending order. That is, if
-		/// other is newer than this instance, a positive value is returned. If other is older, a negative value is
-		/// returned. Otherwise 0 is returned.
-		/// </summary>
-		/// <returns>A comparison value (time difference in milliseconds)</returns>
-		/// <param name="other">Other instance of a <see cref="BaseModel"/></param>
-		public int SortDateLastModifiedDescending(BaseModel other)
-		{
-			return (int) other.DateLastModified.Subtract(this.DateLastModified).TotalMilliseconds;
+			return this.DateLastModified.Subtract(other.DateLastModified).Milliseconds;
 		}
 
 		public bool ModifiedAfter(BaseModel other)
 		{
-			return this.SortDateLastModifiedDescending(other) < 0;
+			return CompareTo(other) > 0;
 		}
 
 		private void SetRandomId()

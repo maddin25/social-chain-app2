@@ -8,7 +8,7 @@ namespace PartyTimeline.Droid
 {
 	public class PartyTimelineDatabase : SQLiteOpenHelper
 	{
-		private static int DatabaseVersion = 2;
+		private static int DatabaseVersion = 3;
 		private List<TableTemplate> Tables = new List<TableTemplate>();
 
 		public PartyTimelineDatabase(Context context)

@@ -14,9 +14,7 @@ namespace PartyTimeline.ViewModels
 
 		public EventListPageViewModel()
 		{
-			EventService.INSTANCE.PropertyChanged += OnEventServicePropertyChanged;
-			EventList = new ObservableCollection<Event>(EventService.INSTANCE.EventList);
-			ReloadEventList();
+			EventList = EventService.INSTANCE.EventList;
 			AddEventCommand = new Command(() => Application.Current.MainPage.Navigation.PushAsync(new AddEventPage()));
 			RefreshEventListCommand = new Command(EventService.INSTANCE.QueryLocalEventList);
 		}
@@ -38,29 +36,6 @@ namespace PartyTimeline.ViewModels
 					Debug.WriteLine($"Event Nr. {indexOfSelectedEvent + 1} selected");
 					Application.Current.MainPage.Navigation.PushAsync(new EventPageThumbnails(ref _selectedEvent));
 				}
-			}
-		}
-
-		public void OnEventServicePropertyChanged(object sender, PropertyChangedEventArgs e)
-		{
-			if (e.PropertyName == nameof(EventService.EventList))
-			{
-				ReloadEventList();
-			}
-			else if (e.PropertyName == null)
-			{
-				ReloadEventList();
-			}
-		}
-
-		private void ReloadEventList()
-		{
-			// TODO: ugly implementation, always copying the list
-			// maybe get around this by reading from the database and ordering by date created
-			EventList.Clear();
-			foreach (Event eventReference in EventService.INSTANCE.EventList)
-			{
-				EventList.Add(eventReference);
 			}
 		}
 	}

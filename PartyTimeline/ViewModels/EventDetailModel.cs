@@ -37,7 +37,6 @@ namespace PartyTimeline
 		public void Deinitialize()
 		{
 			DependencyService.Get<EventSyncInterface>().StopEventSyncing(EventReference);
-			EventService.INSTANCE.PropertyChanged -= OnEventServicePropertyChanged;
 		}
 
 		async Task CheckCameraPermissions(Action<bool> callBack)

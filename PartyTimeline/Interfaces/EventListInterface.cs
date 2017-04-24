@@ -8,4 +8,5 @@ public interface EventListInterface
 	List<Event> PollServerEventList();
 	void PushServerEvent(Event eventReference);
 	void WriteLocalEvent(Event eventReference);
+	void WriteLocalEventImage(EventImage image, Event eventReference);
 }

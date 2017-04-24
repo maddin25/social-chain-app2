@@ -89,7 +89,11 @@ namespace PartyTimeline.Droid
 			ExecuteSimpleTransaction(EventTable.INSTANCE.Insert(eventReference));
 		}
 
+		public void WriteLocalEventImage(EventImage image, Event eventReference)
 		{
+			ExecuteSimpleTransaction(ImageTable.INSTANCE.Insert(image, defaultEventMember, eventReference));            
+		}
+
 		private void ExecuteSimpleTransaction(string query)
 		{
 			db.BeginTransaction();

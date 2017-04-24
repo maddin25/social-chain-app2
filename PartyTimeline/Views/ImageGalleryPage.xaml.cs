@@ -9,6 +9,7 @@ namespace PartyTimeline.Views
 	{
 		public ImageGalleryPage(ref EventImage eventImage, ref Event eventReference)
 		{
+			// TODO: create a new ViewModel based on EventDetailModel
 			InitializeComponent();
 			BindingContext = eventReference;
 			Title = eventReference.Name;

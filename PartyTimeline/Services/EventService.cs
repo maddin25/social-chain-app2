@@ -106,6 +106,7 @@ namespace PartyTimeline.Services
 		public void AddImageToEvent(EventImage image, Event eventReference)
 		{
 			EventList.Find((Event obj) => obj.Equals(eventReference))?.Images.Add(image);
+			DependencyService.Get<EventListInterface>().WriteLocalEventImage(image, eventReference);
 			DependencyService.Get<EventSyncInterface>().UploadNewImageLowRes(image);
 			NotifyPropertyChanged(eventReference.Name);
 		}

@@ -11,22 +11,22 @@ namespace PartyTimeline.iOS
 		{
 		}
 
-		public void StartEventSyncing(ref Event eventReference)
+		public void StartEventSyncing(Event eventReference)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void StopEventSyncing(ref Event eventReference)
+		public void StopEventSyncing(Event eventReference)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void UploadNewImageLowRes(ref EventImage image)
+		public void UploadNewImageLowRes(EventImage image)
 		{
 			throw new NotImplementedException();
 		}
 
-		public void UpdateImageAnnotation(ref EventImage image)
+		public void UpdateImageAnnotation(EventImage image)
 		{
 			throw new NotImplementedException();
 		}

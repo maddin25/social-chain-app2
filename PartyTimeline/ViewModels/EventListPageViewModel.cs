@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
 
-using PartyTimeline.Annotations;
 using PartyTimeline.Services;
 
 using Xamarin.Forms;
@@ -17,7 +14,7 @@ namespace PartyTimeline.ViewModels
 
 		public EventListPageViewModel()
 		{
-			EventService.INSTANCE.PropertyChanged += new PropertyChangedEventHandler(OnEventServicePropertyChanged);
+			EventService.INSTANCE.PropertyChanged += OnEventServicePropertyChanged;
 			EventList = new ObservableCollection<Event>(EventService.INSTANCE.EventList);
 			ReloadEventList();
 			AddEventCommand = new Command(() => Application.Current.MainPage.Navigation.PushAsync(new AddEventPage()));
@@ -38,7 +35,6 @@ namespace PartyTimeline.ViewModels
 				{
 					var indexOfSelectedEvent = EventList.IndexOf(_selectedEvent);
 					Debug.WriteLine($"Event Nr. {indexOfSelectedEvent + 1} selected");
-					DependencyService.Get<EventSyncInterface>().StartEventSyncing(ref _selectedEvent);
 					Application.Current.MainPage.Navigation.PushAsync(new EventPageThumbnails(ref _selectedEvent));
 				}
 			}

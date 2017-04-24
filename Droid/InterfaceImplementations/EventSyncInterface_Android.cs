@@ -15,7 +15,7 @@ namespace PartyTimeline.Droid
 		{
 		}
 
-		public void StartEventSyncing(ref Event eventReference)
+		public void StartEventSyncing(Event eventReference)
 		{
 			SDebug.WriteLine($"Starting syncing service for event {eventReference.Name}");
 
@@ -27,17 +27,17 @@ namespace PartyTimeline.Droid
 			context.BindService(startEventSyncingIntent, eventSyncingConnection, Bind.AutoCreate);
 		}
 
-		public void StopEventSyncing(ref Event eventReference)
+		public void StopEventSyncing(Event eventReference)
 		{
 			SDebug.WriteLine($"Stopping syncing service for event {eventReference.Name}");
 		}
 
-		public void UploadNewImageLowRes(ref EventImage image)
+		public void UploadNewImageLowRes(EventImage image)
 		{
 			eventSyncingConnection.Binder.Service.UploadNewImageLowRes(ref image);
 		}
 
-		public void UpdateImageAnnotation(ref EventImage image)
+		public void UpdateImageAnnotation(EventImage image)
 		{
 
 		}

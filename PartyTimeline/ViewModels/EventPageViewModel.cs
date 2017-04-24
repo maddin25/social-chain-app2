@@ -145,7 +145,6 @@ namespace PartyTimeline
 
 			EventReference.Images.Add(newEventImage);
 
-			DependencyService.Get<EventSyncInterface>().UploadNewImageLowRes(ref newEventImage);
 		}
 	}
 }

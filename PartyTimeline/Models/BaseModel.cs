@@ -71,5 +71,10 @@ namespace PartyTimeline
 		{
 			return (int) other.DateLastModified.Subtract(this.DateLastModified).TotalMilliseconds;
 		}
+
+		public bool CreatedAfter(BaseModel other)
+		{
+			return this.SortDateCreatedDescending(other) < 0;
+		}
 	}
 }

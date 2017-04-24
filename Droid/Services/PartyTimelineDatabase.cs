@@ -85,6 +85,7 @@ namespace PartyTimeline.Droid
 					events.Add(e);
 					SDebug.Assert(cursor.MoveToNext(), "failed moving to the next row");
 				}
+				db.SetTransactionSuccessful();
 			}
 			catch (Exception e)
 			{

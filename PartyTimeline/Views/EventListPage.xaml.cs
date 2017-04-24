@@ -18,7 +18,7 @@ namespace PartyTimeline
 		protected override bool OnBackButtonPressed()
 		{
 			Debug.WriteLine("Back pressed in EventListPage");
-			if (Device.OS == TargetPlatform.Android)
+			if (Device.RuntimePlatform == Device.Android)
 			{
 				DependencyService.Get<SystemInterface>().Close();
 			}

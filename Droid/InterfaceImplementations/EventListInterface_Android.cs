@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using SDebug = System.Diagnostics.Debug;
 
-using Android.Database;
 using Android.Database.Sqlite;
 
 using Newtonsoft.Json;
@@ -25,7 +23,7 @@ namespace PartyTimeline.Droid
 
 		public List<Event> ReadLocalEvents()
 		{
-			return null;
+			return dbHelper.ReadLocalEvents(db);
 		}
 
 		public List<Event> PollServerEventList()

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 using PartyTimeline.Services;
 
@@ -17,7 +17,7 @@ namespace PartyTimeline
 				if (AllFieldsValid())
 				{
 					Id = new Random().Next();
-					SetDateCreated(DateTime.Now);
+					SetDate(DateTime.Now);
 					EventService.INSTANCE.AddNewEvent(this);
 					Application.Current.MainPage.Navigation.PopAsync(true);
 				}

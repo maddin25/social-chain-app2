@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SDebug = System.Diagnostics.Debug;
 
 using Android.Content;
+using Android.Database;
 using Android.Database.Sqlite;
 
 using Xamarin.Forms;
@@ -58,9 +59,40 @@ namespace PartyTimeline.Droid
 			}
 		}
 
-		public string ListTables(SQLiteDatabase db)
+		public List<Event> ReadLocalEvents(SQLiteDatabase db)
 		{
-			return string.Empty;
+			List<Event> events = new List<Event>();
+			Dictionary<string, int> columnIndexMapping = new Dictionary<string, int>();
+
+			db.BeginTransaction();
+			ICursor cursor = db.Query(eventTable.TableName, null, null, null, null, null, null);
+			foreach (Column column in eventTable.Columns)
+			{
+				columnIndexMapping[column.Name] = cursor.GetColumnIndex(column.Name);
+			}
+
+			try
+			{
+				cursor.MoveToFirst();
+				while (!cursor.IsAfterLast)
+				{
+					Event e = new Event();
+					e.Id = cursor.GetLong(columnIndexMapping[eventTable.ColumnId]);
+					e.Name = cursor.GetString(columnIndexMapping[eventTable.ColumnEventName]);
+					e.Description = cursor.GetString(columnIndexMapping[eventTable.ColumnEventDescription]);
+					e.DateCreated = DateTime.FromFileTime(cursor.GetLong(columnIndexMapping[eventTable.ColumnDateCreated]));
+					e.DateLastModified = DateTime.FromFileTime(cursor.GetLong(columnIndexMapping[eventTable.ColumnLastModified]));
+					events.Add(e);
+					SDebug.Assert(cursor.MoveToNext(), "failed moving to the next row");
+				}
+			}
+			catch (Exception e)
+			{
+				Application.Current.MainPage.DisplayAlert(AlertDatabaseAccessFailed, e.Message, "Ok");
+			}
+			db.EndTransaction();
+			SDebug.WriteLine($"Retrieved {events.Count} events from the local database");
+			return events;
 		}
 
 		public void WriteLocalEvent(SQLiteDatabase db, ref Event eventReference)

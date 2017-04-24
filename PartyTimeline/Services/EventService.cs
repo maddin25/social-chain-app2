@@ -41,9 +41,7 @@ namespace PartyTimeline.Services
 		private EventService()
 		{
 			EventList = new ObservableCollection<Event>();
-
-			EventList.Add(new Event (DateTime.Now) { Name = "Drinking a lot of beer", Images = GenerateImagesForEvent() });
-			EventList.Add(new Event (DateTime.Now) { Images = GenerateImagesForEvent() });
+			QueryLocalEventList();
 		}
 
 		public ObservableCollection<Event> GetEvents()
@@ -80,6 +78,7 @@ namespace PartyTimeline.Services
 		{
 			foreach (Event eventReference in DependencyService.Get<EventListInterface>().ReadLocalEvents())
 			{
+				// FIXME: the check, whether the event is already in the list fails
 				if (!EventList.Contains(eventReference))
 				{
 					EventList.Add(eventReference);

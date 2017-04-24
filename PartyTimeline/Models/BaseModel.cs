@@ -4,7 +4,7 @@ namespace PartyTimeline
 {
 	public class BaseModel
 	{
-		public DateTime DateCreated { get; private set; }
+		public DateTime DateCreated { get; set; }
 		public DateTime DateLastModified { get; set; }
 
 		public BaseModel()
@@ -14,13 +14,13 @@ namespace PartyTimeline
 
 		public BaseModel(DateTime dateCreated)
 		{
-			SetDateCreated(dateCreated);
+			SetDate(dateCreated);
 		}
 
-		public void SetDateCreated(DateTime dateCreated)
+		public void SetDate(DateTime date)
 		{
-			DateCreated = dateCreated;
-			DateLastModified = dateCreated;
+			DateCreated = date;
+			DateLastModified = date;
 		}
 	}
 }

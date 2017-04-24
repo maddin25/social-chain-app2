@@ -16,6 +16,18 @@ namespace PartyTimeline
 		private readonly string STATEMENT_DROP_TABLE = "DROP TABLE";
 
 		public List<Column> Columns = new List<Column>();
+		public string[] ColumnNames
+		{
+			get
+			{
+				string[] columnNames = new string[Columns.Count];
+				for (int i = 0; i < Columns.Count; i++)
+				{
+					columnNames[i] = Columns[i].Name;
+				}
+				return columnNames;
+			}
+		}
 		public List<string> Relationships = new List<string>();
 		public string TableName = string.Empty;
 

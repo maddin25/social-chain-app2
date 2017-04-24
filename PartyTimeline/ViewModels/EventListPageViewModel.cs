@@ -25,6 +25,7 @@ namespace PartyTimeline.ViewModels
 		public Command AddEventCommand { get; set; }
 		public Command RefreshEventListCommand { get; set; }
 
+		// FIXME: sometimes selecting an entry that has previously been selected does not trigger loading the new page
 		public Event SelectedEvent
 		{
 			get { return _selectedEvent; }

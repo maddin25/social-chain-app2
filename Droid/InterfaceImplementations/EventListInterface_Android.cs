@@ -91,6 +91,7 @@ namespace PartyTimeline.Droid
 
 		private void ExecuteCustomTransaction(Command customCommand)
 		{
+			db.BeginTransaction();
 			try
 			{
 				customCommand.Execute(null);
@@ -106,7 +107,7 @@ namespace PartyTimeline.Droid
 		private Dictionary<string, int> GetColumnMappings(ICursor cursor, List<Column> columns)
 		{
 			Dictionary<string, int> columnIndexMapping = new Dictionary<string, int>(columns.Count);
-			foreach (Column column in EventTable.INSTANCE.Columns)
+			foreach (Column column in columns)
 			{
 				columnIndexMapping[column.Name] = cursor.GetColumnIndex(column.Name);
 			}

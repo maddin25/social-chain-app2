@@ -105,8 +105,6 @@ namespace PartyTimeline
 			//	        });
 		}
 
-
-
 		private async void PickPhoto(bool permissionResult)
 		{
 			if (!CrossMedia.Current.IsPickPhotoSupported)

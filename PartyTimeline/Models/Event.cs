@@ -7,7 +7,6 @@ namespace PartyTimeline
 	{
 		private string _name = "";
 		// TODO: how to create unique Event ID?
-		public long Id;
 		public string Name
 		{
 			get { return _name; }

@@ -4,17 +4,20 @@ namespace PartyTimeline
 {
 	public class BaseModel : IComparable<BaseModel>
 	{
+		private static Random idGenerator = new Random(DateTime.Now.Millisecond);
+
 		public long Id { get; set; }
 		public DateTime DateCreated { get; set; }
 		public DateTime DateLastModified { get; set; }
 
 		public BaseModel()
 		{
-
+			SetRandomId();
 		}
 
 		public BaseModel(DateTime dateCreated)
 		{
+			SetRandomId();
 			SetDate(dateCreated);
 		}
 
@@ -75,6 +78,11 @@ namespace PartyTimeline
 		public bool CreatedAfter(BaseModel other)
 		{
 			return this.SortDateCreatedDescending(other) < 0;
+		}
+
+		private void SetRandomId()
+		{
+			Id = idGenerator.Next();
 		}
 	}
 }

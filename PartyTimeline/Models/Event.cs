@@ -30,6 +30,17 @@ namespace PartyTimeline
 			Contributors = new ObservableCollection<EventMember>();
 		}
 
+		public Event(Event copy)
+		{
+			Id = copy.Id;
+			Name = copy.Name;
+			Description = copy.Description;
+			DateCreated = copy.DateCreated;
+			DateLastModified = copy.DateLastModified;
+			Contributors = copy.Contributors;
+			Images = copy.Images;
+		}
+
 		public Event()
 		{
 

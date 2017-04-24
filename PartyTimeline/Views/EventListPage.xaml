@@ -33,6 +33,7 @@
                 </ListView.ItemTemplate>
                 <ListView.RowHeight>130</ListView.RowHeight>
                 <ListView.SeparatorVisibility>1</ListView.SeparatorVisibility>
+<!--				<ListView.IsPullToRefreshEnabled-->
             </ListView>
         </StackLayout>
     </ContentPage.Content>

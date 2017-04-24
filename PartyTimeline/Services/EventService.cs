@@ -10,7 +10,7 @@ namespace PartyTimeline.Services
 	public class EventService
 	{
 		private static EventService _instance;
-		private static ObservableCollection<Event> EventList;
+		public ObservableCollection<Event> EventList { get; private set; }
 
 		static string[] _placeholderImages = {
 			"https://farm9.staticflickr.com/8625/15806486058_7005d77438.jpg",
@@ -44,11 +44,6 @@ namespace PartyTimeline.Services
 			QueryLocalEventList();
 		}
 
-		public ObservableCollection<Event> GetEvents()
-		{
-			return EventList;
-		}
-
 		private static ObservableCollection<EventImage> GenerateImagesForEvent()
 		{
 			ObservableCollection<EventImage> images = new ObservableCollection<EventImage>();
@@ -76,18 +71,33 @@ namespace PartyTimeline.Services
 
 		public void QueryLocalEventList()
 		{
+			List<Event> sortedEvents = new List<Event>();
 			foreach (Event eventReference in DependencyService.Get<EventListInterface>().ReadLocalEvents())
 			{
-				// FIXME: the check, whether the event is already in the list fails
-				if (!EventList.Contains(eventReference))
+				int index = EventList.IndexOf(eventReference);
+				if (index >= 0 && eventReference.SortDateLastModifiedDescending(EventList[index]) > 0)
 				{
-					EventList.Add(eventReference);
+					/* The event in the EventList is somehow newer than the event stored in the local database. That
+					 * should not be. */
+					Debug.WriteLine($"WARNING: event '{eventReference.Name}' in local database is outdated!");
+					sortedEvents.Add(EventList[index]);
 				}
+				else
+				{
+					sortedEvents.Add(eventReference);
+				}
+			}
+			sortedEvents.Sort();
+			EventList.Clear();
+			foreach (Event eventReference in sortedEvents)
+			{
+				EventList.Add(eventReference);
 			}
 		}
 
 		public void AddNewEvent(Event eventReference)
 		{
+			// FIXME: sort is not yet applied
 			EventList.Add(eventReference);
 			DependencyService.Get<EventListInterface>().WriteLocalEvent(ref eventReference);
 			DependencyService.Get<EventListInterface>().PushServerEvent(ref eventReference);

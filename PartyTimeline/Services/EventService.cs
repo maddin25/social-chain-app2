@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Diagnostics;
 
 using Xamarin.Forms;
 
+using PartyTimeline.Annotations;
+
 namespace PartyTimeline.Services
 {
-	public class EventService
+	public class EventService : INotifyPropertyChanged
 	{
 		private static EventService _instance;
-		public ObservableCollection<Event> EventList { get; private set; }
+		public List<Event> EventList { get; private set; }
 
 		static string[] _placeholderImages = {
 			"https://farm9.staticflickr.com/8625/15806486058_7005d77438.jpg",
@@ -38,10 +42,18 @@ namespace PartyTimeline.Services
 			private set { _instance = value; }
 		}
 
+		public event PropertyChangedEventHandler PropertyChanged;
+
 		private EventService()
 		{
-			EventList = new ObservableCollection<Event>();
+			EventList = new List<Event>();
 			QueryLocalEventList();
+		}
+
+		[NotifyPropertyChangedInvocator]
+		private void NotifyPropertyChanged([CallerMemberName] String propertyName = null)
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 
 		private static ObservableCollection<EventImage> GenerateImagesForEvent()
@@ -71,36 +83,38 @@ namespace PartyTimeline.Services
 
 		public void QueryLocalEventList()
 		{
-			List<Event> sortedEvents = new List<Event>();
 			foreach (Event eventReference in DependencyService.Get<EventListInterface>().ReadLocalEvents())
 			{
 				int index = EventList.IndexOf(eventReference);
-				if (index >= 0 && eventReference.SortDateLastModifiedDescending(EventList[index]) > 0)
+				if (index >= 0)
 				{
-					/* The event in the EventList is somehow newer than the event stored in the local database. That
-					 * should not be. */
-					Debug.WriteLine($"WARNING: event '{eventReference.Name}' in local database is outdated!");
-					sortedEvents.Add(EventList[index]);
+					if (EventList[index].CreatedAfter(eventReference))
+					{
+						/* The event in the EventList is somehow newer than the event stored in the local database. That
+						 * should not be. */
+						Debug.WriteLine($"WARNING: event '{eventReference.Name}' in local database is outdated!");
+					}
 				}
 				else
 				{
-					sortedEvents.Add(eventReference);
+					EventList.Add(eventReference);
 				}
 			}
-			sortedEvents.Sort();
-			EventList.Clear();
-			foreach (Event eventReference in sortedEvents)
-			{
-				EventList.Add(eventReference);
-			}
+			SortEventList();
 		}
 
 		public void AddNewEvent(Event eventReference)
 		{
-			// FIXME: sort is not yet applied
 			EventList.Add(eventReference);
-			DependencyService.Get<EventListInterface>().WriteLocalEvent(ref eventReference);
-			DependencyService.Get<EventListInterface>().PushServerEvent(ref eventReference);
+			SortEventList();
+			DependencyService.Get<EventListInterface>().WriteLocalEvent(eventReference);
+			DependencyService.Get<EventListInterface>().PushServerEvent(eventReference);
+		}
+
+		private void SortEventList()
+		{
+			EventList.Sort();
+			NotifyPropertyChanged(nameof(EventList));
 		}
 	}
 }

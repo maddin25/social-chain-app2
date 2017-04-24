@@ -20,5 +20,15 @@ namespace PartyTimeline.iOS
 		{
 			throw new NotImplementedException();
 		}
+
+		public void UploadNewImageLowRes(ref EventImage image)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void UpdateImageAnnotation(ref EventImage image)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

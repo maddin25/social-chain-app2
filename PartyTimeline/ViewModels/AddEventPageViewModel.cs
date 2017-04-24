@@ -18,7 +18,7 @@ namespace PartyTimeline
 				{
 					Id = new Random().Next();
 					SetDate(DateTime.Now);
-					EventService.INSTANCE.AddNewEvent(this);
+					EventService.INSTANCE.AddNewEvent(new Event(this));
 					Application.Current.MainPage.Navigation.PopAsync(true);
 				}
 			});

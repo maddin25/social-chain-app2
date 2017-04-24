@@ -9,7 +9,7 @@
     <ContentPage.Content>
         <StackLayout Orientation="Vertical">
             <Label Text="Events" XAlign="Center" FontSize="30" />
-            <ListView x:Name="EventListView" ItemsSource="{Binding EventsList}" SelectedItem="{Binding SelectedEvent}" >
+            <ListView x:Name="EventListView" ItemsSource="{Binding EventList, Mode=OneWay}" SelectedItem="{Binding SelectedEvent}" >
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>

@@ -95,7 +95,7 @@ namespace PartyTimeline.Droid
 			return events;
 		}
 
-		public void WriteLocalEvent(SQLiteDatabase db, ref Event eventReference)
+		public void WriteLocalEvent(SQLiteDatabase db, Event eventReference)
 		{
 			db.BeginTransaction();
 			try

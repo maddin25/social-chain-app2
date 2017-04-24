@@ -19,12 +19,12 @@ namespace PartyTimeline.iOS
 			return null;
 		}
 
-		public void WriteLocalEvent(ref Event eventReference)
+		public void WriteLocalEvent(Event eventReference)
 		{
 
 		}
 
-		public void PushServerEvent(ref Event eventReference)
+		public void PushServerEvent(Event eventReference)
 		{
 			string serializedEvent = JsonConvert.SerializeObject(eventReference);
 		}

@@ -31,12 +31,12 @@ namespace PartyTimeline.Droid
 			return null;
 		}
 
-		public void WriteLocalEvent(ref Event eventReference)
+		public void WriteLocalEvent(Event eventReference)
 		{
-			dbHelper.WriteLocalEvent(db, ref eventReference);
+			dbHelper.WriteLocalEvent(db, eventReference);
 		}
 
-		public void PushServerEvent(ref Event eventReference)
+		public void PushServerEvent(Event eventReference)
 		{
 			string serializedEvent = JsonConvert.SerializeObject(eventReference);
 			SDebug.WriteLine($"Serialized event: {serializedEvent}");

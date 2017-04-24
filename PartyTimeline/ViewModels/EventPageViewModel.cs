@@ -14,7 +14,7 @@ using PartyTimeline.Views;
 
 namespace PartyTimeline
 {
-	public class EventPageViewModel : INotifyPropertyChanged
+	public class EventPageViewModel
 	{
 		Event _eventReference;
 		EventImage _selectedImage;
@@ -34,27 +34,22 @@ namespace PartyTimeline
 			}
 		}
 
+		// TODO: remove flot item tapped command
 		public Command<ItemTappedEventArgs> FlowItemTappedCommand { get; }
 		public Command TakePhotoButtonCommand { get; set; }
-		public Command PickVideoButtonCommand { get; set; }
 		public Command PickPhotoButtonCommand { get; set; }
-		public Command TakeVideoButtonCommand { get; set; }
 
 		public EventPageViewModel(ref Event eventReference)
 		{
 			EventReference = eventReference;
 
 			TakePhotoButtonCommand = new Command(async () => await CheckCameraPermissions(TakePhoto));
-			TakeVideoButtonCommand = new Command(async () => await CheckCameraPermissions(TakeVideo));
-			PickVideoButtonCommand = new Command(async () => await CheckCameraPermissions(PickVideo));
 			PickPhotoButtonCommand = new Command(async () => await CheckCameraPermissions(PickPhoto));
 			FlowItemTappedCommand = new Command<ItemTappedEventArgs>((args) =>
 			{
 
 			});
 		}
-
-		public event PropertyChangedEventHandler PropertyChanged;
 
 		async Task CheckCameraPermissions(Action<bool> callBack)
 		{
@@ -105,7 +100,9 @@ namespace PartyTimeline
 			});
 
 			if (file == null)
+			{
 				return;
+			}
 
 			Debug.WriteLine($"Photo file Location: {file.Path}");
 
@@ -131,50 +128,11 @@ namespace PartyTimeline
 			var file = await CrossMedia.Current.PickPhotoAsync(new PickMediaOptions { PhotoSize = PhotoSize.Medium });
 
 			if (file == null)
+			{
 				return;
+			}
 
 			AddEventImage(file.Path);
-		}
-
-		private async void TakeVideo(bool permissionResult)
-		{
-			if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakeVideoSupported)
-			{
-				Debug.WriteLine("Trying to take a video, but no camera available.");
-				return;
-			}
-
-			var file = await CrossMedia.Current.TakeVideoAsync(new Plugin.Media.Abstractions.StoreVideoOptions
-			{
-				Name = "video.mp4",
-				Directory = "DefaultVideos",
-			});
-
-			if (file == null)
-				return;
-
-			Debug.WriteLine($"Video file Location: {file.Path}");
-			// EventReference.AddEventImage(file.Path);
-			file.Dispose();
-		}
-
-
-
-		private async void PickVideo(bool permissionResult)
-		{
-			if (!CrossMedia.Current.IsPickVideoSupported)
-			{
-				Debug.WriteLine("Videos Not Supported: Permission not granted to videos.");
-				return;
-			}
-			var file = await CrossMedia.Current.PickVideoAsync();
-
-			if (file == null)
-				return;
-
-			Debug.WriteLine($"Video file Location: {file.Path}");
-			//EventReference.AddEventImage(file.Path);
-			//file.Dispose(
 		}
 
 		public void AddEventImage(String path)

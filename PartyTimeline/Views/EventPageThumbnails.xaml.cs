@@ -1,12 +1,4 @@
-﻿using PartyTimeline.Views;
-using System;
-using System.Collections.Generic;
-
-using Plugin.Media;
-using Plugin.Media.Abstractions;
-
-using Plugin.Permissions.Abstractions;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 
 namespace PartyTimeline
 {

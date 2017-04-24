@@ -8,13 +8,16 @@
 
     <ContentPage.Content>
 		<StackLayout Orientation="Vertical">
-			<Label Text="{Binding EventReference.Name}" XAlign="Center" FontSize="30"/>
-
 			<ListView
 				RowHeight="200"
 				ItemsSource="{Binding EventReference.Images}"
 				SelectedItem="{Binding SelectedImage}"
 				>
+
+				<ListView.Header>
+					<Label Text="{Binding EventReference.Name}" XAlign="Center" FontSize="30"/>
+				</ListView.Header>
+				
 				<ListView.ItemTemplate>
 					<DataTemplate>
 						<ViewCell>
@@ -46,6 +49,7 @@
                          </ViewCell>
 					</DataTemplate>
 				</ListView.ItemTemplate>
+				
 			</ListView>
 			
 			<!--<flv:FlowListView
@@ -82,10 +86,8 @@
 				</flv:FlowListView.FlowColumnTemplate>
 			</flv:FlowListView>-->
 			
-			<Button Text="Take Photo" Command="{Binding TakePhotoButtonCommand}"/>
-            <Button Text="Pick Photo" Command="{Binding PickPhotoButtonCommand}"/>
-            <Button Text="Take Video" Command="{Binding TakeVideoButtonCommand}"/>
-            <Button Text="Pick Video" Command="{Binding PickVideoButtonCommand}"/>
-        </StackLayout>
+			<Button Text="Take Photo" Command="{Binding TakePhotoButtonCommand}" HeightRequest="40" />
+            <Button Text="Pick Photo" Command="{Binding PickPhotoButtonCommand}" HeightRequest="40" />
+          </StackLayout>
 	</ContentPage.Content>
 </ContentPage>

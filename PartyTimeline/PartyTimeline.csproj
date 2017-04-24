@@ -69,6 +69,7 @@
     <Compile Include="Database\Tables\EventMemberTable.cs" />
     <Compile Include="Database\Tables\Event_EventMember_Table.cs" />
     <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="ViewModels\EventDetailModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Plugin.Media, Version=2.6.3.14, Culture=neutral, processorArchitecture=MSIL">

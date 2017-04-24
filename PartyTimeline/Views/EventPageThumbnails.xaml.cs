@@ -1,9 +1,12 @@
 ﻿using Xamarin.Forms;
 
+using PartyTimeline.Services;
+
 namespace PartyTimeline
 {
 	public partial class EventPageThumbnails : ContentPage
 	{
+		private EventPageViewModel viewModel;
 
 		public EventPageThumbnails()
 		{
@@ -13,8 +16,18 @@ namespace PartyTimeline
 		public EventPageThumbnails(ref Event eventReference)
 		{
 			InitializeComponent();
-			BindingContext = new EventPageViewModel(ref eventReference);
+			viewModel = new EventPageViewModel(ref eventReference);
+			BindingContext = viewModel;
 		}
 
+		protected override void OnAppearing()
+		{
+			viewModel.Initialize();
+		}
+
+		protected override void OnDisappearing()
+		{
+			viewModel.Deinitialize();
+		}
 	}
 }

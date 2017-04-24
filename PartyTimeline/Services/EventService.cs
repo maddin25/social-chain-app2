@@ -103,6 +103,13 @@ namespace PartyTimeline.Services
 			SortEventList();
 		}
 
+		public void AddImageToEvent(EventImage image, Event eventReference)
+		{
+			EventList.Find((Event obj) => obj.Equals(eventReference))?.Images.Add(image);
+			DependencyService.Get<EventSyncInterface>().UploadNewImageLowRes(image);
+			NotifyPropertyChanged(eventReference.Name);
+		}
+
 		public void AddNewEvent(Event eventReference)
 		{
 			EventList.Add(eventReference);

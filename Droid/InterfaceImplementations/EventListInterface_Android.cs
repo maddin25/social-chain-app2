@@ -51,7 +51,6 @@ namespace PartyTimeline.Droid
 		{
 			List<Event> events = new List<Event>();
 
-			db.BeginTransaction();
 			ICursor cursor = db.Query(EventTable.INSTANCE.TableName, null, null, null, null, null, null);
 			Dictionary<string, int> columnIndexMapping = GetColumnMappings(cursor, EventTable.INSTANCE.Columns);
 			ExecuteCustomTransaction(new Command(() =>
@@ -97,14 +96,10 @@ namespace PartyTimeline.Droid
 					{
 						Id = cursor.GetLong(columnIndexMapping[ImageTable.INSTANCE.ColumnId]),
 						URI = cursor.GetString(columnIndexMapping[ImageTable.INSTANCE.ColumnUri]),
+						Caption = cursor.GetString(columnIndexMapping[ImageTable.INSTANCE.ColumnCaption]),
 						DateCreated = DateTime.FromFileTime(cursor.GetLong(columnIndexMapping[ImageTable.INSTANCE.ColumnDateCreated])),
 						DateLastModified = DateTime.FromFileTime(cursor.GetLong(columnIndexMapping[ImageTable.INSTANCE.ColumnLastModified]))
 					};
-					// TODO: make this code more generic and avoid repetitive checks
-					if (columnIndexMapping.ContainsKey(ImageTable.INSTANCE.ColumnCaption))
-					{
-						image.Caption = cursor.GetString(columnIndexMapping[ImageTable.INSTANCE.ColumnCaption]);
-					}
 					images.Add(image);
 					SDebug.Assert(cursor.MoveToNext(), "failed moving to the next row");
 				}
@@ -135,7 +130,10 @@ namespace PartyTimeline.Droid
 			{
 				Application.Current.MainPage.DisplayAlert(AlertDatabaseAccessFailed, e.Message, "Ok");
 			}
-			db.EndTransaction();
+			finally
+			{
+				db.EndTransaction();
+			}
 		}
 
 		private Dictionary<string, int> GetColumnMappings(ICursor cursor, List<Column> columns)

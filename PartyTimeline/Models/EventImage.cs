@@ -10,7 +10,7 @@ namespace PartyTimeline
 
 		public EventImage(DateTime dateCreated) : base(dateCreated)
 		{
-			
+			Caption = string.Empty;
 		}
 	}
 }

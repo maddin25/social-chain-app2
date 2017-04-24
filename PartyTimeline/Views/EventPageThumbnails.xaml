@@ -42,7 +42,7 @@
 									VerticalTextAlignment="End"
 									BackgroundColor="Silver"
 									Opacity="0.8"
-									Text="{Binding ShortAnnotation}"
+									Text="{Binding Caption}"
 									/>
 									
 							</AbsoluteLayout>

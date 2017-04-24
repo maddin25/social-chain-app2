@@ -70,6 +70,7 @@
     <Compile Include="Database\Tables\Event_EventMember_Table.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="ViewModels\EventDetailModel.cs" />
+    <Compile Include="Helper\SortableObserveableCollection.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Plugin.Media, Version=2.6.3.14, Culture=neutral, processorArchitecture=MSIL">
@@ -170,6 +171,7 @@
   <ItemGroup>
     <Folder Include="Database\" />
     <Folder Include="Database\Tables\" />
+    <Folder Include="Helper\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.3.5.233-pre1\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.3.5.233-pre1\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />

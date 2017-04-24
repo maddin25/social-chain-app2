@@ -13,8 +13,8 @@ namespace PartyTimeline
 			set { _name = value; }
 		}
 		public string Description { get; set; }
-		public ObservableCollection<EventMember> Contributors { get; set; }
-		public ObservableCollection<EventImage> Images { get; set; }
+		public SortableObservableCollection<EventMember> Contributors { get; set; }
+		public SortableObservableCollection<EventImage> Images { get; set; }
 		public string GetDateTimeString { get { return DateCreated.ToString(); } }
 		public int NrPictures { get { return Images == null ? 0 : Images.Count; } }
 		public int NrContributors { get { return Contributors == null ? 0 : Contributors.Count; } }
@@ -48,8 +48,8 @@ namespace PartyTimeline
 
 		private void InitializeLists()
 		{
-			Images = new ObservableCollection<EventImage>();
-			Contributors = new ObservableCollection<EventMember>();
+			Images = new SortableObservableCollection<EventImage>();
+			Contributors = new SortableObservableCollection<EventMember>();
 		}
 	}
 }

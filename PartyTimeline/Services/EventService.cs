@@ -17,7 +17,7 @@ namespace PartyTimeline.Services
 	public class EventService
 	{
 		private static EventService _instance;
-		public ObservableCollection<Event> EventList { get; private set; }
+		public SortableObservableCollection<Event> EventList { get; private set; }
 
 		static string[] _placeholderImages = {
 			"https://farm9.staticflickr.com/8625/15806486058_7005d77438.jpg",
@@ -47,7 +47,7 @@ namespace PartyTimeline.Services
 
 		private EventService()
 		{
-			EventList = new ObservableCollection<Event>();
+			EventList = new SortableObservableCollection<Event>();
 			QueryLocalEventList();
 		}
 
@@ -63,6 +63,10 @@ namespace PartyTimeline.Services
 						/* The event in the EventList is somehow newer than the event stored in the local database. That
 						 * should not be. */
 						Debug.WriteLine($"WARNING: event '{eventReference.Name}' in local database is outdated!");
+					}
+					else
+					{
+						EventList[index] = eventReference;
 					}
 				}
 				else
@@ -117,12 +121,12 @@ namespace PartyTimeline.Services
 
 		private void SortEventList()
 		{
-			EventList.OrderByDescending((arg) => arg.DateCreated.ToFileTimeUtc());
+			EventList.SortDescending((arg) => arg.DateCreated.ToFileTimeUtc());
 		}
 
 		private void SortEventImageList(Event eventReference)
 		{
-			eventReference.Images.OrderByDescending((image) => image.DateCreated.ToFileTimeUtc());
+			eventReference.Images.SortDescending((image) => image.DateCreated.ToFileTimeUtc());
 		}
 	}
 }

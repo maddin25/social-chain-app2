@@ -50,16 +50,11 @@ namespace PartyTimeline.Droid
 		public List<Event> ReadLocalEvents()
 		{
 			List<Event> events = new List<Event>();
-			Dictionary<string, int> columnIndexMapping = new Dictionary<string, int>();
 
 			db.BeginTransaction();
 			ICursor cursor = db.Query(EventTable.INSTANCE.TableName, null, null, null, null, null, null);
-			foreach (Column column in EventTable.INSTANCE.Columns)
-			{
-				columnIndexMapping[column.Name] = cursor.GetColumnIndex(column.Name);
-			}
-
-			try
+			Dictionary<string, int> columnIndexMapping = GetColumnMappings(cursor, EventTable.INSTANCE.Columns);
+			ExecuteCustomTransaction(new Command(() =>
 			{
 				cursor.MoveToFirst();
 				while (!cursor.IsAfterLast)
@@ -73,13 +68,8 @@ namespace PartyTimeline.Droid
 					events.Add(e);
 					SDebug.Assert(cursor.MoveToNext(), "failed moving to the next row");
 				}
-				db.SetTransactionSuccessful();
-			}
-			catch (Exception e)
-			{
-				Application.Current.MainPage.DisplayAlert(AlertDatabaseAccessFailed, e.Message, "Ok");
-			}
-			db.EndTransaction();
+			}));
+
 			SDebug.WriteLine($"Retrieved {events.Count} events from the local database");
 			return events;
 		}
@@ -91,15 +81,19 @@ namespace PartyTimeline.Droid
 
 		public void WriteLocalEventImage(EventImage image, Event eventReference)
 		{
-			ExecuteSimpleTransaction(ImageTable.INSTANCE.Insert(image, defaultEventMember, eventReference));            
+			ExecuteSimpleTransaction(ImageTable.INSTANCE.Insert(image, defaultEventMember, eventReference));
 		}
 
 		private void ExecuteSimpleTransaction(string query)
 		{
-			db.BeginTransaction();
+			ExecuteCustomTransaction(new Command(() => db.ExecSQL(query)));
+		}
+
+		private void ExecuteCustomTransaction(Command customCommand)
+		{
 			try
 			{
-				db.ExecSQL(query);
+				customCommand.Execute(null);
 				db.SetTransactionSuccessful();
 			}
 			catch (Exception e)
@@ -107,6 +101,16 @@ namespace PartyTimeline.Droid
 				Application.Current.MainPage.DisplayAlert(AlertDatabaseAccessFailed, e.Message, "Ok");
 			}
 			db.EndTransaction();
+		}
+
+		private Dictionary<string, int> GetColumnMappings(ICursor cursor, List<Column> columns)
+		{
+			Dictionary<string, int> columnIndexMapping = new Dictionary<string, int>(columns.Count);
+			foreach (Column column in EventTable.INSTANCE.Columns)
+			{
+				columnIndexMapping[column.Name] = cursor.GetColumnIndex(column.Name);
+			}
+			return columnIndexMapping;
 		}
 	}
 }

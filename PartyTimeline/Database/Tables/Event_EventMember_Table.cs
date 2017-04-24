@@ -23,9 +23,9 @@ namespace PartyTimeline
 
 			Columns.Clear();
 			string column_event_member_id = "event_member_id";
-			Columns.Add(new Column { Name = column_event_member_id, DataType = ColumnDatatypeId, Constraint = Column.CONSTRAINTS["NOT_NULL_UNIQUE"] });
+			Columns.Add(new Column { Name = column_event_member_id, DataType = ColumnDatatypeId, Constraint = Column.CONSTRAINTS["NOT_NULL"] });
 			string column_event_id = "event_id";
-			Columns.Add(new Column { Name = column_event_id, DataType = ColumnDatatypeId, Constraint = Column.CONSTRAINTS["NOT_NULL_UNIQUE"] });
+			Columns.Add(new Column { Name = column_event_id, DataType = ColumnDatatypeId, Constraint = Column.CONSTRAINTS["NOT_NULL"] });
 
 			string role_column_name = "role";
 			Columns.Add(new Column

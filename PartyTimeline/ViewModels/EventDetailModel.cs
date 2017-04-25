@@ -14,24 +14,40 @@ using Xamarin.Forms;
 
 namespace PartyTimeline
 {
-	public class EventDetailModel
+	public class EventDetailModel : PropertyChangedNotifier
 	{
+		private bool _isRefreshing = false;
 		protected Event _eventReference;
+		public Command RefreshEventCommand { get; set; }
 		public Command TakePhotoButtonCommand { get; set; }
 		public Command PickPhotoButtonCommand { get; set; }
-
+		public bool IsRefreshing
+		{
+			get { return _isRefreshing; }
+			set
+			{
+				_isRefreshing = value;
+				OnPropertyChanged(nameof(IsRefreshing));
+			}
+		}
 		public Event EventReference { get { return _eventReference; } set { _eventReference = value; } }
 
 		public EventDetailModel()
 		{
 			TakePhotoButtonCommand = new Command(async () => await CheckCameraPermissions(TakePhoto));
 			PickPhotoButtonCommand = new Command(async () => await CheckCameraPermissions(PickPhoto));
+			RefreshEventCommand = new Command(() =>
+			{
+				IsRefreshing = true;
+				Task task = Task.Factory.StartNew(() => EventService.INSTANCE.QueryLocalEventImageList(EventReference));
+				task.ContinueWith((obj) => IsRefreshing = false);
+			});
 		}
 
 		public void Initialize()
 		{
 			DependencyService.Get<EventSyncInterface>().StartEventSyncing(EventReference);
-			EventService.INSTANCE.QueryLocalEventImageList(EventReference);
+			RefreshEventCommand.Execute(null);
 		}
 
 		public void Deinitialize()

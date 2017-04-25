@@ -12,6 +12,9 @@
 				RowHeight="200"
 				ItemsSource="{Binding EventReference.Images}"
 				SelectedItem="{Binding SelectedImage}"
+				IsPullToRefreshEnabled="true"
+				RefreshCommand="{Binding RefreshEventCommand}"
+				IsRefreshing="{Binding IsRefreshing, Mode=TwoWay}"
 				>
 
 				<ListView.Header>

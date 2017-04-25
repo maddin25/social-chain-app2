@@ -9,12 +9,11 @@
     <ContentPage.Content>
         <StackLayout Orientation="Vertical">
             <ListView
-				x:Name="EventListView"
+				x:Name="ListViewEvents"
 				ItemsSource="{Binding EventList, Mode=OneWay}"
-				SelectedItem="{Binding SelectedEvent}"
+				SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
 				IsPullToRefreshEnabled="true"
-				RefreshCommand="{Binding RefreshEventListCommand}"
-				IsRefreshing="{Binding IsRefreshing, Mode=TwoWay}"
+				RefreshCommand="{Binding RefreshListCommand}"
 				RowHeight="130"
 				SeparatorVisibility="None">
 
@@ -50,7 +49,7 @@
 	
 	<ContentPage.ToolbarItems>
 	    <ToolbarItem Name="AddEvent" Order="Primary" Icon="plus.png" Priority="0" Command="{Binding AddEventCommand}"/>
-	    <ToolbarItem Name="RefreshEventList" Order="Primary" Icon="refresh.png" Priority="1" Command="{Binding RefreshEventListCommand}"/>
+	    <ToolbarItem Name="RefreshEventList" Order="Primary" Icon="refresh.png" Priority="1" Command="{Binding RefreshListCommand}"/>
 	</ContentPage.ToolbarItems>
 	
     <ContentPage.Padding>

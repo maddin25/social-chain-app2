@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SDebug = System.Diagnostics.Debug;
+using System.Threading.Tasks;
 
 using Android.Database;
 using Android.Database.Sqlite;
@@ -24,7 +25,6 @@ namespace PartyTimeline.Droid
 		public EventListInterface_Android()
 		{
 			dbHelper = new PartyTimelineDatabase(Android.App.Application.Context);
-			db = dbHelper.WritableDatabase;
 
 			defaultEventMember = new EventMember(DateTime.Now)
 			{
@@ -38,10 +38,10 @@ namespace PartyTimeline.Droid
 
 		public List<Event> PollServerEventList()
 		{
-			return null;
+			throw new NotImplementedException(nameof(PollServerEventList));
 		}
 
-		public void PushServerEvent(Event eventReference)
+		public async Task PushServerEvent(Event eventReference)
 		{
 			string serializedEvent = JsonConvert.SerializeObject(eventReference);
 			SDebug.WriteLine($"Serialized event: {serializedEvent}");
@@ -49,11 +49,11 @@ namespace PartyTimeline.Droid
 
 		public List<Event> ReadLocalEvents()
 		{
+			db = dbHelper.ReadableDatabase;
 			List<Event> events = new List<Event>();
-
 			ICursor cursor = db.Query(EventTable.INSTANCE.TableName, null, null, null, null, null, null);
 			Dictionary<string, int> columnIndexMapping = GetColumnMappings(cursor, EventTable.INSTANCE.Columns);
-			ExecuteCustomTransaction(new Command(() =>
+			ExecuteCustomTransaction(new Action(() =>
 			{
 				cursor.MoveToFirst();
 				while (!cursor.IsAfterLast)
@@ -68,18 +68,19 @@ namespace PartyTimeline.Droid
 					SDebug.Assert(cursor.MoveToNext(), "failed moving to the next row");
 				}
 			}));
-
+			db = null;
 			SDebug.WriteLine($"Retrieved {events.Count} events from the local database");
 			return events;
 		}
 
-		public void WriteLocalEvent(Event eventReference)
+		public async Task WriteLocalEvent(Event eventReference)
 		{
 			ExecuteSimpleTransaction(EventTable.INSTANCE.Insert(eventReference));
 		}
 
 		public List<EventImage> ReadLocalEventImages(Event eventReference)
 		{
+			db = dbHelper.ReadableDatabase;
 			List<EventImage> images = new List<EventImage>();
 			ICursor cursor = db.Query(
 				ImageTable.INSTANCE.TableName,
@@ -87,7 +88,7 @@ namespace PartyTimeline.Droid
 				$"{ImageTable.INSTANCE.ColumnEventId} = {eventReference.Id}",
 				null, null, null, null);
 			Dictionary<string, int> columnIndexMapping = GetColumnMappings(cursor, ImageTable.INSTANCE.Columns);
-			ExecuteCustomTransaction(new Command(() =>
+			ExecuteCustomTransaction(new Action(() =>
 			{
 				cursor.MoveToFirst();
 				while (!cursor.IsAfterLast)
@@ -104,26 +105,29 @@ namespace PartyTimeline.Droid
 					SDebug.Assert(cursor.MoveToNext(), "failed moving to the next row");
 				}
 			}));
+			db = null;
 			SDebug.WriteLine($"Retrieved {images.Count} images from the local database");
 			return images;
 		}
 
-		public void WriteLocalEventImage(EventImage image, Event eventReference)
+		public async Task WriteLocalEventImage(EventImage image, Event eventReference)
 		{
 			ExecuteSimpleTransaction(ImageTable.INSTANCE.Insert(image, defaultEventMember, eventReference));
 		}
 
 		private void ExecuteSimpleTransaction(string query)
 		{
-			ExecuteCustomTransaction(new Command(() => db.ExecSQL(query)));
+			db = dbHelper.WritableDatabase;
+			ExecuteCustomTransaction(new Action(() => db.ExecSQL(query)));
+			db = null;
 		}
 
-		private void ExecuteCustomTransaction(Command customCommand)
+		private void ExecuteCustomTransaction(Action customCommand)
 		{
 			db.BeginTransaction();
 			try
 			{
-				customCommand.Execute(null);
+				customCommand.Invoke();
 				db.SetTransactionSuccessful();
 			}
 			catch (Exception e)

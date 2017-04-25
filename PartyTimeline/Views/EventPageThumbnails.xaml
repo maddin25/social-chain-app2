@@ -9,12 +9,12 @@
     <ContentPage.Content>
 		<StackLayout Orientation="Vertical">
 			<ListView
+				x:Name="ListViewEventThumbnails"
 				RowHeight="200"
 				ItemsSource="{Binding EventReference.Images}"
-				SelectedItem="{Binding SelectedImage}"
+				SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
 				IsPullToRefreshEnabled="true"
-				RefreshCommand="{Binding RefreshEventCommand}"
-				IsRefreshing="{Binding IsRefreshing, Mode=TwoWay}"
+				RefreshCommand="{Binding RefreshListCommand}"
 				>
 
 				<ListView.Header>

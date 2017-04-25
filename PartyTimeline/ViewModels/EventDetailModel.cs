@@ -14,40 +14,24 @@ using Xamarin.Forms;
 
 namespace PartyTimeline
 {
-	public class EventDetailModel : PropertyChangedNotifier
+	public abstract class EventDetailModel : UIBindingHelper<EventImage>
 	{
-		private bool _isRefreshing = false;
 		protected Event _eventReference;
-		public Command RefreshEventCommand { get; set; }
 		public Command TakePhotoButtonCommand { get; set; }
 		public Command PickPhotoButtonCommand { get; set; }
-		public bool IsRefreshing
-		{
-			get { return _isRefreshing; }
-			set
-			{
-				_isRefreshing = value;
-				OnPropertyChanged(nameof(IsRefreshing));
-			}
-		}
 		public Event EventReference { get { return _eventReference; } set { _eventReference = value; } }
 
-		public EventDetailModel()
+		public EventDetailModel(ListView refreshableListView) : base(refreshableListView)
 		{
 			TakePhotoButtonCommand = new Command(async () => await CheckCameraPermissions(TakePhoto));
 			PickPhotoButtonCommand = new Command(async () => await CheckCameraPermissions(PickPhoto));
-			RefreshEventCommand = new Command(() =>
-			{
-				IsRefreshing = true;
-				Task task = Task.Factory.StartNew(() => EventService.INSTANCE.QueryLocalEventImageList(EventReference));
-				task.ContinueWith((obj) => IsRefreshing = false);
-			});
 		}
 
 		public void Initialize()
 		{
+			// FIXME: somehow the EventReference is null in the RefreshListCommand
 			DependencyService.Get<EventSyncInterface>().StartEventSyncing(EventReference);
-			RefreshEventCommand.Execute(null);
+			RefreshListCommand.Execute(null);
 		}
 
 		public void Deinitialize()
@@ -150,6 +134,11 @@ namespace PartyTimeline
 				Debug.WriteLine($"The referenced event {EventReference.Name} has been updated");
 			}
 			Debug.WriteLine($"Called {nameof(OnEventServicePropertyChanged)} of {this.GetType().Name}");
+		}
+
+		protected override async Task OnRefreshTriggered()
+		{
+			await EventService.INSTANCE.QueryLocalEventImageList(EventReference);
 		}
 	}
 }

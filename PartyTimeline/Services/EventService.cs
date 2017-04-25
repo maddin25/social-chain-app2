@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+
 using System.Diagnostics;
 
 using Xamarin.Forms;
@@ -50,9 +52,9 @@ namespace PartyTimeline.Services
 			EventList = new SortableObservableCollection<Event>();
 		}
 
-		public void QueryLocalEventList(Action queryFinishedCallback = null)
+		public async Task QueryLocalEventListAsync()
 		{
-			foreach (Event eventReference in DependencyService.Get<EventListInterface>().ReadLocalEvents())
+			foreach (Event eventReference in await Task.Run(() => DependencyService.Get<EventListInterface>().ReadLocalEvents()))
 			{
 				int index = EventList.IndexOf(eventReference);
 				if (index >= 0)
@@ -74,12 +76,11 @@ namespace PartyTimeline.Services
 				}
 			}
 			SortEventList();
-			queryFinishedCallback?.Invoke();
 		}
 
-		public void QueryLocalEventImageList(Event eventReference)
+		public async Task QueryLocalEventImageList(Event eventReference)
 		{
-			foreach (EventImage image in DependencyService.Get<EventListInterface>().ReadLocalEventImages(eventReference))
+			foreach (EventImage image in await Task.Run(() => DependencyService.Get<EventListInterface>().ReadLocalEventImages(eventReference)))
 			{
 				int index = eventReference.Images.IndexOf(image);
 				if (index >= 0)

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 using PartyTimeline;
 
@@ -8,7 +9,7 @@ public interface EventListInterface
 	List<EventImage> ReadLocalEventImages(Event eventReference);
 	List<Event> PollServerEventList();
 
-	void PushServerEvent(Event eventReference);
-	void WriteLocalEvent(Event eventReference);
-	void WriteLocalEventImage(EventImage image, Event eventReference);
+	Task PushServerEvent(Event eventReference);
+	Task WriteLocalEvent(Event eventReference);
+	Task WriteLocalEventImage(EventImage image, Event eventReference);
 }

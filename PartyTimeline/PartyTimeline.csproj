@@ -71,7 +71,7 @@
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="ViewModels\EventDetailModel.cs" />
     <Compile Include="Helper\SortableObserveableCollection.cs" />
-    <Compile Include="Helper\PropertyChangedNotifier.cs" />
+    <Compile Include="Helper\UIBindingHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Plugin.Media, Version=2.6.3.14, Culture=neutral, processorArchitecture=MSIL">

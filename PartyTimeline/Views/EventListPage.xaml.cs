@@ -11,7 +11,7 @@ namespace PartyTimeline
 		public EventListPage()
 		{
 			InitializeComponent();
-			BindingContext = new EventListPageViewModel();
+			BindingContext = new EventListPageViewModel(ListViewEvents);
 			NavigationPage.SetHasBackButton(this, false);
 		}
 

@@ -67,7 +67,7 @@ namespace PartyTimeline.Droid
 						DateLastModified = DateTime.FromFileTime(cursor.GetLong(columnIndexMapping[EventTable.INSTANCE.ColumnLastModified]))
 					};
 					events.Add(e);
-					SDebug.Assert(cursor.MoveToNext(), "failed moving to the next row");
+					cursor.MoveToNext();
 				}
 			}));
 			db = null;
@@ -104,7 +104,7 @@ namespace PartyTimeline.Droid
 						DateLastModified = DateTime.FromFileTime(cursor.GetLong(columnIndexMapping[ImageTable.INSTANCE.ColumnLastModified]))
 					};
 					images.Add(image);
-					SDebug.Assert(cursor.MoveToNext(), "failed moving to the next row");
+					cursor.MoveToNext();
 				}
 			}));
 			db = null;

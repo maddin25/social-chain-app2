@@ -48,10 +48,9 @@ namespace PartyTimeline.Services
 		private EventService()
 		{
 			EventList = new SortableObservableCollection<Event>();
-			QueryLocalEventList();
 		}
 
-		public void QueryLocalEventList()
+		public void QueryLocalEventList(Action queryFinishedCallback = null)
 		{
 			foreach (Event eventReference in DependencyService.Get<EventListInterface>().ReadLocalEvents())
 			{
@@ -75,6 +74,7 @@ namespace PartyTimeline.Services
 				}
 			}
 			SortEventList();
+			queryFinishedCallback?.Invoke();
 		}
 
 		public void QueryLocalEventImageList(Event eventReference)

@@ -8,9 +8,21 @@
 	
     <ContentPage.Content>
         <StackLayout Orientation="Vertical">
-            <Label Text="Events" XAlign="Center" FontSize="30" />
-            <ListView x:Name="EventListView" ItemsSource="{Binding EventList, Mode=OneWay}" SelectedItem="{Binding SelectedEvent}" >
-                <ListView.ItemTemplate>
+            <ListView
+				x:Name="EventListView"
+				ItemsSource="{Binding EventList, Mode=OneWay}"
+				SelectedItem="{Binding SelectedEvent}"
+				IsPullToRefreshEnabled="true"
+				RefreshCommand="{Binding RefreshEventListCommand}"
+				IsRefreshing="{Binding IsRefreshing, Mode=TwoWay}"
+				RowHeight="130"
+				SeparatorVisibility="None">
+
+				<ListView.Header>
+					<Label Text="Events" XAlign="Center" FontSize="30" />
+				</ListView.Header>
+				
+				<ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
                             <Frame Padding="0,0,0,3">
@@ -31,9 +43,7 @@
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
-                <ListView.RowHeight>130</ListView.RowHeight>
-                <ListView.SeparatorVisibility>1</ListView.SeparatorVisibility>
-<!--				<ListView.IsPullToRefreshEnabled-->
+               
             </ListView>
         </StackLayout>
     </ContentPage.Content>

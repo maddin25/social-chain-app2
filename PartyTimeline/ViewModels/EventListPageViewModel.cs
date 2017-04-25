@@ -1,6 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 using PartyTimeline.Services;
 
@@ -8,20 +10,37 @@ using Xamarin.Forms;
 
 namespace PartyTimeline.ViewModels
 {
-	public class EventListPageViewModel
+	public class EventListPageViewModel : INotifyPropertyChanged
 	{
 		private Event _selectedEvent;
+		private bool _isRefreshing = false;
+
+		public bool IsRefreshing
+		{
+			get { return _isRefreshing; }
+			set
+			{
+				_isRefreshing = value;
+				OnPropertyChanged(nameof(IsRefreshing));
+			}
+		}
+		public ObservableCollection<Event> EventList { get; private set; }
+		public Command AddEventCommand { get; set; }
+		public Command RefreshEventListCommand { get; set; }
+		public event PropertyChangedEventHandler PropertyChanged;
 
 		public EventListPageViewModel()
 		{
 			EventList = EventService.INSTANCE.EventList;
 			AddEventCommand = new Command(() => Application.Current.MainPage.Navigation.PushAsync(new AddEventPage()));
-			RefreshEventListCommand = new Command(EventService.INSTANCE.QueryLocalEventList);
+			RefreshEventListCommand = new Command(() =>
+			{
+				IsRefreshing = true;
+				Task task = Task.Factory.StartNew(() => EventService.INSTANCE.QueryLocalEventList());
+				task.ContinueWith((obj) => IsRefreshing = false);
+			});
+			RefreshEventListCommand.Execute(null);
 		}
-
-		public ObservableCollection<Event> EventList { get; private set; }
-		public Command AddEventCommand { get; set; }
-		public Command RefreshEventListCommand { get; set; }
 
 		// FIXME: sometimes selecting an entry that has previously been selected does not trigger loading the new page
 		public Event SelectedEvent
@@ -37,6 +56,11 @@ namespace PartyTimeline.ViewModels
 					Application.Current.MainPage.Navigation.PushAsync(new EventPageThumbnails(ref _selectedEvent));
 				}
 			}
+		}
+
+		protected virtual void OnPropertyChanged(string propertyName)
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 	}
 }

@@ -9,7 +9,7 @@ public interface EventListInterface
 	List<EventImage> ReadLocalEventImages(Event eventReference);
 	List<Event> PollServerEventList();
 
-	Task PushServerEvent(Event eventReference);
-	Task WriteLocalEvent(Event eventReference);
-	Task WriteLocalEventImage(EventImage image, Event eventReference);
+	void PushServerEvent(Event eventReference);
+	void WriteLocalEvent(Event eventReference);
+	void WriteLocalEventImage(EventImage image, Event eventReference);
 }

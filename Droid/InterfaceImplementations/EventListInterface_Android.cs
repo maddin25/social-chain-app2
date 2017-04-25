@@ -41,7 +41,7 @@ namespace PartyTimeline.Droid
 			throw new NotImplementedException(nameof(PollServerEventList));
 		}
 
-		public async Task PushServerEvent(Event eventReference)
+		public void PushServerEvent(Event eventReference)
 		{
 			string serializedEvent = JsonConvert.SerializeObject(eventReference);
 			SDebug.WriteLine($"Serialized event: {serializedEvent}");
@@ -58,12 +58,14 @@ namespace PartyTimeline.Droid
 				cursor.MoveToFirst();
 				while (!cursor.IsAfterLast)
 				{
-					Event e = new Event();
-					e.Id = cursor.GetLong(columnIndexMapping[EventTable.INSTANCE.ColumnId]);
-					e.Name = cursor.GetString(columnIndexMapping[EventTable.INSTANCE.ColumnEventName]);
-					e.Description = cursor.GetString(columnIndexMapping[EventTable.INSTANCE.ColumnEventDescription]);
-					e.DateCreated = DateTime.FromFileTime(cursor.GetLong(columnIndexMapping[EventTable.INSTANCE.ColumnDateCreated]));
-					e.DateLastModified = DateTime.FromFileTime(cursor.GetLong(columnIndexMapping[EventTable.INSTANCE.ColumnLastModified]));
+					Event e = new Event
+					{
+						Id = cursor.GetLong(columnIndexMapping[EventTable.INSTANCE.ColumnId]),
+						Name = cursor.GetString(columnIndexMapping[EventTable.INSTANCE.ColumnEventName]),
+						Description = cursor.GetString(columnIndexMapping[EventTable.INSTANCE.ColumnEventDescription]),
+						DateCreated = DateTime.FromFileTime(cursor.GetLong(columnIndexMapping[EventTable.INSTANCE.ColumnDateCreated])),
+						DateLastModified = DateTime.FromFileTime(cursor.GetLong(columnIndexMapping[EventTable.INSTANCE.ColumnLastModified]))
+					};
 					events.Add(e);
 					SDebug.Assert(cursor.MoveToNext(), "failed moving to the next row");
 				}
@@ -73,7 +75,7 @@ namespace PartyTimeline.Droid
 			return events;
 		}
 
-		public async Task WriteLocalEvent(Event eventReference)
+		public void WriteLocalEvent(Event eventReference)
 		{
 			ExecuteSimpleTransaction(EventTable.INSTANCE.Insert(eventReference));
 		}
@@ -110,7 +112,7 @@ namespace PartyTimeline.Droid
 			return images;
 		}
 
-		public async Task WriteLocalEventImage(EventImage image, Event eventReference)
+		public void WriteLocalEventImage(EventImage image, Event eventReference)
 		{
 			ExecuteSimpleTransaction(ImageTable.INSTANCE.Insert(image, defaultEventMember, eventReference));
 		}

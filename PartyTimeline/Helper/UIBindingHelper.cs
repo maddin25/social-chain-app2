@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
@@ -29,6 +30,8 @@ namespace PartyTimeline
 				if (_selectedItem != null)
 				{
 					OnSelect(ref _selectedItem);
+					SelectedItem = default(T);
+					OnPropertyChanged(nameof(SelectedItem));
 				}
 			}
 		}

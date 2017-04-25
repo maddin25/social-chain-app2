@@ -18,7 +18,6 @@ namespace PartyTimeline.ViewModels
 		{
 			EventList = EventService.INSTANCE.EventList;
 			AddEventCommand = new Command(() => Application.Current.MainPage.Navigation.PushAsync(new AddEventPage()));
-			RefreshListCommand.Execute(null);
 		}
 
 		// FIXME: sometimes selecting an entry that has previously been selected does not trigger loading the new page
@@ -32,6 +31,12 @@ namespace PartyTimeline.ViewModels
 		protected override async Task OnRefreshTriggered()
 		{
 			await EventService.INSTANCE.QueryLocalEventListAsync();
+		}
+
+		new public void OnAppearing()
+		{
+			base.OnAppearing();
+			RefreshListCommand.Execute(null);
 		}
 	}
 }

@@ -8,10 +8,12 @@ namespace PartyTimeline
 {
 	public partial class EventListPage : ContentPage
 	{
+		private EventListPageViewModel viewModel;
+
 		public EventListPage()
 		{
 			InitializeComponent();
-			BindingContext = new EventListPageViewModel(ListViewEvents);
+			BindingContext = viewModel = new EventListPageViewModel(ListViewEvents);
 			NavigationPage.SetHasBackButton(this, false);
 		}
 
@@ -23,6 +25,16 @@ namespace PartyTimeline
 				DependencyService.Get<SystemInterface>().Close();
 			}
 			return true;
+		}
+
+		protected override void OnAppearing()
+		{
+			viewModel.OnAppearing();
+		}
+
+		protected override void OnDisappearing()
+		{
+			viewModel.OnDisappearing();
 		}
 	}
 }

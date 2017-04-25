@@ -27,14 +27,16 @@ namespace PartyTimeline
 			PickPhotoButtonCommand = new Command(async () => await CheckCameraPermissions(PickPhoto));
 		}
 
-		public void Initialize()
+		new public void OnAppearing()
 		{
+			base.OnAppearing();
 			DependencyService.Get<EventSyncInterface>().StartEventSyncing(EventReference);
 			RefreshListCommand.Execute(null);
 		}
 
-		public void Deinitialize()
+		new public void OnDisappearing()
 		{
+			base.OnDisappearing();
 			DependencyService.Get<EventSyncInterface>().StopEventSyncing(EventReference);
 		}
 

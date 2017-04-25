@@ -16,18 +16,17 @@ namespace PartyTimeline
 		public EventPageThumbnails(ref Event eventReference)
 		{
 			InitializeComponent();
-			viewModel = new EventPageViewModel(ref eventReference, ListViewEventThumbnails);
-			BindingContext = viewModel;
+			BindingContext = viewModel = new EventPageViewModel(ref eventReference, ListViewEventThumbnails);
 		}
 
 		protected override void OnAppearing()
 		{
-			viewModel.Initialize();
+			viewModel.OnAppearing();
 		}
 
 		protected override void OnDisappearing()
 		{
-			viewModel.Deinitialize();
+			viewModel.OnDisappearing();
 		}
 	}
 }

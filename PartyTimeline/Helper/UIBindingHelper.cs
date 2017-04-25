@@ -55,5 +55,15 @@ namespace PartyTimeline
 		protected abstract void OnSelect(ref T selectedItem);
 
 		protected abstract Task OnRefreshTriggered();
+
+		public void OnAppearing()
+		{
+
+		}
+
+		public void OnDisappearing()
+		{
+
+		}
 	}
 }

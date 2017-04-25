@@ -29,7 +29,6 @@ namespace PartyTimeline
 
 		public void Initialize()
 		{
-			// FIXME: somehow the EventReference is null in the RefreshListCommand
 			DependencyService.Get<EventSyncInterface>().StartEventSyncing(EventReference);
 			RefreshListCommand.Execute(null);
 		}

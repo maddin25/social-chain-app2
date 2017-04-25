@@ -10,7 +10,7 @@ using Xamarin.Forms;
 
 namespace PartyTimeline.ViewModels
 {
-	public class EventListPageViewModel : INotifyPropertyChanged
+	public class EventListPageViewModel : PropertyChangedNotifier
 	{
 		private Event _selectedEvent;
 		private bool _isRefreshing = false;
@@ -27,7 +27,6 @@ namespace PartyTimeline.ViewModels
 		public ObservableCollection<Event> EventList { get; private set; }
 		public Command AddEventCommand { get; set; }
 		public Command RefreshEventListCommand { get; set; }
-		public event PropertyChangedEventHandler PropertyChanged;
 
 		public EventListPageViewModel()
 		{
@@ -56,11 +55,6 @@ namespace PartyTimeline.ViewModels
 					Application.Current.MainPage.Navigation.PushAsync(new EventPageThumbnails(ref _selectedEvent));
 				}
 			}
-		}
-
-		protected virtual void OnPropertyChanged(string propertyName)
-		{
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 	}
 }

@@ -12,14 +12,14 @@ namespace PartyTimeline
 {
 	public class LocalDatabaseAccess
 	{
-		private static readonly string databaseDirectory = Path.Combine("..", "..", "databases");
+		private static readonly string databaseDirectory = Path.Combine("");
 		private static readonly string databaseFilename = "PartyTimeline.sqlite3";
 		private SQLiteConnection dbConnection;
 
 		public LocalDatabaseAccess()
 		{
 			string applicationFolder = DependencyService.Get<SystemInterface>().GetApplicationDataFolder();
-			string dbPath = Path.Combine(applicationFolder, databaseDirectory, databaseFilename);
+			string dbPath = Path.Combine(applicationFolder, databaseFilename);
 			Debug.WriteLine($"Connecting to local SQLite database '{dbPath}'");
 			dbConnection = new SQLiteConnection(dbPath);
 			dbConnection.CreateTable<Event>();

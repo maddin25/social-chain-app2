@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 using Xamarin.Forms;
 
@@ -7,6 +8,8 @@ namespace PartyTimeline.iOS
 {
 	public class SystemInterface_iOS : SystemInterface
 	{
+		private static readonly string CACHE_DIRECTORY = "./Library";
+
 		public SystemInterface_iOS()
 		{
 		}
@@ -18,7 +21,8 @@ namespace PartyTimeline.iOS
 
 		public string GetApplicationDataFolder()
 		{
-			return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+			Directory.CreateDirectory(CACHE_DIRECTORY);
+			return CACHE_DIRECTORY;
 		}
 	}
 }

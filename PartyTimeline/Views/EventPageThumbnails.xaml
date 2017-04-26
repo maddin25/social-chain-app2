@@ -30,7 +30,7 @@
 									HeightRequest="200"
 									Aspect="AspectFill"
 									DownsampleHeight="200"
-									DownsampleUseDipUnits="false"
+									DownsampleUseDipUnits="true"
 									LoadingPlaceholder="image_loading.png"
 									ErrorPlaceholder="image_error.png"
 									Source="{Binding URI}">

@@ -8,8 +8,6 @@ using Plugin.Media.Abstractions;
 using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
 
-using PartyTimeline.Services;
-
 using Xamarin.Forms;
 
 namespace PartyTimeline

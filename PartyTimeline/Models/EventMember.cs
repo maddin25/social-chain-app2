@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using SQLite;
 
 namespace PartyTimeline
 {
 	public enum ROLES { Administrator, Moderator, Contributor, Viewer };
 
+	[Table("event_members")]
 	public class EventMember : BaseModel
 	{
 		public static int ROLE_ID_MIN = 0;
@@ -27,15 +30,25 @@ namespace PartyTimeline
 		};
 
 		// TODO: how to create unique EventMember ID?
+		[Column("email_address"), NotNull, Unique]
 		public string EmailAddress { get; set; }
+		[Column("first_name"), NotNull]
 		public string FirstName { get; set; }
+		[Column("last_name"), NotNull]
 		public string LastName { get; set; }
+		[Column("facebook_token"), MaxLength(256), Unique]
 		public string FacebookToken { get; set; }
+		[Ignore]
 		public int Role { get; set; }
+
+		public EventMember()
+		{
+			
+		}
 
 		public EventMember(DateTime dateCreated) : base(dateCreated)
 		{
-
+			
 		}
 	}
 }

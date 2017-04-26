@@ -1,4 +1,5 @@
-﻿using SDebug = System.Diagnostics.Debug;
+﻿using System;
+using SDebug = System.Diagnostics.Debug;
 
 using Xamarin.Forms;
 
@@ -9,6 +10,7 @@ namespace PartyTimeline.Droid
 	{
 		public SystemInterface_Android()
 		{
+			
 		}
 
 		public void Close()
@@ -16,6 +18,11 @@ namespace PartyTimeline.Droid
 			SDebug.WriteLine("Quitting Application");
 			// TODO: maybe replace this with a less brutal or more proper way
 			Android.OS.Process.KillProcess(Android.OS.Process.MyPid());
+		}
+
+		public string GetApplicationDataFolder()
+		{
+			return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 		}
 	}
 }

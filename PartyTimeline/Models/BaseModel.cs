@@ -1,13 +1,17 @@
 ﻿using System;
+using SQLite;
 
 namespace PartyTimeline
 {
+	[Table("BaseModel")]
 	public class BaseModel : IComparable<BaseModel>
 	{
 		private static Random idGenerator = new Random(DateTime.Now.Millisecond);
-
+		[PrimaryKey, Column("_id")]
 		public long Id { get; set; }
+		[Column("date_created"), NotNull]
 		public DateTime DateCreated { get; set; }
+		[Column("date_modified"), NotNull]
 		public DateTime DateLastModified { get; set; }
 
 		public BaseModel()
@@ -38,7 +42,7 @@ namespace PartyTimeline
 
 		public override int GetHashCode()
 		{
-			return (int) Id;
+			return (int)Id;
 		}
 
 		/// <summary>

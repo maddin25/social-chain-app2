@@ -1,7 +1,5 @@
 ﻿using Xamarin.Forms;
 
-using PartyTimeline.Services;
-
 namespace PartyTimeline
 {
 	public partial class EventPageThumbnails : ContentPage

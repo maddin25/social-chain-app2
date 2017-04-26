@@ -15,5 +15,10 @@ namespace PartyTimeline.iOS
 		{
 			throw new NotImplementedException("Close method is not implemented for iOS");
 		}
+
+		public string GetApplicationDataFolder()
+		{
+			return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+		}
 	}
 }

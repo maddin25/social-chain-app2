@@ -3,8 +3,6 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-using PartyTimeline.Services;
-
 using Xamarin.Forms;
 
 namespace PartyTimeline.ViewModels

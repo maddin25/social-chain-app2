@@ -1,0 +1,5 @@
+these definitions hold for the vector graphics files
+actionbar icons have a default size of 50x50 pixel
+the visible part of the icon is in it's widest dimension 40x40 pixel and centered with respect to the page
+centering can be done with respect to the dimensions of the visible part or the weight centroid of it (e.g. for a triangle)
+

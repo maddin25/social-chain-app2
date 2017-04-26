@@ -8,11 +8,13 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.1"
-   viewBox="0 0 24 24"
+   viewBox="0 0 50 50"
    enable-background="new 0 0 24 24"
    id="svg2"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="plus.svg">
+   sodipodi:docname="plus.svg"
+   width="50"
+   height="50">
   <metadata
      id="metadata10">
     <rdf:RDF>
@@ -21,6 +23,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -35,19 +38,20 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="691"
-     inkscape:window-height="480"
+     inkscape:window-width="1440"
+     inkscape:window-height="852"
      id="namedview6"
      showgrid="false"
      inkscape:zoom="9.8333333"
-     inkscape:cx="12"
-     inkscape:cy="12"
+     inkscape:cx="12.152542"
+     inkscape:cy="20.135593"
      inkscape:window-x="0"
      inkscape:window-y="0"
-     inkscape:window-maximized="0"
+     inkscape:window-maximized="1"
      inkscape:current-layer="svg2" />
   <path
-     d="m23,10h-8.5c-0.3,0-0.5-0.2-0.5-0.5v-8.5c0-0.6-0.4-1-1-1h-2c-0.6,0-1,0.4-1,1v8.5c0,0.3-0.2,0.5-0.5,0.5h-8.5c-0.6,0-1,0.4-1,1v2c0,0.6 0.4,1 1,1h8.5c0.3,0 0.5,0.2 0.5,0.5v8.5c0,0.6 0.4,1 1,1h2c0.6,0 1-0.4 1-1v-8.5c0-0.3 0.2-0.5 0.5-0.5h8.5c0.6,0 1-0.4 1-1v-2c0-0.6-0.4-1-1-1z"
+     d="m 38.75,22.5 -10.625,0 C 27.75,22.5 27.5,22.25 27.5,21.875 l 0,-10.625 C 27.5,10.5 27,10 26.25,10 l -2.5,0 C 23,10 22.5,10.5 22.5,11.25 l 0,10.625 c 0,0.375 -0.25,0.625 -0.625,0.625 l -10.625,0 C 10.5,22.5 10,23 10,23.75 l 0,2.5 c 0,0.75 0.5,1.25 1.25,1.25 l 10.625,0 c 0.375,0 0.625,0.25 0.625,0.625 l 0,10.625 C 22.5,39.5 23,40 23.75,40 l 2.5,0 C 27,40 27.5,39.5 27.5,38.75 l 0,-10.625 c 0,-0.375 0.25,-0.625 0.625,-0.625 l 10.625,0 C 39.5,27.5 40,27 40,26.25 l 0,-2.5 C 40,23 39.5,22.5 38.75,22.5 Z"
      id="path4"
-     style="fill:#ffffff" />
+     style="fill:#ffffff"
+     inkscape:connector-curvature="0" />
 </svg>

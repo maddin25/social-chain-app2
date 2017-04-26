@@ -8,18 +8,27 @@ namespace PartyTimeline
 {
 	public class AddEventPageViewModel : Event
 	{
+		private bool saveSuccessful = false;
 		private readonly string AlertInvalidField = "Invalid field";
+		Object _lockObject = new Object();
 
 		public AddEventPageViewModel()
 		{
 			AddEventCommand = new Command(() =>
 			{
-				if (AllFieldsValid())
+				lock(_lockObject)
 				{
-					Id = new Random().Next();
-					SetDate(DateTime.Now);
-					EventService.INSTANCE.AddNewEvent(new Event(this));
-					Application.Current.MainPage.Navigation.PopAsync(true);
+					if (!saveSuccessful)
+					{
+						if (AllFieldsValid())
+						{
+							Id = new Random().Next();
+							SetDate(DateTime.Now);
+							EventService.INSTANCE.AddNewEvent(new Event(this));
+							saveSuccessful = true;
+							Application.Current.MainPage.Navigation.PopAsync(true);
+						}
+					}
 				}
 			});
 		}

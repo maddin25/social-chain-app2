@@ -10,7 +10,6 @@ namespace PartyTimeline
 	{
 		public App()
 		{
-			FlowListView.Init();
 			MainPage = new NavigationPage(new LoginPage());
 		}
 

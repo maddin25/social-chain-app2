@@ -10,6 +10,7 @@ using Android.Widget;
 using Android.OS;
 using Plugin.Media;
 using Plugin.Permissions;
+using FFImageLoading.Forms.Droid;
 
 namespace PartyTimeline.Droid
 {
@@ -20,7 +21,7 @@ namespace PartyTimeline.Droid
 		{
 			TabLayoutResource = Resource.Layout.Tabbar;
 			ToolbarResource = Resource.Layout.Toolbar;
-
+			CachedImageRenderer.Init();
 			base.OnCreate(bundle);
 
 		    await CrossMedia.Current.Initialize();

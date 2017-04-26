@@ -66,6 +66,13 @@ namespace PartyTimeline
 			callBack(result);
 		}
 
+		async Task CheckStoragePermissions(Action<bool> callBack)
+		{
+			bool result = false;
+			var storageStatus = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Storage);
+			// TODO: use this method
+		}
+
 		private async void TakePhoto(bool permissionResult)
 		{
 			await CrossMedia.Current.Initialize();

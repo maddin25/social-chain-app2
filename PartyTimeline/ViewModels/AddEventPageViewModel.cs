@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using SQLite;
 
 using Xamarin.Forms;
 
@@ -16,6 +17,7 @@ namespace PartyTimeline
 		private DateTime _eventEndDate;
 		private TimeSpan _eventEndTime;
 
+		[Ignore]
 		public DateTime UiEventStartDate
 		{
 			get { return _eventStartDate; }
@@ -25,6 +27,7 @@ namespace PartyTimeline
 				OnPropertyChanged(nameof(UiEventStartDate));
 			}
 		}
+		[Ignore]
 		public TimeSpan UiEventStartTime
 		{
 			get { return _eventStartTime; }
@@ -34,6 +37,7 @@ namespace PartyTimeline
 				OnPropertyChanged(nameof(UiEventStartTime));
 			}
 		}
+		[Ignore]
 		public DateTime UiEventEndDate
 		{
 			get { return _eventEndDate; }
@@ -43,6 +47,7 @@ namespace PartyTimeline
 				OnPropertyChanged(nameof(UiEventEndDate));
 			}
 		}
+		[Ignore]
 		public TimeSpan UiEventEndTime
 		{
 			get { return _eventEndTime; }
@@ -53,6 +58,7 @@ namespace PartyTimeline
 			}
 		}
 
+		[Ignore]
 		public Command AddEventCommand { get; set; }
 		public event PropertyChangedEventHandler PropertyChanged;
 

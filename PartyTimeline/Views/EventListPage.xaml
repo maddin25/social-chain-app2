@@ -4,7 +4,9 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:PartyTimeline"
 	x:Class="PartyTimeline.EventListPage"
-    xmlns:viewModels="clr-namespace:PartyTimeline.ViewModels;assembly=PartyTimeline">
+    xmlns:viewModels="clr-namespace:PartyTimeline.ViewModels;assembly=PartyTimeline"
+    xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+	>
 	
     <ContentPage.Content>
         <StackLayout Orientation="Vertical">
@@ -29,11 +31,21 @@
                                     <Frame Padding="15,15,15,15" OutlineColor="Gray" BackgroundColor="White">
                                         <Frame.Content>
                                             <StackLayout Padding="0,0,0,0"  Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
-                                                    <Image Source="{Binding GetPreviewURL}" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" AbsoluteLayout.LayoutFlags="All" Aspect="AspectFill"/>
-                                                    <Label Text="{Binding Name}" AbsoluteLayout.LayoutBounds="0.03, 0.85, autosize, autosize" AbsoluteLayout.LayoutFlags="PositionProportional"/>
-                                                    <Label Text="{Binding GetDateTimeString}" AbsoluteLayout.LayoutBounds="0.03, 0.95, autosize, autosize" AbsoluteLayout.LayoutFlags="PositionProportional" FontSize="10"/>
-                                                    <Label Text="{Binding GetNrPicturesString}" AbsoluteLayout.LayoutBounds="0.97, 3, autosize, autosize" AbsoluteLayout.LayoutFlags="XProportional" HorizontalTextAlignment="End" FontSize="10"/>
-                                                    <Label Text="{Binding GetNrContributorsString}" AbsoluteLayout.LayoutBounds="0.97, 15, autosize, autosize" AbsoluteLayout.LayoutFlags="XProportional" HorizontalTextAlignment="End" FontSize="10"/>
+												<ffimageloading:CachedImage
+													x:Name="EventPreviewImage"
+													AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+													AbsoluteLayout.LayoutFlags="All"
+													Aspect="AspectFill"
+													DownsampleHeight="100"
+													DownsampleUseDipUnits="true"
+													ErrorPlaceholder="image_error.png"
+													Source="{Binding GetPreviewURL}"
+													>
+												</ffimageloading:CachedImage>
+                                                <Label Text="{Binding Name}" AbsoluteLayout.LayoutBounds="0.03, 0.85, autosize, autosize" AbsoluteLayout.LayoutFlags="PositionProportional"/>
+                                                <Label Text="{Binding GetDateTimeString}" AbsoluteLayout.LayoutBounds="0.03, 0.95, autosize, autosize" AbsoluteLayout.LayoutFlags="PositionProportional" FontSize="10"/>
+                                                <Label Text="{Binding GetNrPicturesString}" AbsoluteLayout.LayoutBounds="0.97, 3, autosize, autosize" AbsoluteLayout.LayoutFlags="XProportional" HorizontalTextAlignment="End" FontSize="10"/>
+                                                <Label Text="{Binding GetNrContributorsString}" AbsoluteLayout.LayoutBounds="0.97, 15, autosize, autosize" AbsoluteLayout.LayoutFlags="XProportional" HorizontalTextAlignment="End" FontSize="10"/>
                                             </StackLayout>
                                         </Frame.Content>
                                     </Frame>
@@ -55,5 +67,5 @@
     <ContentPage.Padding>
         <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" WinPhone="20,20,20,20"/>
     </ContentPage.Padding>
-	
+
 </ContentPage>

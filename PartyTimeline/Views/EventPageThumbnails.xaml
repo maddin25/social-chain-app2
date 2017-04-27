@@ -33,7 +33,8 @@
 									DownsampleUseDipUnits="true"
 									LoadingPlaceholder="image_loading.png"
 									ErrorPlaceholder="image_error.png"
-									Source="{Binding URI}">
+									Source="{Binding URI}"
+									>
 	                            </ffimageloading:CachedImage>
 								
 								<Label

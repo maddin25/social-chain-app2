@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 using PartyTimeline.Views;
 
-namespace PartyTimeline
+namespace PartyTimeline.ViewModels
 {
 	public class EventPageViewModel : EventDetailModel
 	{

@@ -10,7 +10,7 @@ using Plugin.Permissions.Abstractions;
 
 using Xamarin.Forms;
 
-namespace PartyTimeline
+namespace PartyTimeline.ViewModels
 {
 	public abstract class EventDetailModel : UIBindingHelper<EventImage>
 	{

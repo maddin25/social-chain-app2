@@ -1,7 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Diagnostics;
 using SQLite;
+
+using Xamarin.Forms;
 
 namespace PartyTimeline
 {
@@ -36,40 +37,24 @@ namespace PartyTimeline
 		// The image should be in dimensions 3:1 (width:height)
 		[Ignore]
 		public string GetPreviewURL { get { return "https://farm8.staticflickr.com/7351/16355627795_204bf423e9.jpg"; } }
+		[Ignore]
+		public Command OnDelete { get; set; }
 
 		public Event(DateTime dateCreated) : base(dateCreated)
 		{
-			InitializeLists();
+			Initialize();
 		}
 
 		public Event()
 		{
-			InitializeLists();
+			Initialize();
 		}
 
-		private void InitializeLists()
+		private void Initialize()
 		{
+			OnDelete = new Command<Event>(EventService.INSTANCE.RemoveEvent);
 			Images = new SortableObservableCollection<EventImage>();
 			Contributors = new SortableObservableCollection<EventMember>();
-		}
-
-		public override string ToString()
-		{
-			return $"Event: {Id}" +
-				$"\n\tName={Name}" +
-				$"\n\tDescription={Description}" +
-				$"\n\tDateCreated={DateCreated}" +
-				$"\n\tDateLastModified={DateLastModified}" +
-				$"\n\tStartDate={StartDateTime}" +
-				$"\n\tEndDate={EndDateTime}" +
-				$"\n\tContributors={Contributors}" +
-				$"\n\tImages={Images}" +
-				$"\n\tGetDateTimeString={GetDateTimeString}" +
-				$"\n\tNrPictures={NrPictures}" +
-				$"\n\tNrContributors={NrContributors}" +
-				$"\n\tGetNrPicturesString={GetNrPicturesString}" +
-				$"\n\tGetNrContributorsString={GetNrContributorsString}" +
-				$"\n\tGetPreviewURL={GetPreviewURL}";
 		}
 	}
 }

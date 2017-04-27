@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+
 using Xamarin.Forms;
 
-namespace PartyTimeline
+namespace PartyTimeline.ViewModels
 {
 	public class LoginPageViewModel
 	{

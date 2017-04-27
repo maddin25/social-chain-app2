@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IO;
+using System.Diagnostics;
 
 using Xamarin.Forms;
 
@@ -19,7 +19,17 @@ namespace PartyTimeline.iOS
 
 		public string GetApplicationDataFolder()
 		{
+			PrintPaths();
 			return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+		}
+
+		private void PrintPaths()
+		{
+			Debug.WriteLine($"MyDocuments: {Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}");
+			Debug.WriteLine($"ApplicationData: {Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}");
+			Debug.WriteLine($"LocalApplicationData: {Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}");
+			Debug.WriteLine($"Personal: {Environment.GetFolderPath(Environment.SpecialFolder.Personal)}");
+			Debug.WriteLine($"Desktop: {Environment.GetFolderPath(Environment.SpecialFolder.Desktop)}");
 		}
 	}
 }

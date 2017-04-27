@@ -4,7 +4,7 @@ using SQLite;
 
 using Xamarin.Forms;
 
-namespace PartyTimeline
+namespace PartyTimeline.ViewModels
 {
 	public class AddEventPageViewModel : Event, INotifyPropertyChanged
 	{

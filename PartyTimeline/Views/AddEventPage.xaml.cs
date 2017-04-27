@@ -2,6 +2,8 @@
 
 using Xamarin.Forms;
 
+using PartyTimeline.ViewModels;
+
 namespace PartyTimeline
 {
 	public partial class AddEventPage : ContentPage

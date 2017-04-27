@@ -72,6 +72,23 @@ namespace PartyTimeline
 			dbConnection.Insert(eventReference);
 		}
 
+		public void RemoveEvent(Event eventReference)
+		{
+			var cursor = from image in dbConnection.Table<EventImage>()
+						 where image.EventId == eventReference.Id
+						 select image;
+			foreach (EventImage image in cursor)
+			{
+				dbConnection.Delete<EventImage>(image.Id);
+			}
+			dbConnection.Delete<Event>(eventReference.Id);
+		}
+
+		public void RemoveEventImage(EventImage image)
+		{
+			dbConnection.Delete<EventImage>(image.Id);
+		}
+
 		private void InsertMyself()
 		{
 			EventMember currentUser = SessionInformation.INSTANCE.CurrentUser;

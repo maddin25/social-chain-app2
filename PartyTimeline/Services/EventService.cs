@@ -84,8 +84,9 @@ namespace PartyTimeline
 		public void AddImageToEvent(EventImage image, Event eventReference)
 		{
 			// TODO: verify that also the "global" event list is being updated
-			eventReference.Images.Add(image);
-			localDb.WriteEventImage(image, eventReference);
+			int index = EventList.IndexOf(eventReference);
+			EventList[index].Images.Add(image);
+			localDb.WriteEventImage(image, EventList[index]);
 			//DependencyService.Get<EventSyncInterface>().UploadNewImageLowRes(image);
 		}
 
@@ -97,14 +98,26 @@ namespace PartyTimeline
 			//DependencyService.Get<EventListInterface>().PushServerEvent(eventReference);
 		}
 
+		public void RemoveEvent(Event eventReference)
+		{
+			EventList.Remove(eventReference);
+			localDb.RemoveEvent(eventReference);
+			SortEventList();
+		}
+
+		public void RemoveImage(EventImage image)
+		{
+			localDb.RemoveEventImage(image);
+		}
+
 		private void SortEventList()
 		{
-			((SortableObservableCollection<Event>) EventList).SortDescending((arg) => arg.DateCreated.ToFileTimeUtc());
+			EventList.SortDescending((arg) => arg.DateCreated.ToFileTimeUtc());
 		}
 
 		private void SortEventImageList(Event eventReference)
 		{
-			((SortableObservableCollection<EventImage>) eventReference.Images).SortDescending((image) => image.DateCreated.ToFileTimeUtc());
+			eventReference.Images.SortDescending((image) => image.DateCreated.ToFileTimeUtc());
 		}
 	}
 }

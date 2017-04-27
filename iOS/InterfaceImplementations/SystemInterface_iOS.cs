@@ -8,8 +8,6 @@ namespace PartyTimeline.iOS
 {
 	public class SystemInterface_iOS : SystemInterface
 	{
-		private static readonly string CACHE_DIRECTORY = "./Library";
-
 		public SystemInterface_iOS()
 		{
 		}
@@ -21,8 +19,7 @@ namespace PartyTimeline.iOS
 
 		public string GetApplicationDataFolder()
 		{
-			Directory.CreateDirectory(CACHE_DIRECTORY);
-			return CACHE_DIRECTORY;
+			return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 		}
 	}
 }

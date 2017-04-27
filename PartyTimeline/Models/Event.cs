@@ -14,9 +14,9 @@ namespace PartyTimeline
 		[Column("event_description")]
 		public string Description { get; set; }
 		[Column("start_date"), NotNull]
-		public DateTime StartDate { get; set; }
+		public DateTime StartDateTime { get; set; }
 		[Column("end_date"), NotNull]
-		public DateTime EndDate { get; set; }
+		public DateTime EndDateTime { get; set; }
 		// TODO: add these properties as well
 		//public string Location { get; set; }
 		[Ignore]
@@ -42,18 +42,6 @@ namespace PartyTimeline
 			InitializeLists();
 		}
 
-		// TODO: replace with MemberwiseClone()
-		public Event(Event copy)
-		{
-			Id = copy.Id;
-			Name = copy.Name;
-			Description = copy.Description;
-			DateCreated = copy.DateCreated;
-			DateLastModified = copy.DateLastModified;
-			Contributors = copy.Contributors;
-			Images = copy.Images;
-		}
-
 		public Event()
 		{
 			InitializeLists();
@@ -72,8 +60,8 @@ namespace PartyTimeline
 				$"\n\tDescription={Description}" +
 				$"\n\tDateCreated={DateCreated}" +
 				$"\n\tDateLastModified={DateLastModified}" +
-				$"\n\tStartDate={StartDate}" +
-				$"\n\tEndDate={EndDate}" +
+				$"\n\tStartDate={StartDateTime}" +
+				$"\n\tEndDate={EndDateTime}" +
 				$"\n\tContributors={Contributors}" +
 				$"\n\tImages={Images}" +
 				$"\n\tGetDateTimeString={GetDateTimeString}" +

@@ -2,18 +2,31 @@
 <ContentPage
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-	x:Class="PartyTimeline.AddEventPage">
+	x:Class="PartyTimeline.AddEventPage"
+	>
 	
 	<ContentPage.Content>
-		<StackLayout>
-			<Label Text="Add new Event" XAlign="Center" FontSize="30" />
-			<Entry Text="{Binding Name}" Placeholder="Name" />
-			<Label Text="Description" XAlign="Start" />
-			<Editor Text="{Binding Description}" MinimumHeightRequest="100" HeightRequest="150" />
-		</StackLayout>
+		<ScrollView>
+			<StackLayout>
+				<Label Text="Add new Event" XAlign="Center" FontSize="30" />
+				<Entry Text="{Binding Name}" Placeholder="Name" />
+				<Label Text="Description" XAlign="Start" />
+				<Editor Text="{Binding Description}" MinimumHeightRequest="100" HeightRequest="150" />
+				<Label Text="Start" XAlign="Start"/>
+				<DatePicker Date="{Binding UiEventStartDate}" MaximumDate="{Binding UiEventEndDate}"/>
+				<TimePicker Time="{Binding UiEventStartTime}" />
+				<Label Text="End" XAlign="Start"/>
+				<DatePicker Date="{Binding UiEventEndDate}" MinimumDate="{Binding UiEventStartDate}"/>
+				<TimePicker Time="{Binding UiEventEndTime}" />
+			</StackLayout>
+		</ScrollView>
 	</ContentPage.Content>
 
 	<ContentPage.ToolbarItems>
 		<ToolbarItem Name="SaveNewEvent" Text="Save" Command="{Binding AddEventCommand}" />
 	</ContentPage.ToolbarItems>
+
+	<ContentPage.Padding>
+		<OnPlatform x:TypeArguments="Thickness" Android="5, 0, 5, 0" iOS="5, 20, 5, 0" WinPhone="20,20,20,20"/>
+	</ContentPage.Padding>
 </ContentPage>

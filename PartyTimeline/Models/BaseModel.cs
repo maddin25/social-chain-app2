@@ -22,13 +22,13 @@ namespace PartyTimeline
 		public BaseModel(DateTime dateCreated)
 		{
 			SetRandomId();
-			SetDate(dateCreated);
+			SetDateCreated(dateCreated);
 		}
 
-		public void SetDate(DateTime date)
+		public void SetDateCreated(DateTime dateCreated)
 		{
-			DateCreated = date;
-			DateLastModified = date;
+			DateCreated = dateCreated;
+			DateLastModified = dateCreated;
 		}
 
 		public override bool Equals(object obj)

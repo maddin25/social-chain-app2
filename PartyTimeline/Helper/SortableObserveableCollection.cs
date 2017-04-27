@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 
 namespace PartyTimeline
 {
@@ -39,7 +40,17 @@ namespace PartyTimeline
 			List<T> sortedItemsList = sortedItems.ToList();
 			for (int i = 0; i < sortedItemsList.Count; i++)
 			{
+				int oldIndex = IndexOf(sortedItemsList[i]);
 				Items[i] = sortedItemsList[i];
+				if (i != oldIndex)
+				{
+					OnCollectionChanged(new NotifyCollectionChangedEventArgs(
+						NotifyCollectionChangedAction.Move,
+						sortedItemsList[i],
+						i,
+						oldIndex
+					));
+				}
 			}
 		}
 	}

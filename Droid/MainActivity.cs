@@ -23,10 +23,12 @@ namespace PartyTimeline.Droid
 			ToolbarResource = Resource.Layout.Toolbar;
 			CachedImageRenderer.Init();
 			base.OnCreate(bundle);
-
 		    await CrossMedia.Current.Initialize();
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
+
+			Window.SetSoftInputMode(Android.Views.SoftInput.AdjustResize);
+			AndroidBug5497WorkaroundForXamarinAndroid.assistActivity(this);
 
 			LoadApplication(new App());
 		}

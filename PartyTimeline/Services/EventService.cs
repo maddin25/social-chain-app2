@@ -92,14 +92,15 @@ namespace PartyTimeline
 			int index = EventList.IndexOf(eventReference);
 			EventList[index].Images.Add(image);
 			localDb.WriteEventImage(image, EventList[index]);
+			SortEventImageList(eventReference);
 			//DependencyService.Get<EventSyncInterface>().UploadNewImageLowRes(image);
 		}
 
 		public void AddNewEvent(Event eventReference)
 		{
 			EventList.Add(eventReference);
-			SortEventList();
 			localDb.AddEvent(eventReference);
+			SortEventList();
 			//DependencyService.Get<EventListInterface>().PushServerEvent(eventReference);
 		}
 
@@ -120,6 +121,7 @@ namespace PartyTimeline
 				{
 					EventList[eventIndex].Images.Remove(image);
 				}
+				SortEventImageList(EventList[eventIndex]);
 			}
 			DeleteFileWithDialog(image.Path);
 			DeleteFileWithDialog(image.PathSmall);

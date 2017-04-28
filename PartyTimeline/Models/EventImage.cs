@@ -19,6 +19,7 @@ namespace PartyTimeline
 		public long EventId { get; set; }
 		[Column("event_member_id"), NotNull]
 		public long EventMemberId { get; set; }
+		// TODO: should we introduce a date taken DateTime as well?
 
 		public EventImage(DateTime dateCreated) : base(dateCreated)
 		{

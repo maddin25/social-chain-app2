@@ -42,11 +42,11 @@ namespace PartyTimeline
 		{
 			RefreshListCommand = new Command(async () =>
 			{
-				Debug.WriteLine("Refreshing event list");
+				Debug.WriteLine("Refreshing list");
 				refreshableListView.IsRefreshing = true;
 				await OnRefreshTriggered();
 				refreshableListView.IsRefreshing = false;
-				Debug.WriteLine("Finished refreshing event list");
+				Debug.WriteLine("Finished refreshing list");
 			});
 		}
 

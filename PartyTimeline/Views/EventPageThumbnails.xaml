@@ -28,6 +28,7 @@
 							</ViewCell.ContextActions>
 							
 							<AbsoluteLayout Padding="0,0,0,6" >
+								
 								<ffimageloading:CachedImage
 									AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
 									AbsoluteLayout.LayoutFlags="All"
@@ -92,9 +93,12 @@
 					</DataTemplate>
 				</flv:FlowListView.FlowColumnTemplate>
 			</flv:FlowListView>-->
-			
-			<Button Text="Take Photo" Command="{Binding TakePhotoButtonCommand}" HeightRequest="40" />
-            <Button Text="Pick Photo" Command="{Binding PickPhotoButtonCommand}" HeightRequest="40" />
+
           </StackLayout>
 	</ContentPage.Content>
+
+	<ContentPage.ToolbarItems>
+	    <ToolbarItem Name="Take Photo" Order="Primary" Icon="photo-camera.png" Priority="1" Command="{Binding TakePhotoButtonCommand}"/>
+	    <ToolbarItem Name="Pick Photo" Order="Primary" Icon="gallery-add.png" Priority="0" Command="{Binding PickPhotoButtonCommand}"/>
+	</ContentPage.ToolbarItems>
 </ContentPage>

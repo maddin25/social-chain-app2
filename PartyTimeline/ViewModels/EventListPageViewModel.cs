@@ -31,7 +31,7 @@ namespace PartyTimeline.ViewModels
 			await EventService.INSTANCE.QueryLocalEventListAsync();
 		}
 
-		new public void OnAppearing()
+		public override void OnAppearing()
 		{
 			base.OnAppearing();
 			RefreshListCommand.Execute(null);

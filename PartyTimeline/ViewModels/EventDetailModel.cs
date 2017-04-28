@@ -25,20 +25,20 @@ namespace PartyTimeline.ViewModels
 			PickPhotoButtonCommand = new Command(async () => await CheckCameraPermissions(PickPhoto));
 		}
 
-		new public void OnAppearing()
+		public override void OnAppearing()
 		{
 			base.OnAppearing();
 			DependencyService.Get<EventSyncInterface>().StartEventSyncing(EventReference);
 			RefreshListCommand.Execute(null);
 		}
 
-		new public void OnDisappearing()
+		public override void OnDisappearing()
 		{
 			base.OnDisappearing();
 			DependencyService.Get<EventSyncInterface>().StopEventSyncing(EventReference);
 		}
 
-		async Task CheckCameraPermissions(Action<bool> callBack)
+		private async Task CheckCameraPermissions(Action<bool> callBack)
 		{
 			bool result = false;
 
@@ -66,7 +66,7 @@ namespace PartyTimeline.ViewModels
 			callBack(result);
 		}
 
-		async Task CheckStoragePermissions(Action<bool> callBack)
+		private async Task CheckStoragePermissions(Action<bool> callBack)
 		{
 			bool result = false;
 			var storageStatus = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Storage);
@@ -127,7 +127,7 @@ namespace PartyTimeline.ViewModels
 			AddEventImage(file.Path);
 		}
 
-		public void AddEventImage(String path)
+		private void AddEventImage(String path)
 		{
 			EventImage newEventImage = new EventImage(DateTime.Now) { Path = path };
 			EventService.INSTANCE.AddImageToEvent(newEventImage, EventReference);

@@ -50,6 +50,16 @@ namespace PartyTimeline
 			});
 		}
 
+		public virtual void OnAppearing()
+		{
+			
+		}
+		
+		public virtual void OnDisappearing()
+		{
+			
+		}
+		
 		protected virtual void OnPropertyChanged(string propertyName)
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -58,15 +68,5 @@ namespace PartyTimeline
 		protected abstract void OnSelect(ref T selectedItem);
 
 		protected abstract Task OnRefreshTriggered();
-
-		public void OnAppearing()
-		{
-
-		}
-
-		public void OnDisappearing()
-		{
-
-		}
 	}
 }

@@ -99,7 +99,7 @@
 	</ContentPage.Content>
 
 	<ContentPage.ToolbarItems>
-	    <ToolbarItem Name="Take Photo" Order="Primary" Icon="photo-camera.png" Priority="1" Command="{Binding TakePhotoButtonCommand}"/>
-	    <ToolbarItem Name="Pick Photo" Order="Primary" Icon="gallery-add.png" Priority="0" Command="{Binding PickPhotoButtonCommand}"/>
+	    <ToolbarItem Name="Take Photo" Order="Primary" Icon="photo_camera.png" Priority="1" Command="{Binding TakePhotoButtonCommand}"/>
+	    <ToolbarItem Name="Pick Photo" Order="Primary" Icon="gallery_add.png" Priority="0" Command="{Binding PickPhotoButtonCommand}"/>
 	</ContentPage.ToolbarItems>
 </ContentPage>

@@ -1,6 +1,8 @@
 ﻿using System;
 using SQLite;
 
+using Xamarin.Forms;
+
 namespace PartyTimeline
 {
 	[Table("BaseModel")]
@@ -13,15 +15,18 @@ namespace PartyTimeline
 		public DateTime DateCreated { get; set; }
 		[Column("date_modified"), NotNull]
 		public DateTime DateLastModified { get; set; }
+		[Ignore]
+		public Command OnDelete { get; set; }
+
 
 		public BaseModel()
 		{
-			SetRandomId();
+			Initialize();
 		}
 
 		public BaseModel(DateTime dateCreated)
 		{
-			SetRandomId();
+			Initialize();
 			SetDateCreated(dateCreated);
 		}
 
@@ -63,6 +68,12 @@ namespace PartyTimeline
 		private void SetRandomId()
 		{
 			Id = idGenerator.Next();
+		}
+
+		private void Initialize()
+		{
+			SetRandomId();
+			OnDelete = new Command(() => new object()); // dummy
 		}
 	}
 }

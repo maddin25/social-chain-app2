@@ -23,6 +23,10 @@
 				<ListView.ItemTemplate>
 					<DataTemplate>
 						<ViewCell>
+							<ViewCell.ContextActions>
+								<MenuItem x:Name="MenuItemOnDelete" Text="Delete" Command="{Binding OnDelete}" CommandParameter="{Binding .}"/>
+							</ViewCell.ContextActions>
+							
 							<AbsoluteLayout Padding="0,0,0,6" >
 								<ffimageloading:CachedImage
 									AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
@@ -33,7 +37,7 @@
 									DownsampleUseDipUnits="true"
 									LoadingPlaceholder="image_loading.png"
 									ErrorPlaceholder="image_error.png"
-									Source="{Binding URI}"
+									Source="{Binding Path}"
 									>
 	                            </ffimageloading:CachedImage>
 								

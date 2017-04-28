@@ -129,7 +129,7 @@ namespace PartyTimeline.ViewModels
 
 		public void AddEventImage(String path)
 		{
-			EventImage newEventImage = new EventImage(DateTime.Now) { URI = path };
+			EventImage newEventImage = new EventImage(DateTime.Now) { Path = path };
 			EventService.INSTANCE.AddImageToEvent(newEventImage, EventReference);
 		}
 

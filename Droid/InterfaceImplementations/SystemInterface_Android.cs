@@ -21,6 +21,20 @@ namespace PartyTimeline.Droid
 			Android.OS.Process.KillProcess(Android.OS.Process.MyPid());
 		}
 
+		public bool DeleteFile(string path)
+		{
+			try
+			{
+				File.Delete(path);
+			}
+			catch (IOException e)
+			{
+				SDebug.WriteLine(e.Message);
+				return false;
+			}
+			return true;
+		}
+
 		public string GetApplicationDataFolder()
 		{
 			PrintPaths();

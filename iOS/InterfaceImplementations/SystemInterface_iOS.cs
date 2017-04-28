@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Diagnostics;
 
 using Xamarin.Forms;
@@ -17,10 +18,24 @@ namespace PartyTimeline.iOS
 			throw new NotImplementedException("Close method is not implemented for iOS");
 		}
 
+		public bool DeleteFile(string path)
+		{
+			try
+			{
+				File.Delete(path);
+			}
+			catch (IOException e)
+			{
+				Debug.WriteLine(e.Message);
+				return false;
+			}
+			return true;
+		}
+
 		public string GetApplicationDataFolder()
 		{
 			PrintPaths();
-			return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+			return Environment.GetFolderPath(Environment.SpecialFolder.Personal);
 		}
 
 		private void PrintPaths()

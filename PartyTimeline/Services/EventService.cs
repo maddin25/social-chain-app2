@@ -1,6 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.IO;
+using System.Threading.Tasks;
 
 using System.Diagnostics;
+
+using Acr.UserDialogs;
+
+using Xamarin.Forms;
 
 namespace PartyTimeline
 {
@@ -66,7 +71,7 @@ namespace PartyTimeline
 					{
 						/* The image in the Event is somehow newer than the image stored in the local database. That
 						 * should not be. */
-						Debug.WriteLine($"WARNING: image with URI '{image.URI}' in local database is outdated!");
+						Debug.WriteLine($"WARNING: image with URI '{image.Path}' in local database is outdated!");
 					}
 					else
 					{
@@ -98,16 +103,62 @@ namespace PartyTimeline
 			//DependencyService.Get<EventListInterface>().PushServerEvent(eventReference);
 		}
 
-		public void RemoveEvent(Event eventReference)
+		public void Remove(Event eventReference)
 		{
 			EventList.Remove(eventReference);
 			localDb.RemoveEvent(eventReference);
 			SortEventList();
 		}
 
-		public void RemoveImage(EventImage image)
+		public void Remove(EventImage image)
 		{
-			localDb.RemoveEventImage(image);
+			long eventId = localDb.RemoveEventImage(image);
+			if (eventId != -1)
+			{
+				int eventIndex = EventList.IndexOf(new Event { Id = eventId });
+				if (eventIndex >= 0)
+				{
+					EventList[eventIndex].Images.Remove(image);
+				}
+			}
+			DeleteFileWithDialog(image.Path);
+			DeleteFileWithDialog(image.PathSmall);
+		}
+
+		public void Remove(BaseModel item)
+		{
+			if (item is EventImage)
+			{
+				Remove((EventImage)item);
+			}
+			else if (item is Event)
+			{
+				Remove((Event)item);
+			}
+			else
+			{
+				Debug.WriteLine($"Deleting instances of {item.GetType()} not supported");
+			}
+		}
+
+		private bool DeleteFile(string path)
+		{
+			if (string.IsNullOrEmpty(path))
+			{
+				return true;
+			}
+			else
+			{
+				return DependencyService.Get<SystemInterface>().DeleteFile(path);
+			}
+		}
+
+		private void DeleteFileWithDialog(string path)
+		{
+			if (!DeleteFile(path))
+			{
+				UserDialogs.Instance.Alert(Path.GetFileName(path), "Deleting file failed");
+			}
 		}
 
 		private void SortEventList()

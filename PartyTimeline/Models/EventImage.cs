@@ -1,6 +1,8 @@
 ﻿using System;
 using SQLite;
 
+using Xamarin.Forms;
+
 namespace PartyTimeline
 {
 	[Table("event_images")]
@@ -9,10 +11,10 @@ namespace PartyTimeline
 		// TODO: how to create unique EventImage ID?
 		[Column("caption")]
 		public string Caption { get; set; }
-		[Column("uri"), NotNull, Unique]
-		public string URI { get; set; }
-		[Column("uri_small"), Unique]
-		public string URIsmall { get; set; }
+		[Column("path"), NotNull, Unique]
+		public string Path { get; set; }
+		[Column("path_small"), Unique]
+		public string PathSmall { get; set; }
 		[Column("event_id"), NotNull]
 		public long EventId { get; set; }
 		[Column("event_member_id"), NotNull]
@@ -20,11 +22,17 @@ namespace PartyTimeline
 
 		public EventImage(DateTime dateCreated) : base(dateCreated)
 		{
-			Caption = string.Empty;
+			Initialize();
 		}
 
 		public EventImage()
 		{
+			Initialize();
+		}
+
+		private void Initialize()
+		{
+			OnDelete = new Command<BaseModel>(EventService.INSTANCE.Remove);
 			Caption = string.Empty;
 		}
 	}

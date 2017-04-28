@@ -1,4 +1,4 @@
-﻿using SDebug = System.Diagnostics.Debug;
+using SDebug = System.Diagnostics.Debug;
 
 using Android.App;
 using Android.Content;
@@ -36,12 +36,12 @@ namespace PartyTimeline.Droid
 
 		public void UploadNewImageLowRes(ref EventImage image)
 		{
-			SDebug.WriteLine($"Uploading image {image.URI} to the server");
+			SDebug.WriteLine($"Uploading image {image.Path} to the server");
 		}
 
 		public void UpdateImageAnnotation(ref EventImage image)
 		{
-			SDebug.WriteLine($"Updating annotation of image {image.URI}");
+			SDebug.WriteLine($"Updating annotation of image {image.Path}");
 		}
 	}
 }

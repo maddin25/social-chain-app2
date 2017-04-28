@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 
 using System;
 using System.Collections.Generic;
@@ -55,8 +55,8 @@ namespace UnitTests
 			Console.WriteLine(eventMemberTable.Insert(eventMember1));
 			Console.WriteLine(eventMemberTable.Insert(eventMember2));
 			
-			EventImage image1 = new EventImage(DateTime.Now.AddMinutes(-12)) { URI = "k24m235kl124n2k234k234j", Caption = "image1", Id = 1 };
-			EventImage image2 = new EventImage(DateTime.Now) { URI = "2k3259xi23kjsd092390ksdk", Caption = "image2", Id = 2 };
+			EventImage image1 = new EventImage(DateTime.Now.AddMinutes(-12)) { Path = "k24m235kl124n2k234k234j", Caption = "image1", Id = 1 };
+			EventImage image2 = new EventImage(DateTime.Now) { Path = "2k3259xi23kjsd092390ksdk", Caption = "image2", Id = 2 };
 			Console.WriteLine(imageTable.Insert(image1, eventMember1, event1));
 			Console.WriteLine(imageTable.Insert(image2, eventMember2, event1));
 		}

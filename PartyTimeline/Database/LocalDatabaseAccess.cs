@@ -84,13 +84,16 @@ namespace PartyTimeline
 			dbConnection.Delete<Event>(eventReference.Id);
 		}
 
-		public void RemoveEventImage(EventImage image)
+		public long RemoveEventImage(EventImage image)
 		{
+			Event eventReference = dbConnection.Get<Event>(image.EventId);
 			dbConnection.Delete<EventImage>(image.Id);
+			return eventReference != null ? eventReference.Id : -1;
 		}
 
 		private void InsertMyself()
 		{
+			// FIXME: move this to after the login screen, prevent infinite loop in EventMember initialization
 			EventMember currentUser = SessionInformation.INSTANCE.CurrentUser;
 			EventMember existingUser = dbConnection.Find<EventMember>(currentUser.Id);
 			if (existingUser == null)

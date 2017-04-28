@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using SQLite;
 
 using Xamarin.Forms;
@@ -37,8 +36,6 @@ namespace PartyTimeline
 		// The image should be in dimensions 3:1 (width:height)
 		[Ignore]
 		public string GetPreviewURL { get { return "https://farm8.staticflickr.com/7351/16355627795_204bf423e9.jpg"; } }
-		[Ignore]
-		public Command OnDelete { get; set; }
 
 		public Event(DateTime dateCreated) : base(dateCreated)
 		{
@@ -52,7 +49,7 @@ namespace PartyTimeline
 
 		private void Initialize()
 		{
-			OnDelete = new Command<Event>(EventService.INSTANCE.RemoveEvent);
+			OnDelete = new Command<BaseModel>(EventService.INSTANCE.Remove);
 			Images = new SortableObservableCollection<EventImage>();
 			Contributors = new SortableObservableCollection<EventMember>();
 		}

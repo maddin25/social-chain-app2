@@ -2,12 +2,11 @@
 using SDebug = System.Diagnostics.Debug;
 
 using Android.App;
-using Android.Content;
 using Android.Content.PM;
-using Android.Runtime;
 using Android.Views;
-using Android.Widget;
 using Android.OS;
+
+using Acr.UserDialogs;
 using Plugin.Media;
 using Plugin.Permissions;
 using FFImageLoading.Forms.Droid;
@@ -22,6 +21,7 @@ namespace PartyTimeline.Droid
 			TabLayoutResource = Resource.Layout.Tabbar;
 			ToolbarResource = Resource.Layout.Toolbar;
 			CachedImageRenderer.Init();
+			UserDialogs.Init(this);
 			base.OnCreate(bundle);
 		    await CrossMedia.Current.Initialize();
 

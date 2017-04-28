@@ -1,4 +1,4 @@
-﻿using Xamarin.Forms;
+using Xamarin.Forms;
 
 using PartyTimeline.ViewModels;
 
@@ -10,7 +10,7 @@ namespace PartyTimeline
 		{
 			InitializeComponent();
 			NavigationPage.SetHasNavigationBar(this, false);
-			BindingContext = new LoginPageViewModel();
+			BindingContext = new LoginViewModel();
 		}
 	}
 }

@@ -7,12 +7,12 @@ using Xamarin.Forms;
 
 namespace PartyTimeline.ViewModels
 {
-	public class EventListPageViewModel : UIBindingHelper<Event>
+	public class EventListViewModel : UIBindingHelper<Event>
 	{
 		public ObservableCollection<Event> EventList { get; private set; }
 		public Command AddEventCommand { get; set; }
 
-		public EventListPageViewModel(ListView refreshableListView) : base(refreshableListView)
+		public EventListViewModel(ListView refreshableListView) : base(refreshableListView)
 		{
 			EventList = EventService.INSTANCE.EventList;
 			AddEventCommand = new Command(() => Application.Current.MainPage.Navigation.PushAsync(new AddEventPage()));

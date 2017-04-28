@@ -27,7 +27,7 @@
                     <DataTemplate>
                         <ViewCell>
 							<ViewCell.ContextActions>
-								<MenuItem x:Name="MenuItemOnDelete" Text="Delete" Command="{Binding OnDelete}" CommandParameter="{Binding .}"/>
+								<MenuItem x:Name="MenuItemOnDelete" Text="Delete" IsDestructive="true" Command="{Binding OnDelete}" CommandParameter="{Binding .}"/>
 							</ViewCell.ContextActions>
                          
                             <StackLayout Padding="0,0,0,0"  Orientation="Horizontal" HorizontalOptions="CenterAndExpand">

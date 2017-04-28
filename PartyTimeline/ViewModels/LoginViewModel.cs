@@ -6,13 +6,13 @@ using Xamarin.Forms;
 
 namespace PartyTimeline.ViewModels
 {
-	public class LoginPageViewModel
+	public class LoginViewModel
 	{
 		private string username_;
 		private string password_;
 
 
-		public LoginPageViewModel()
+		public LoginViewModel()
 		{
 			Username = "testuser@nomads.com";
 			LoginCommand = new Command(async () => await Login());

@@ -38,7 +38,7 @@
     <Compile Include="RestClient\RestClient.cs" />
     <Compile Include="RestClient\TaskModel.cs" />
     <Compile Include="Services\EventService.cs" />
-    <Compile Include="ViewModels\EventListPageViewModel.cs" />
+    <Compile Include="ViewModels\EventListViewModel.cs" />
     <Compile Include="Views\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
@@ -49,19 +49,19 @@
     <Compile Include="Models\Event.cs" />
     <Compile Include="Models\EventMember.cs" />
     <Compile Include="Models\EventImage.cs" />
-    <Compile Include="Views\EventPageThumbnails.xaml.cs">
-      <DependentUpon>EventPageThumbnails.xaml</DependentUpon>
+    <Compile Include="Views\EventThumbnailsPage.xaml.cs">
+      <DependentUpon>EventThumbnailsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ImageGalleryPage.xaml.cs">
-      <DependentUpon>ImageGalleryPage.xaml</DependentUpon>
+    <Compile Include="Views\EventGalleryPage.xaml.cs">
+      <DependentUpon>EventGalleryPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\LoginPageViewModel.cs" />
-    <Compile Include="ViewModels\EventPageViewModel.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="ViewModels\EventGalleryViewModel.cs" />
     <Compile Include="Interfaces\EventSyncInterface.cs" />
-    <Compile Include="Views\AddEventPage.xaml.cs">
-      <DependentUpon>AddEventPage.xaml</DependentUpon>
+    <Compile Include="Views\EditEventPage.xaml.cs">
+      <DependentUpon>EditEventPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\AddEventPageViewModel.cs" />
+    <Compile Include="ViewModels\EditEventViewModel.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="ViewModels\EventDetailModel.cs" />
     <Compile Include="Helper\SortableObserveableCollection.cs" />
@@ -168,15 +168,15 @@
     <EmbeddedResource Include="Views\EventListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\EventPageThumbnails.xaml">
+    <EmbeddedResource Include="Views\EventThumbnailsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\AddEventPage.xaml">
+    <EmbeddedResource Include="Views\EditEventPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\ImageGalleryPage.xaml">
+    <EmbeddedResource Include="Views\EventGalleryPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>

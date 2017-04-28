@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 
 using PartyTimeline.ViewModels;
 
@@ -8,12 +8,12 @@ namespace PartyTimeline
 {
 	public partial class EventListPage : ContentPage
 	{
-		private EventListPageViewModel viewModel;
+		private EventListViewModel viewModel;
 
 		public EventListPage()
 		{
 			InitializeComponent();
-			BindingContext = viewModel = new EventListPageViewModel(ListViewEvents);
+			BindingContext = viewModel = new EventListViewModel(ListViewEvents);
 			NavigationPage.SetHasBackButton(this, false);
 		}
 

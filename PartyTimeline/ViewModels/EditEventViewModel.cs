@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace PartyTimeline.ViewModels
 {
-	public class AddEventPageViewModel : Event, INotifyPropertyChanged
+	public class EditEventViewModel : Event, INotifyPropertyChanged
 	{
 		private bool saveSuccessful = false;
 		private readonly string AlertInvalidField = "Invalid field";
@@ -67,7 +67,7 @@ namespace PartyTimeline.ViewModels
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 
-		public AddEventPageViewModel()
+		public EditEventViewModel()
 		{
 			SetStartDateTime();
 			SetEndDateTime();

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 using Xamarin.Forms;
 
@@ -11,7 +11,7 @@ namespace PartyTimeline
 		public AddEventPage()
 		{
 			InitializeComponent();
-			BindingContext = new AddEventPageViewModel();
+			BindingContext = new EditEventViewModel();
 		}
 	}
 }

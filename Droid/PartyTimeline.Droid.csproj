@@ -280,6 +280,16 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\refresh.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\plus.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\refresh.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\gallery-add.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\photo-camera.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\gallery-add.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\photo-camera.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\gallery-add.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\photo-camera.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\gallery-add.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\photo-camera.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\gallery-add.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\photo-camera.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\xml\file_paths.xml" />

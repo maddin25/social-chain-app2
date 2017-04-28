@@ -29,32 +29,24 @@
 							<ViewCell.ContextActions>
 								<MenuItem x:Name="MenuItemOnDelete" Text="Delete" Command="{Binding OnDelete}" CommandParameter="{Binding .}"/>
 							</ViewCell.ContextActions>
-                            <Frame Padding="0,0,0,3">
-                                <Frame.Content> 
-                                    <Frame Padding="15,15,15,15" OutlineColor="Gray" BackgroundColor="White">
-                                        <Frame.Content>
-                                            <StackLayout Padding="0,0,0,0"  Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
-												<ffimageloading:CachedImage
-													x:Name="EventPreviewImage"
-													AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
-													AbsoluteLayout.LayoutFlags="All"
-													Aspect="AspectFill"
-													DownsampleHeight="100"
-													DownsampleUseDipUnits="true"
-													ErrorPlaceholder="image_error.png"
-													Source="{Binding GetPreviewURL}"
-													>
-												</ffimageloading:CachedImage>
-                                                <Label Text="{Binding Name}" AbsoluteLayout.LayoutBounds="0.03, 0.85, autosize, autosize" AbsoluteLayout.LayoutFlags="PositionProportional"/>
-                                                <Label Text="{Binding GetDateTimeString}" AbsoluteLayout.LayoutBounds="0.03, 0.95, autosize, autosize" AbsoluteLayout.LayoutFlags="PositionProportional" FontSize="10"/>
-                                                <Label Text="{Binding GetNrPicturesString}" AbsoluteLayout.LayoutBounds="0.97, 3, autosize, autosize" AbsoluteLayout.LayoutFlags="XProportional" HorizontalTextAlignment="End" FontSize="10"/>
-                                                <Label Text="{Binding GetNrContributorsString}" AbsoluteLayout.LayoutBounds="0.97, 15, autosize, autosize" AbsoluteLayout.LayoutFlags="XProportional" HorizontalTextAlignment="End" FontSize="10"/>
-                                            </StackLayout>
-                                        </Frame.Content>
-                                    </Frame>
-                                </Frame.Content>
-                            </Frame>
-
+                         
+                            <StackLayout Padding="0,0,0,0"  Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+								<ffimageloading:CachedImage
+									x:Name="EventPreviewImage"
+									AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+									AbsoluteLayout.LayoutFlags="All"
+									Aspect="AspectFill"
+									DownsampleHeight="100"
+									DownsampleUseDipUnits="true"
+									ErrorPlaceholder="image_error.png"
+									Source="{Binding GetPreviewURL}"
+									>
+								</ffimageloading:CachedImage>
+                                <Label Text="{Binding Name}" AbsoluteLayout.LayoutBounds="0.03, 0.85, autosize, autosize" AbsoluteLayout.LayoutFlags="PositionProportional"/>
+                                <Label Text="{Binding GetDateTimeString}" AbsoluteLayout.LayoutBounds="0.03, 0.95, autosize, autosize" AbsoluteLayout.LayoutFlags="PositionProportional" FontSize="10"/>
+                                <Label Text="{Binding GetNrPicturesString}" AbsoluteLayout.LayoutBounds="0.97, 3, autosize, autosize" AbsoluteLayout.LayoutFlags="XProportional" HorizontalTextAlignment="End" FontSize="10"/>
+                                <Label Text="{Binding GetNrContributorsString}" AbsoluteLayout.LayoutBounds="0.97, 15, autosize, autosize" AbsoluteLayout.LayoutFlags="XProportional" HorizontalTextAlignment="End" FontSize="10"/>
+                            </StackLayout>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>

@@ -58,5 +58,10 @@ namespace PartyTimeline.ViewModels
 			// TODO: Start polling event list here
 			await Application.Current.MainPage.Navigation.PushAsync(new EventListPage());
 		}
+
+		private void TestFacebookApi()
+		{
+			
+		}
 	}
 }

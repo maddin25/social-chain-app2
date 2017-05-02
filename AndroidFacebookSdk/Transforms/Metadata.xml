@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+	<attr path="/api/package[@name='com.facebook']/class[@name='GraphRequestBatch']/method[@name='get']"
+		name="managedName">GetGraphRequest</attr>
+	<attr path="/api/package[@name='com.facebook.share.widget']/class[@name='ShareDialog']/method[@name='getOrderedModeHandlers']"
+		name="managedReturn">System.Collections.IList</attr>
+	<attr path="/api/package[@name='com.facebook.share.widget']/class[@name='MessageDialog']/method[@name='getOrderedModeHandlers']"
+		name="managedReturn">System.Collections.IList</attr>
+	<attr path="/api/package[@name='com.facebook.share.widget']/class[@name='JoinAppGroupDialog']/method[@name='getOrderedModeHandlers']"
+		name="managedReturn">System.Collections.IList</attr>
+	<attr path="/api/package[@name='com.facebook.share.widget']/class[@name='GameRequestDialog']/method[@name='getOrderedModeHandlers']"
+		name="managedReturn">System.Collections.IList</attr>
+	<attr path="/api/package[@name='com.facebook.share.widget']/class[@name='CreateAppGroupDialog']/method[@name='getOrderedModeHandlers']"
+		name="managedReturn">System.Collections.IList</attr>
+	<attr path="/api/package[@name='com.facebook.share.widget']/class[@name='AppInviteDialog']/method[@name='getOrderedModeHandlers']"
+		name="managedReturn">System.Collections.IList</attr>
+	<attr path="/api/package[@name='com.facebook.share.internal']/class[@name='LikeDialog']/method[@name='getOrderedModeHandlers']"
+		name="managedReturn">System.Collections.IList</attr>
+	<attr path="/api/package[@name='com.facebook.share']/class[@name='DeviceShareDialog']/method[@name='getOrderedModeHandlers']"
+		name="managedReturn">System.Collections.IList</attr>
+	<attr path="/api/package[@name='com.facebook.share.internal']/class[@name='VideoUploader.FinishUploadWorkItem']/method[@name='getParameters' and count(parameter)=0]"
+		name="visibility">protected</attr>
+	<attr path="/api/package[@name='com.facebook.share.internal']/class[@name='VideoUploader.StartUploadWorkItem']/method[@name='getParameters' and count(parameter)=0]"
+		name="visibility">protected</attr>
+	<attr path="/api/package[@name='com.facebook.share.internal']/class[@name='VideoUploader.TransferChunkWorkItem']/method[@name='getParameters' and count(parameter)=0]"
+		name="visibility">protected</attr>
+</metadata>

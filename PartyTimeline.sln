@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PartyTimeline.Droid", "Droi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{016D12BE-6430-48D2-B256-1357E0B764E1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroidFacebookSdk", "AndroidFacebookSdk\AndroidFacebookSdk.csproj", "{ED95D962-DA41-4F2C-B9D0-FEAD774CCCFD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -89,6 +91,22 @@ Global
 		{016D12BE-6430-48D2-B256-1357E0B764E1}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{016D12BE-6430-48D2-B256-1357E0B764E1}.Release|x64.ActiveCfg = Release|Any CPU
 		{016D12BE-6430-48D2-B256-1357E0B764E1}.Release|x64.Build.0 = Release|Any CPU
+		{ED95D962-DA41-4F2C-B9D0-FEAD774CCCFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED95D962-DA41-4F2C-B9D0-FEAD774CCCFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED95D962-DA41-4F2C-B9D0-FEAD774CCCFD}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{ED95D962-DA41-4F2C-B9D0-FEAD774CCCFD}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{ED95D962-DA41-4F2C-B9D0-FEAD774CCCFD}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{ED95D962-DA41-4F2C-B9D0-FEAD774CCCFD}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{ED95D962-DA41-4F2C-B9D0-FEAD774CCCFD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{ED95D962-DA41-4F2C-B9D0-FEAD774CCCFD}.Debug|x64.Build.0 = Debug|Any CPU
+		{ED95D962-DA41-4F2C-B9D0-FEAD774CCCFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED95D962-DA41-4F2C-B9D0-FEAD774CCCFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED95D962-DA41-4F2C-B9D0-FEAD774CCCFD}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{ED95D962-DA41-4F2C-B9D0-FEAD774CCCFD}.Release|iPhone.Build.0 = Release|Any CPU
+		{ED95D962-DA41-4F2C-B9D0-FEAD774CCCFD}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{ED95D962-DA41-4F2C-B9D0-FEAD774CCCFD}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{ED95D962-DA41-4F2C-B9D0-FEAD774CCCFD}.Release|x64.ActiveCfg = Release|Any CPU
+		{ED95D962-DA41-4F2C-B9D0-FEAD774CCCFD}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

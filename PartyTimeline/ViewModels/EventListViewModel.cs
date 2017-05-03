@@ -23,7 +23,7 @@ namespace PartyTimeline.ViewModels
 		{
 			var indexOfSelectedEvent = EventList.IndexOf(selectedEvent);
 			Debug.WriteLine($"Event Nr. {indexOfSelectedEvent + 1} selected");
-			Application.Current.MainPage.Navigation.PushAsync(new EventPageThumbnails(ref selectedEvent));
+			Application.Current.MainPage.Navigation.PushAsync(new EventThumbnailsPage(ref selectedEvent));
 		}
 
 		protected override async Task OnRefreshTriggered()

@@ -10,7 +10,7 @@ namespace PartyTimeline
 	{
 		public App()
 		{
-			MainPage = new NavigationPage(new LoginPage());
+			MainPage = new NavigationPage(new FacebookLoginPage());
 		}
 
 		protected override void OnStart()

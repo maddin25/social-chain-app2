@@ -8,7 +8,6 @@
 			<Button Text="Login" Command="{Binding LoginCommand}" />
 			<Button Text="Sign Up" Command="{Binding SignUpCommand}" />
 			<Button Text="Forgot Password" Command="{Binding ForgotPasswordCommand}" />
-			<Button Text="Login with Facebook" Command="{Binding LoginFacebookCommand}" />
           </StackLayout>
 	</ContentPage.Content>
     <ContentPage.Padding>

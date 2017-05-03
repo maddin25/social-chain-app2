@@ -4,16 +4,16 @@ using PartyTimeline.ViewModels;
 
 namespace PartyTimeline
 {
-	public partial class EventPageThumbnails : ContentPage
+	public partial class EventThumbnailsPage : ContentPage
 	{
 		private EventPageViewModel viewModel;
 
-		public EventPageThumbnails()
+		public EventThumbnailsPage()
 		{
 			InitializeComponent();
 		}
 
-		public EventPageThumbnails(ref Event eventReference)
+		public EventThumbnailsPage(ref Event eventReference)
 		{
 			InitializeComponent();
 			BindingContext = viewModel = new EventPageViewModel(ref eventReference, ListViewEventThumbnails);

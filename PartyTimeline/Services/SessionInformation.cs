@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
+
+using Xamarin.Auth;
+
 namespace PartyTimeline
 {
 	public class SessionInformation
@@ -18,6 +22,11 @@ namespace PartyTimeline
 				return _instance;
 			}
 			set { _instance = value; }
+		}
+
+		public void SetCurrentUser(Account account)
+		{
+			Debug.WriteLine(account.ToString());
 		}
 
 		private SessionInformation()

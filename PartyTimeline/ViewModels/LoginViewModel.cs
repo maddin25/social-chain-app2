@@ -16,7 +16,7 @@ namespace PartyTimeline.ViewModels
 		{
 			Username = "testuser@nomads.com";
 			LoginCommand = new Command(async () => await Login());
-			LoginFacebookCommand = new Command(async () => await Application.Current.MainPage.Navigation.PushAsync(new FacebookLogin()));
+			LoginFacebookCommand = new Command(async () => await Application.Current.MainPage.Navigation.PushAsync(new FacebookLoginPage()));
 			SignUpCommand = new Command(async () => await Application.Current.MainPage.DisplayAlert("Welcome", "Please sign up (not implemented)", "OK"));
 			ForgotPasswordCommand = new Command(async () => await Application.Current.MainPage.DisplayAlert("Idiot", "You forgot your password", "Acknowledged"));
 		}

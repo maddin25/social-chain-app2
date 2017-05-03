@@ -7,10 +7,28 @@ namespace PartyTimeline
 {
 	public class SessionInformation
 	{
-		
+
 		private static SessionInformation _instance;
 
-		public EventMember CurrentUser { get; set; }
+		public Account CurrentUser { get; set; }
+
+		public long UserId
+		{
+			get
+			{
+				lock (CurrentUser)
+				{
+					if (CurrentUser.Properties.ContainsKey(FacebookAccountProperties.Id))
+					{
+						return long.Parse(CurrentUser.Properties[FacebookAccountProperties.Id]);
+					}
+					else
+					{
+						throw new InvalidOperationException("The current user's ID is not known");
+					}
+				}
+			}
+		}
 
 		public static SessionInformation INSTANCE
 		{
@@ -27,35 +45,40 @@ namespace PartyTimeline
 
 		public void SetCurrentUser(Account account)
 		{
-			CurrentUser = new EventMember(DateTime.Now);
-			if (account.Properties.ContainsKey(FacebookAccountProperties.Id))
+			CurrentUser = account;
+			UpdateCurrentUser(account);
+		}
+
+		public void UpdateCurrentUser(Account account)
+		{
+			lock (CurrentUser)
 			{
-				CurrentUser.Id = long.Parse(account.Properties[FacebookAccountProperties.Id]);
+				if (account.Properties.ContainsKey(FacebookAccountProperties.Id))
+				{
+					CurrentUser.Properties[FacebookAccountProperties.Id] = account.Properties[FacebookAccountProperties.Id];
+				}
+				if (account.Properties.ContainsKey(FacebookAccountProperties.Name))
+				{
+					CurrentUser.Properties[FacebookAccountProperties.Name] = account.Properties[FacebookAccountProperties.Name];
+				}
+				if (account.Properties.ContainsKey(FacebookAccountProperties.EMail))
+				{
+					CurrentUser.Properties[FacebookAccountProperties.EMail] = account.Properties[FacebookAccountProperties.EMail];
+				}
+				if (account.Properties.ContainsKey(FacebookAccountProperties.AccessToken))
+				{
+					CurrentUser.Properties[FacebookAccountProperties.AccessToken] = account.Properties[FacebookAccountProperties.AccessToken];
+				}
+				if (account.Properties.ContainsKey(FacebookAccountProperties.ExpiresOn))
+				{
+					CurrentUser.Properties[FacebookAccountProperties.ExpiresOn] = account.Properties[FacebookAccountProperties.ExpiresOn];
+				}
 			}
-			if (account.Properties.ContainsKey(FacebookAccountProperties.Name))
-			{
-				CurrentUser.Name = account.Properties[FacebookAccountProperties.Name];
-			}
-			if (account.Properties.ContainsKey(FacebookAccountProperties.EMail))
-			{
-				CurrentUser.EmailAddress = account.Properties[FacebookAccountProperties.EMail];
-			}
-			if (account.Properties.ContainsKey(FacebookAccountProperties.AccessToken))
-			{
-				CurrentUser.FacebookToken = account.Properties[FacebookAccountProperties.AccessToken];
-			}
-			if (account.Properties.ContainsKey(FacebookAccountProperties.ExpiresOn))
-			{
-				CurrentUser.SessionExpirationDate = DateTime.FromFileTime(long.Parse(account.Properties[FacebookAccountProperties.ExpiresOn]));
-			}
-			// TODO: remove this later
-			EventService.INSTANCE.AddEventMember(CurrentUser);
-			Debug.WriteLine(account.ToString());
 		}
 
 		private SessionInformation()
 		{
-			CurrentUser = null;
+			CurrentUser = new Account();
 		}
 	}
 }

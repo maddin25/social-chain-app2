@@ -15,7 +15,7 @@ namespace PartyTimeline
 		private static readonly string databaseDirectory = Path.Combine("");
 		private static readonly string databaseFilename = "PartyTimeline.sqlite3";
 		// TODO: remove this property in realease builds and implement migration behavior
-		private readonly bool dropTables = false;
+		private readonly bool dropTables = true;
 		private SQLiteConnection dbConnection;
 
 		public LocalDatabaseAccess()
@@ -61,21 +61,26 @@ namespace PartyTimeline
 		public void WriteEventImage(EventImage eventImage, Event eventReference)
 		{
 			eventImage.EventId = eventReference.Id;
-			eventImage.EventMemberId = SessionInformation.INSTANCE.CurrentUser.Id;
+			eventImage.EventMemberId = SessionInformation.INSTANCE.UserId;
 			dbConnection.Insert(eventImage);
 		}
 
 		public void WriteEventMember(EventMember member)
 		{
+			EventMember dbMember = null;
 			try
 			{
-				var dbMember = dbConnection.Get<EventMember>(member.Id);
-				// TODO: implement update query
-				Debug.WriteLine($"EventMember {member.Name} (id={member.Id}) already exists in the database");
+				dbMember = dbConnection.Get<EventMember>(member.Id);
 			}
-			catch (Exception e)
+			catch { }
+			if (dbMember == null)
 			{
 				dbConnection.Insert(member);
+			}
+			else
+			{
+				// TODO: implement update query
+				Debug.WriteLine($"EventMember {member.Name} (id={member.Id}) already exists in the database");
 			}
 		}
 

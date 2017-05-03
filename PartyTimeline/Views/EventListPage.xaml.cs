@@ -14,6 +14,7 @@ namespace PartyTimeline
 		{
 			InitializeComponent();
 			BindingContext = viewModel = new EventListViewModel(ListViewEvents);
+			NavigationPage.SetHasNavigationBar(this, true);
 			NavigationPage.SetHasBackButton(this, false);
 		}
 

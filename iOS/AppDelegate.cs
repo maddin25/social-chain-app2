@@ -16,7 +16,7 @@ namespace PartyTimeline.iOS
 			global::Xamarin.Forms.Forms.Init();
 			CachedImageRenderer.Init();
 			LoadApplication(new App());
-
+			
 			return base.FinishedLaunching(app, options);
 		}
 	}

@@ -246,7 +246,7 @@
     <Compile Include="Services\EventSyncBinder.cs" />
     <Compile Include="Services\EventSyncServiceConnection.cs" />
     <Compile Include="Helpers\AndroidBug5497WorkaroundForXamarinAndroid.cs" />
-    <Compile Include="Renderers\FacebookLoginPageRenderer.cs" />
+    <Compile Include="InterfaceImplementations\FacebookInterface_Android.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

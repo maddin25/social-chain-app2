@@ -30,15 +30,10 @@ namespace PartyTimeline
 			{ROLES.Viewer, 3}
 		};
 
-		// TODO: how to create unique EventMember ID?
 		[Column("email_address"), NotNull, Unique]
 		public string EmailAddress { get; set; }
 		[Column("name"), NotNull]
 		public string Name { get; set; }
-		[Column("facebook_token"), MaxLength(256), Unique]
-		public string FacebookToken { get; set; }
-		[Column("facebook_taken_expiration"), NotNull]
-		public DateTime SessionExpirationDate { get; set; }
 		[Ignore]
 		public int Role { get; set; }
 

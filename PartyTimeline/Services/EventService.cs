@@ -99,9 +99,14 @@ namespace PartyTimeline
 		public void AddNewEvent(Event eventReference)
 		{
 			EventList.Add(eventReference);
-			localDb.AddEvent(eventReference);
+			localDb.WriteEvent(eventReference);
 			SortEventList();
 			//DependencyService.Get<EventListInterface>().PushServerEvent(eventReference);
+		}
+
+		public void AddEventMember(EventMember member)
+		{
+			localDb.WriteEventMember(member);
 		}
 
 		public void Remove(Event eventReference)

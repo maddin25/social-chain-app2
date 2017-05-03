@@ -7,6 +7,7 @@ namespace PartyTimeline
 {
 	public class SessionInformation
 	{
+		
 		private static SessionInformation _instance;
 
 		public EventMember CurrentUser { get; set; }
@@ -26,19 +27,35 @@ namespace PartyTimeline
 
 		public void SetCurrentUser(Account account)
 		{
+			CurrentUser = new EventMember(DateTime.Now);
+			if (account.Properties.ContainsKey(FacebookAccountProperties.Id))
+			{
+				CurrentUser.Id = long.Parse(account.Properties[FacebookAccountProperties.Id]);
+			}
+			if (account.Properties.ContainsKey(FacebookAccountProperties.Name))
+			{
+				CurrentUser.Name = account.Properties[FacebookAccountProperties.Name];
+			}
+			if (account.Properties.ContainsKey(FacebookAccountProperties.EMail))
+			{
+				CurrentUser.EmailAddress = account.Properties[FacebookAccountProperties.EMail];
+			}
+			if (account.Properties.ContainsKey(FacebookAccountProperties.AccessToken))
+			{
+				CurrentUser.FacebookToken = account.Properties[FacebookAccountProperties.AccessToken];
+			}
+			if (account.Properties.ContainsKey(FacebookAccountProperties.ExpiresOn))
+			{
+				CurrentUser.SessionExpirationDate = DateTime.FromFileTime(long.Parse(account.Properties[FacebookAccountProperties.ExpiresOn]));
+			}
+			// TODO: remove this later
+			EventService.INSTANCE.AddEventMember(CurrentUser);
 			Debug.WriteLine(account.ToString());
 		}
 
 		private SessionInformation()
 		{
-			CurrentUser = new EventMember(DateTime.Now)
-			{
-				Id = 1,
-				EmailAddress = "mailto@martin-patz.de",
-				FirstName = "Martin",
-				LastName = "Patz",
-				Role = EventMember.RolesIds[ROLES.Administrator]
-			};
+			CurrentUser = null;
 		}
 	}
 }

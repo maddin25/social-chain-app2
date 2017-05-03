@@ -14,6 +14,8 @@ namespace PartyTimeline
 	{
 		private static readonly string databaseDirectory = Path.Combine("");
 		private static readonly string databaseFilename = "PartyTimeline.sqlite3";
+		// TODO: remove this property in realease builds and implement migration behavior
+		private readonly bool dropTables = false;
 		private SQLiteConnection dbConnection;
 
 		public LocalDatabaseAccess()
@@ -22,16 +24,7 @@ namespace PartyTimeline
 			string dbPath = Path.Combine(applicationFolder, databaseFilename);
 			Debug.WriteLine($"Connecting to local SQLite database '{dbPath}'");
 			dbConnection = new SQLiteConnection(dbPath);
-			dbConnection.CreateTable<Event>();
-			dbConnection.CreateTable<EventMember>();
-			dbConnection.CreateTable<Event_EventMember>();
-			dbConnection.CreateTable<EventImage>();
-			InsertMyself();
-		}
-
-		public void AddEvent(Event eventReference)
-		{
-			dbConnection.Insert(eventReference);
+			Init();
 		}
 
 		public List<Event> ReadEvents()
@@ -60,6 +53,11 @@ namespace PartyTimeline
 			return eventImages;
 		}
 
+		public void WriteEvent(Event eventReference)
+		{
+			dbConnection.Insert(eventReference);
+		}
+
 		public void WriteEventImage(EventImage eventImage, Event eventReference)
 		{
 			eventImage.EventId = eventReference.Id;
@@ -67,9 +65,18 @@ namespace PartyTimeline
 			dbConnection.Insert(eventImage);
 		}
 
-		public void WriteEvent(Event eventReference)
+		public void WriteEventMember(EventMember member)
 		{
-			dbConnection.Insert(eventReference);
+			try
+			{
+				var dbMember = dbConnection.Get<EventMember>(member.Id);
+				// TODO: implement update query
+				Debug.WriteLine($"EventMember {member.Name} (id={member.Id}) already exists in the database");
+			}
+			catch (Exception e)
+			{
+				dbConnection.Insert(member);
+			}
 		}
 
 		public void RemoveEvent(Event eventReference)
@@ -86,20 +93,35 @@ namespace PartyTimeline
 
 		public long RemoveEventImage(EventImage image)
 		{
+			// TODO: this Get method can throw a NotFoundException, surround with try - catch block
 			Event eventReference = dbConnection.Get<Event>(image.EventId);
 			dbConnection.Delete<EventImage>(image.Id);
 			return eventReference != null ? eventReference.Id : -1;
 		}
 
-		private void InsertMyself()
+		private void Init()
 		{
-			// FIXME: move this to after the login screen, prevent infinite loop in EventMember initialization
-			EventMember currentUser = SessionInformation.INSTANCE.CurrentUser;
-			EventMember existingUser = dbConnection.Find<EventMember>(currentUser.Id);
-			if (existingUser == null)
+			if (dropTables)
 			{
-				dbConnection.Insert(currentUser);
+				DropAllTables();
 			}
+			CreateAllTables();
+		}
+
+		private void DropAllTables()
+		{
+			dbConnection.DropTable<Event>();
+			dbConnection.DropTable<EventMember>();
+			dbConnection.DropTable<Event_EventMember>();
+			dbConnection.DropTable<EventImage>();
+		}
+
+		private void CreateAllTables()
+		{
+			dbConnection.CreateTable<Event>();
+			dbConnection.CreateTable<EventMember>();
+			dbConnection.CreateTable<Event_EventMember>();
+			dbConnection.CreateTable<EventImage>();
 		}
 	}
 }

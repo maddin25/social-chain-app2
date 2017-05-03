@@ -12,6 +12,7 @@ namespace PartyTimeline
 		public FacebookLoginPage()
 		{
 			InitializeComponent();
+			NavigationPage.SetHasNavigationBar(this, false);
 		}
 	}
 }

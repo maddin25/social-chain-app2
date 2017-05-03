@@ -16,11 +16,11 @@ namespace PartyTimeline.Droid
 {
 	public class FacebookLoginPageRenderer : PageRenderer
 	{
-		private FacebookAuthenticator auth;
+		private FacebookCommunicator auth;
 
 		public FacebookLoginPageRenderer()
 		{
-			auth = new FacebookAuthenticator();
+			auth = new FacebookCommunicator();
 			SDebug.WriteLine("Instantiated custom renderer");
 		}
 
@@ -33,15 +33,22 @@ namespace PartyTimeline.Droid
 				return;
 			}
 
-			try
+			if (auth.IsAuthorized)
 			{
-				Activity activity = (Activity)Forms.Context;
-				Intent intent = (Intent)auth.Authenticator.GetUI(activity);
-				Forms.Context.StartActivity(intent);
+				auth.OnIsAuthorized();
 			}
-			catch (Exception ex)
+			else
 			{
-				SDebug.WriteLine(ex.Message);
+				try
+				{
+					Activity activity = (Activity)Forms.Context;
+					Intent intent = (Intent)auth.Authenticator.GetUI(activity);
+					Forms.Context.StartActivity(intent);
+				}
+				catch (Exception ex)
+				{
+					SDebug.WriteLine(ex.Message);
+				}
 			}
 		}
 	}

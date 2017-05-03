@@ -13,6 +13,7 @@ namespace PartyTimeline
 		public static int ROLE_ID_MIN = 0;
 		public static int ROLE_ID_MAX = 3;
 
+		// TODO: move these dictionaries to the Event_EventMember class
 		public static Dictionary<ROLES, string> RoleDescriptions = new Dictionary<ROLES, string>
 		{
 			{ROLES.Administrator, "Administrator"},
@@ -32,18 +33,18 @@ namespace PartyTimeline
 		// TODO: how to create unique EventMember ID?
 		[Column("email_address"), NotNull, Unique]
 		public string EmailAddress { get; set; }
-		[Column("first_name"), NotNull]
-		public string FirstName { get; set; }
-		[Column("last_name"), NotNull]
-		public string LastName { get; set; }
+		[Column("name"), NotNull]
+		public string Name { get; set; }
 		[Column("facebook_token"), MaxLength(256), Unique]
 		public string FacebookToken { get; set; }
+		[Column("facebook_taken_expiration"), NotNull]
+		public DateTime SessionExpirationDate { get; set; }
 		[Ignore]
 		public int Role { get; set; }
 
 		public EventMember()
 		{
-			
+
 		}
 
 		public EventMember(DateTime dateCreated) : base(dateCreated)

@@ -50,8 +50,8 @@ namespace UnitTests
 			Event event1 = new Event(DateTime.Now.AddMinutes(-20)) { Id = 1, Description = "event1 description", Name = "awesome test event1" };
 			Console.WriteLine(eventTable.Insert(event1));
 
-			EventMember eventMember1 = new EventMember(DateTime.Now.AddMinutes(-18)) { Id = 32, FirstName = "Hamza", LastName = "Tahir", EmailAddress = "htahir111@gmail.com", Role = EventMember.RolesIds[ROLES.Administrator] };
-			EventMember eventMember2 = new EventMember(DateTime.Now.AddMinutes(-17)) { Id = 33, FirstName = "Martin", LastName = "Patz", EmailAddress = "mailto@martin-patz.de", Role = EventMember.RolesIds[ROLES.Administrator] };
+			EventMember eventMember1 = new EventMember(DateTime.Now.AddMinutes(-18)) { Id = 32, Name = "Hamza", LastName = "Tahir", EmailAddress = "htahir111@gmail.com", Role = EventMember.RolesIds[ROLES.Administrator] };
+			EventMember eventMember2 = new EventMember(DateTime.Now.AddMinutes(-17)) { Id = 33, Name = "Martin", LastName = "Patz", EmailAddress = "mailto@martin-patz.de", Role = EventMember.RolesIds[ROLES.Administrator] };
 			Console.WriteLine(eventMemberTable.Insert(eventMember1));
 			Console.WriteLine(eventMemberTable.Insert(eventMember2));
 			

@@ -11,7 +11,7 @@ using Newtonsoft.Json.Linq;
 
 namespace PartyTimeline
 {
-	public class FacebookCommunicator
+	public class FacebookClient
 	{
 		private readonly string AppId = "1632106426819143";
 
@@ -42,7 +42,7 @@ namespace PartyTimeline
 			}
 		}
 
-		public FacebookCommunicator()
+		public FacebookClient()
 		{
 			Authenticator = new OAuth2Authenticator(
 				clientId: AppId,

@@ -11,7 +11,7 @@ namespace PartyTimeline
 	{
 		bool isAuthorizing = false;
 
-		FacebookCommunicator fbCommunicator;
+		FacebookClient fbCommunicator;
 
 		public FacebookLoginPage()
 		{
@@ -27,7 +27,7 @@ namespace PartyTimeline
 				return;
 			}
 
-			fbCommunicator = new FacebookCommunicator();
+			fbCommunicator = new FacebookClient();
 			if (fbCommunicator.IsAuthorized())
 			{
 				fbCommunicator.OnIsAuthorized();

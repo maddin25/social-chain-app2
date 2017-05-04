@@ -64,6 +64,15 @@ namespace PartyTimeline
 			set { _instance = value; }
 		}
 
+		public string GetUserProperty(string propertyName)
+		{
+			if (CurrentUser?.Properties.ContainsKey(propertyName) ?? false)
+			{
+				return CurrentUser.Properties[propertyName];
+			}
+			return null;
+		}
+
 		public void BeginSession(Account account)
 		{
 			AccountStore.Create().Save(account, AppName);
@@ -155,6 +164,7 @@ namespace PartyTimeline
 
 		private void OnSessionEnded(EventArgs e)
 		{
+			Debug.WriteLine($"{nameof(SessionEnded)} event triggered");
 			SessionEnded?.Invoke(this, e);
 		}
 

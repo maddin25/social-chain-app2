@@ -81,6 +81,9 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Resources\MyColors.cs" />
+    <Compile Include="Resources\AppResources_de.Designer.cs">
+      <DependentUpon>AppResources_de.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Plugin.Media, Version=2.6.3.14, Culture=neutral, processorArchitecture=MSIL">

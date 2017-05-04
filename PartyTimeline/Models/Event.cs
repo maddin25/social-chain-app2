@@ -31,6 +31,14 @@ namespace PartyTimeline
 		[Ignore]
 		public CoverImage Cover { get; set; }
 
+		[JsonProperty("is_canceled")]
+		[Ignore]
+		public bool IsCancelled { get; set; }
+
+		[JsonProperty("is_draft")]
+		[Ignore]
+		public bool IsDraft { get; set; }
+
 		// TODO: add these properties as well
 		//public string Location { get; set; }
 		[Ignore]

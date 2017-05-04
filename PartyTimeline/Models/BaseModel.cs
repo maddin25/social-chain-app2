@@ -11,13 +11,18 @@ namespace PartyTimeline
 	public class BaseModel : IComparable<BaseModel>
 	{
 		private static Random idGenerator = new Random(DateTime.Now.Millisecond);
+
 		[JsonProperty("id", Required=Required.Always)]
 		[PrimaryKey, Column("_id")]
 		public long Id { get; set; }
+
 		[Column("date_created"), NotNull]
 		public DateTime DateCreated { get; set; }
+
+		[JsonProperty("updated_time", Required=Required.Always)]
 		[Column("date_modified"), NotNull]
 		public DateTime DateLastModified { get; set; }
+
 		[Ignore]
 		public Command OnDelete { get; set; }
 

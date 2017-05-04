@@ -155,8 +155,13 @@ namespace PartyTimeline
 					 * should not be. */
 					Debug.WriteLine($"WARNING: event '{eventReference.Name}' in local database is outdated!");
 				}
+				else if (eventReference.IsDraft || eventReference.IsCancelled)
+				{
+					// TODO: skip it and optionally remove it from the list and the DB
+				}
 				else
 				{
+					// TODO: update event in local DB if necessay (modified dates differ)
 					EventList[index] = eventReference;
 				}
 			}

@@ -18,7 +18,7 @@ namespace PartyTimeline
 		private readonly string AppId = "1632106426819143";
 		private readonly TimeSpan LimitEventsInPast = TimeSpan.FromDays(180);
 
-		public void Authorize(Action onSuccess)
+		public void Authorize(Action onSuccess, Action<string> onFailure)
 		{
 			var authenticator = new OAuth2Authenticator(
 				clientId: AppId,
@@ -27,13 +27,17 @@ namespace PartyTimeline
 				redirectUrl: new Uri("https://www.facebook.com/connect/login_success.html"),
 				isUsingNativeUI: false
 			);
-			authenticator.Completed += (object sender, AuthenticatorCompletedEventArgs e) =>
+			authenticator.Completed += async (object sender, AuthenticatorCompletedEventArgs e) =>
 			{
 				if (e.IsAuthenticated)
 				{
 					SessionInformation.INSTANCE.BeginSession(e.Account);
+					await CompleteAccountInformation(e.Account);
 					onSuccess.BeginInvoke(onSuccess.EndInvoke, null);
-					CompleteAccountInformation(e.Account);
+				}
+				else
+				{
+					onFailure.BeginInvoke("cancelled or failed", onFailure.EndInvoke, null);
 				}
 				Debug.WriteLine($"Authenticated: {e.IsAuthenticated}");
 			};
@@ -47,7 +51,7 @@ namespace PartyTimeline
 			var initialRequest = new OAuth2Request(
 				"GET",
 				new Uri("https://graph.facebook.com/v2.9/me/events"),
-				new Dictionary<string, string> { { "fields", "id,name,start_time,end_time,cover{id,source}" } },
+				new Dictionary<string, string> { { "fields", "id,name,start_time,end_time,updated_time,is_cancelled,is_draft,cover{id,source}" } },
 				account
 			);
 			Response response = await initialRequest.GetResponseAsync();

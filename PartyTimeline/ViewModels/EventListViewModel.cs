@@ -11,14 +11,28 @@ namespace PartyTimeline.ViewModels
 	{
 		public ObservableCollection<Event> EventList { get; private set; }
 		public Command AddEventCommand { get; set; }
+		public Command LogoutCommand { get; set; }
 
 		public EventListViewModel(ListView refreshableListView) : base(refreshableListView)
 		{
 			EventList = EventService.INSTANCE.EventList;
 			AddEventCommand = new Command(() => Application.Current.MainPage.Navigation.PushAsync(new AddEventPage()));
+			LogoutCommand = new Command(async () =>
+			{
+				bool logout = await Application.Current.MainPage.DisplayAlert(
+					"Confirm Logout",
+					"Are you sure want to log out?",
+					"Yes",
+					"Cancel"
+				);
+				if (logout)
+				{
+					SessionInformation.INSTANCE.EndSession();
+					await Application.Current.MainPage.Navigation.PushModalAsync(new FacebookLoginPage());
+				}
+			});
 		}
 
-		// FIXME: sometimes selecting an entry that has previously been selected does not trigger loading the new page
 		protected override void OnSelect(ref Event selectedEvent)
 		{
 			var indexOfSelectedEvent = EventList.IndexOf(selectedEvent);

@@ -35,6 +35,7 @@ namespace PartyTimeline
 			EventList = new SortableObservableCollection<Event>();
 			localDb = new LocalDatabaseAccess();
 			fbClient = new FacebookClient();
+			SessionInformation.INSTANCE.SessionEnded += (sender, e) => EventList.Clear();
 		}
 
 		public async Task QueryFacebookEventListAsync()

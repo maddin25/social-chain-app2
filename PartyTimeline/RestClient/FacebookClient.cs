@@ -18,77 +18,26 @@ namespace PartyTimeline
 		private readonly string AppId = "1632106426819143";
 		private readonly TimeSpan LimitEventsInPast = TimeSpan.FromDays(180);
 
-		public OAuth2Authenticator Authenticator { get; set; }
-
-		public Account AuthorizedAccount
+		public void Authorize(Action onSuccess)
 		{
-			get
-			{
-				AccountStore store = AccountStore.Create();
-				IEnumerable<Account> accounts = store.FindAccountsForService(Resources.AppResources.AppName);
-				List<Account> accountsList = new List<Account>(accounts);
-				if (accountsList.Count > 1)
-				{
-					Debug.WriteLine($"WARNING: more than one account found, cleaning up");
-					foreach (Account acc in accounts)
-					{
-						store.Delete(acc, Resources.AppResources.AppName);
-					}
-					return null;
-				}
-				if (accountsList.Count == 0)
-				{
-					return null;
-				}
-				// Only one account was found
-				return accountsList[0];
-			}
-		}
-
-		public FacebookClient()
-		{
-			Authenticator = new OAuth2Authenticator(
+			var authenticator = new OAuth2Authenticator(
 				clientId: AppId,
 				scope: "email,user_events",
 				authorizeUrl: new Uri("https://www.facebook.com/v2.9/dialog/oauth/"),
 				redirectUrl: new Uri("https://www.facebook.com/connect/login_success.html"),
 				isUsingNativeUI: false
 			);
-			Authenticator.Completed += async (object sender, AuthenticatorCompletedEventArgs e) =>
+			authenticator.Completed += (object sender, AuthenticatorCompletedEventArgs e) =>
 			{
 				if (e.IsAuthenticated)
 				{
-					SessionInformation.INSTANCE.SetCurrentUser(e.Account);
-					OnIsAuthorized();
-					await CompleteAccountInformation(e.Account);
+					SessionInformation.INSTANCE.BeginSession(e.Account);
+					onSuccess.BeginInvoke(onSuccess.EndInvoke, null);
+					CompleteAccountInformation(e.Account);
 				}
 				Debug.WriteLine($"Authenticated: {e.IsAuthenticated}");
 			};
-		}
-
-		public bool IsAuthorized()
-		{
-			Account account = AuthorizedAccount;
-			if (account == null)
-			{
-				return false;
-			}
-			if (account.Properties.ContainsKey(FacebookAccountProperties.ExpiresOn))
-			{
-				DateTime expiresOn = DateTime.FromFileTime(long.Parse(account.Properties[FacebookAccountProperties.ExpiresOn]));
-				if (expiresOn <= DateTime.Now) // is true, if the Account token is not yet expired
-				{
-					return false;
-				}
-				else
-				{
-					SessionInformation.INSTANCE.SetCurrentUser(account);
-					return true;
-				}
-			}
-			Debug.WriteLine($"WARNING: Account {account.Username} does not contain the {nameof(FacebookAccountProperties.ExpiresOn)} property");
-			AccountStore.Create().Delete(account, Resources.AppResources.AppName);
-			return false;
+			DependencyService.Get<FacebookInterface>().LaunchLogin(authenticator);
 		}
 
 		public async Task<List<Event>> GetEvents(Account account)
@@ -177,8 +126,7 @@ namespace PartyTimeline
 				account.Properties[FacebookAccountProperties.Id] = accountInformation.id;
 				account.Properties[FacebookAccountProperties.Name] = accountInformation.name;
 				account.Properties[FacebookAccountProperties.EMail] = accountInformation.email;
-				AccountStore.Create().Save(account, Resources.AppResources.AppName);
-				SessionInformation.INSTANCE.UpdateCurrentUser(account);
+				await SessionInformation.INSTANCE.UpdateSession(account);
 			}
 			else
 			{

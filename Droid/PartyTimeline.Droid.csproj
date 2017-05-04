@@ -287,6 +287,11 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\photo_camera.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\gallery_add.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\photo_camera.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\logout.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\logout.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\logout.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\logout.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\logout.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\xml\file_paths.xml" />

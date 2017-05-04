@@ -11,21 +11,28 @@ namespace PartyTimeline.iOS
 {
 	public class FacebookInterface_iOS : FacebookInterface
 	{
+		private UIViewController loginViewController;
+
 		public void LaunchLogin(Authenticator authenticator)
 		{
 			try
 			{
 				// native: SFSafariViewController
-				UIViewController viewController = (UIViewController)authenticator.GetUI();
+				loginViewController = (UIViewController)authenticator.GetUI();
 				UIViewController rootViewController = UIApplication.SharedApplication.KeyWindow.RootViewController;
 
 				//UIViewController rootViewController = window.RootViewController;
-				rootViewController.PresentViewController(viewController, false, null);
+				rootViewController.PresentViewController(loginViewController, false, null);
 			}
 			catch (Exception ex)
 			{
 				Debug.WriteLine(ex.Message);
 			}
+		}
+
+		public void CloseLogin()
+		{
+			loginViewController?.DismissViewController(true, null);
 		}
 	}
 }

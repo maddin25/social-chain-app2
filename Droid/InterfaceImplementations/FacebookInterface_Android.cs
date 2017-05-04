@@ -26,5 +26,10 @@ namespace PartyTimeline.Droid
 				SDebug.WriteLine(ex.Message);
 			}
 		}
+
+		public void CloseLogin()
+		{
+
+		}
 	}
 }

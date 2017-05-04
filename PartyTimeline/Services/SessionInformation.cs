@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 using Xamarin.Auth;
 
@@ -7,11 +9,30 @@ namespace PartyTimeline
 {
 	public class SessionInformation
 	{
-
+		private Account _currentUser;
 		private static SessionInformation _instance;
 
-		public Account CurrentUser { get; set; }
+		public static readonly string AppName = "PartyTimeline";
 
+		public EventHandler SessionEnded;
+
+		public Account CurrentUser
+		{
+			get
+			{
+				if (_currentUser == null)
+				{
+					_currentUser = ReadAccountFromAccountStore();
+				}
+				return _currentUser;
+			}
+			private set
+			{
+				_currentUser = value;
+			}
+		}
+
+		// TODO: remove
 		public long UserId
 		{
 			get
@@ -43,16 +64,50 @@ namespace PartyTimeline
 			set { _instance = value; }
 		}
 
-		public void SetCurrentUser(Account account)
+		public void BeginSession(Account account)
 		{
+			AccountStore.Create().Save(account, AppName);
 			CurrentUser = account;
-			UpdateCurrentUser(account);
 		}
 
-		public void UpdateCurrentUser(Account account)
+		public void EndSession()
+		{
+			AccountStore.Create().Delete(CurrentUser, AppName);
+			CurrentUser = null;
+			OnSessionEnded(EventArgs.Empty);
+		}
+
+		public Task UpdateSession(Account account)
+		{
+			UpdateCurrentUser(account);
+			return AccountStore.Create().SaveAsync(CurrentUser, AppName);
+		}
+
+		public bool ActiveSessionAvailable()
+		{
+			if (CurrentUser == null)
+			{
+				return false;
+			}
+			if (!CurrentUser.Properties.ContainsKey(FacebookAccountProperties.ExpiresOn))
+			{
+				Debug.WriteLine($"WARNING: Account {CurrentUser.Username} does not contain the {nameof(FacebookAccountProperties.ExpiresOn)} property");
+				EndSession();
+				return false;
+			}
+			DateTime expiresOn = DateTime.FromFileTime(long.Parse(CurrentUser.Properties[FacebookAccountProperties.ExpiresOn]));
+			return expiresOn > DateTime.Now; // is true, if the Account token is not yet expired
+		}
+
+		private void UpdateCurrentUser(Account account)
 		{
 			lock (CurrentUser)
 			{
+				if (CurrentUser == null)
+				{
+					CurrentUser = account;
+					return;
+				}
 				if (account.Properties.ContainsKey(FacebookAccountProperties.Id))
 				{
 					CurrentUser.Properties[FacebookAccountProperties.Id] = account.Properties[FacebookAccountProperties.Id];
@@ -76,9 +131,36 @@ namespace PartyTimeline
 			}
 		}
 
+		private Account ReadAccountFromAccountStore()
+		{
+			AccountStore store = AccountStore.Create();
+
+			List<Account> accounts = new List<Account>(store.FindAccountsForService(AppName));
+			if (accounts.Count > 1)
+			{
+				Debug.WriteLine($"WARNING: more than one account found, cleaning up");
+				foreach (Account account in accounts)
+				{
+					store.Delete(account, AppName);
+				}
+				return null;
+			}
+			if (accounts.Count == 0)
+			{
+				return null;
+			}
+			// Only one account was found
+			return accounts[0];
+		}
+
+		private void OnSessionEnded(EventArgs e)
+		{
+			SessionEnded?.Invoke(this, e);
+		}
+
 		private SessionInformation()
 		{
-			CurrentUser = new Account();
+
 		}
 	}
 }

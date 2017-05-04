@@ -81,8 +81,7 @@
     </ContentPage.Content>
 	
 	<ContentPage.ToolbarItems>
-	    <ToolbarItem Name="AddEvent" Order="Primary" Icon="plus.png" Priority="0" Command="{Binding AddEventCommand}"/>
-	    <ToolbarItem Name="RefreshEventList" Order="Primary" Icon="refresh.png" Priority="1" Command="{Binding RefreshListCommand}"/>
+	    <ToolbarItem Name="Logout" Text="Logout" Order="Primary" Icon="logout.png" Priority="0" Command="{Binding LogoutCommand}"/>
 	</ContentPage.ToolbarItems>
 	
     <ContentPage.Padding>

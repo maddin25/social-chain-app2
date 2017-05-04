@@ -26,16 +26,21 @@ namespace PartyTimeline
 			{
 				return;
 			}
-
-			fbCommunicator = new FacebookClient();
-			if (fbCommunicator.IsAuthorized())
+			Action loadEventList = () =>
 			{
-				fbCommunicator.OnIsAuthorized();
+				isAuthorizing = false;
+				Application.Current.MainPage.Navigation.PushAsync(new EventListPage());
+			};
+
+			if (SessionInformation.INSTANCE.ActiveSessionAvailable())
+			{
+				loadEventList.Invoke();
 			}
 			else
 			{
 				isAuthorizing = true;
-				DependencyService.Get<FacebookInterface>().LaunchLogin(fbCommunicator.Authenticator);
+				fbCommunicator = new FacebookClient();
+				fbCommunicator.Authorize(loadEventList);
 			}
 		}
 	}

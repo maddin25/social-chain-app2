@@ -240,6 +240,9 @@
     <BundleResource Include="Resources\photo_camera.png" />
     <BundleResource Include="Resources\photo_camera%402x.png" />
     <BundleResource Include="Resources\photo_camera%403x.png" />
+    <BundleResource Include="Resources\logout.png" />
+    <BundleResource Include="Resources\logout%402x.png" />
+    <BundleResource Include="Resources\logout%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Renderers\" />

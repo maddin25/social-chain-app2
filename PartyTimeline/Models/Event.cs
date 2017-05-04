@@ -3,20 +3,30 @@ using SQLite;
 
 using Xamarin.Forms;
 
+using Newtonsoft.Json;
+using Newtonsoft.Json.Schema;
+
 namespace PartyTimeline
 {
 	[Table("events")]
 	public class Event : BaseModel
 	{
-		// TODO: how to create unique Event ID?
+		[JsonProperty("name", Required = Required.Always)]
 		[Column("event_name"), NotNull]
 		public string Name { get; set; }
+
+		[JsonProperty("description", NullValueHandling = NullValueHandling.Ignore)]
 		[Column("event_description")]
 		public string Description { get; set; }
+
+		[JsonProperty("start_time", Required = Required.Always)]
 		[Column("start_date"), NotNull]
 		public DateTime StartDateTime { get; set; }
-		[Column("end_date"), NotNull]
+
+		[JsonProperty("end_time", NullValueHandling = NullValueHandling.Ignore)]
+		[Column("end_date")]
 		public DateTime EndDateTime { get; set; }
+
 		// TODO: add these properties as well
 		//public string Location { get; set; }
 		[Ignore]

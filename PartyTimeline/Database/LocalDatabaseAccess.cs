@@ -15,7 +15,7 @@ namespace PartyTimeline
 		private static readonly string databaseDirectory = Path.Combine("");
 		private static readonly string databaseFilename = "PartyTimeline.sqlite3";
 		// TODO: remove this property in realease builds and implement migration behavior
-		private readonly bool dropTables = true;
+		private readonly bool dropTables = false;
 		private SQLiteConnection dbConnection;
 
 		public LocalDatabaseAccess()

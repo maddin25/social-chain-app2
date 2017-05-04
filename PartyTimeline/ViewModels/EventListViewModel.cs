@@ -28,7 +28,8 @@ namespace PartyTimeline.ViewModels
 
 		protected override async Task OnRefreshTriggered()
 		{
-			await EventService.INSTANCE.QueryLocalEventListAsync();
+			await EventService.INSTANCE.QueryFacebookEventListAsync();
+			//await EventService.INSTANCE.QueryLocalEventListAsync();
 		}
 
 		public override void OnAppearing()

@@ -3,12 +3,15 @@ using SQLite;
 
 using Xamarin.Forms;
 
+using Newtonsoft.Json;
+
 namespace PartyTimeline
 {
 	[Table("BaseModel")]
 	public class BaseModel : IComparable<BaseModel>
 	{
 		private static Random idGenerator = new Random(DateTime.Now.Millisecond);
+		[JsonProperty("id", Required=Required.Always)]
 		[PrimaryKey, Column("_id")]
 		public long Id { get; set; }
 		[Column("date_created"), NotNull]

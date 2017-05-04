@@ -30,7 +30,7 @@
 								<MenuItem x:Name="MenuItemOnDelete" Text="Delete" IsDestructive="true" Command="{Binding OnDelete}" CommandParameter="{Binding .}"/>
 							</ViewCell.ContextActions>
                          
-                            <StackLayout Padding="0,0,0,0"  Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                            <AbsoluteLayout Padding="0,0,0,0" HorizontalOptions="StartAndExpand">
 								<ffimageloading:CachedImage
 									x:Name="EventPreviewImage"
 									AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
@@ -43,10 +43,10 @@
 									>
 								</ffimageloading:CachedImage>
                                 <Label Text="{Binding Name}" AbsoluteLayout.LayoutBounds="0.03, 0.85, autosize, autosize" AbsoluteLayout.LayoutFlags="PositionProportional"/>
-                                <Label Text="{Binding GetDateTimeString}" AbsoluteLayout.LayoutBounds="0.03, 0.95, autosize, autosize" AbsoluteLayout.LayoutFlags="PositionProportional" FontSize="10"/>
+                                <Label Text="{Binding StartDateTime}" AbsoluteLayout.LayoutBounds="0.03, 0.95, autosize, autosize" AbsoluteLayout.LayoutFlags="PositionProportional" FontSize="10"/>
                                 <Label Text="{Binding GetNrPicturesString}" AbsoluteLayout.LayoutBounds="0.97, 3, autosize, autosize" AbsoluteLayout.LayoutFlags="XProportional" HorizontalTextAlignment="End" FontSize="10"/>
                                 <Label Text="{Binding GetNrContributorsString}" AbsoluteLayout.LayoutBounds="0.97, 15, autosize, autosize" AbsoluteLayout.LayoutFlags="XProportional" HorizontalTextAlignment="End" FontSize="10"/>
-                            </StackLayout>
+                            </AbsoluteLayout>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>

@@ -13,6 +13,8 @@ namespace PartyTimeline
 	{
 		private static EventService _instance;
 		private LocalDatabaseAccess localDb;
+		private FacebookClient fbClient;
+
 		public SortableObservableCollection<Event> EventList { get; private set; }
 
 		public static EventService INSTANCE
@@ -32,30 +34,23 @@ namespace PartyTimeline
 		{
 			EventList = new SortableObservableCollection<Event>();
 			localDb = new LocalDatabaseAccess();
+			fbClient = new FacebookClient();
+		}
+
+		public async Task QueryFacebookEventListAsync()
+		{
+			foreach (Event eventReference in await Task.Run(() => fbClient.GetEvents(SessionInformation.INSTANCE.CurrentUser)))
+			{
+				ParseReceivedEvent(eventReference);
+			}
+			SortEventList();
 		}
 
 		public async Task QueryLocalEventListAsync()
 		{
 			foreach (Event eventReference in await Task.Run(() => localDb.ReadEvents()))
 			{
-				int index = EventList.IndexOf(eventReference);
-				if (index >= 0)
-				{
-					if (EventList[index].ModifiedAfter(eventReference))
-					{
-						/* The event in the EventList is somehow newer than the event stored in the local database. That
-						 * should not be. */
-						Debug.WriteLine($"WARNING: event '{eventReference.Name}' in local database is outdated!");
-					}
-					else
-					{
-						EventList[index] = eventReference;
-					}
-				}
-				else
-				{
-					EventList.Add(eventReference);
-				}
+				ParseReceivedEvent(eventReference);
 			}
 			SortEventList();
 		}
@@ -148,6 +143,28 @@ namespace PartyTimeline
 			}
 		}
 
+		private void ParseReceivedEvent(Event eventReference)
+		{
+			int index = EventList.IndexOf(eventReference);
+			if (index >= 0)
+			{
+				if (EventList[index].ModifiedAfter(eventReference))
+				{
+					/* The event in the EventList is somehow newer than the event stored in the local database. That
+					 * should not be. */
+					Debug.WriteLine($"WARNING: event '{eventReference.Name}' in local database is outdated!");
+				}
+				else
+				{
+					EventList[index] = eventReference;
+				}
+			}
+			else
+			{
+				EventList.Add(eventReference);
+			}
+		}
+
 		private bool DeleteFile(string path)
 		{
 			if (string.IsNullOrEmpty(path))
@@ -170,7 +187,7 @@ namespace PartyTimeline
 
 		private void SortEventList()
 		{
-			EventList.SortDescending((arg) => arg.DateCreated.ToFileTimeUtc());
+			EventList.SortDescending((arg) => arg.StartDateTime.ToFileTimeUtc());
 		}
 
 		private void SortEventImageList(Event eventReference)

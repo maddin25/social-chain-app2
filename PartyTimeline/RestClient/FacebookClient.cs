@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 
 using Xamarin.Auth;
@@ -14,6 +16,7 @@ namespace PartyTimeline
 	public class FacebookClient
 	{
 		private readonly string AppId = "1632106426819143";
+		private readonly TimeSpan LimitEventsInPast = TimeSpan.FromDays(180);
 
 		public OAuth2Authenticator Authenticator { get; set; }
 
@@ -88,6 +91,50 @@ namespace PartyTimeline
 			return false;
 		}
 
+		public async Task<List<Event>> GetEvents(Account account)
+		{
+			List<Event> events = new List<Event>();
+
+			var initialRequest = new OAuth2Request(
+				"GET",
+				new Uri("https://graph.facebook.com/v2.9/me/events"),
+				new Dictionary<string, string> { { "fields", "id,name,start_time,end_time" } },
+				account
+			);
+			Response response = await initialRequest.GetResponseAsync();
+
+			await ParseEventQueryResponse(response?.GetResponseText(), events);
+
+			return events;
+		}
+
+		private async Task ParseEventQueryResponse(string response, List<Event> events)
+		{
+			if (string.IsNullOrWhiteSpace(response))
+			{
+				return;
+			}
+			List<Event> eventsInResponse = JObject.Parse(response).SelectToken("data").ToObject<List<Event>>();
+			DateTime toleranzeInPast = DateTime.Now.Subtract(LimitEventsInPast);
+			foreach (Event eventReference in eventsInResponse)
+			{
+				if (eventReference.StartDateTime < toleranzeInPast)
+				{
+					return;
+				}
+				events.Add(eventReference);
+			}
+
+			string cursor = JObject.Parse(response).SelectToken("paging")?.ToObject<FacebookPager>()?.next;
+			if (!string.IsNullOrEmpty(cursor))
+			{
+				HttpWebRequest cursorRequest = WebRequest.CreateHttp(cursor);
+				WebResponse cursorResponse = await cursorRequest.GetResponseAsync();
+				StreamReader reader = new StreamReader(cursorResponse.GetResponseStream());
+				await ParseEventQueryResponse(reader.ReadToEnd(), events);
+			}
+		}
+
 		public async Task<bool> VerifyTokenValidity(Account account)
 		{
 			var request = new OAuth2Request(
@@ -151,7 +198,6 @@ namespace PartyTimeline
 			public string email { get; set; }
 		}
 
-		[JsonObject("data")]
 		private class FacebookTokenInspection
 		{
 			public long app_id { get; set; }
@@ -161,6 +207,11 @@ namespace PartyTimeline
 			public long issued_at { get; set; }
 			public bool is_valid { get; set; }
 			public List<string> scopes { get; set; }
+		}
+
+		private class FacebookPager
+		{
+			public string next { get; set; }
 		}
 	}
 }

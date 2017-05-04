@@ -98,7 +98,7 @@ namespace PartyTimeline
 			var initialRequest = new OAuth2Request(
 				"GET",
 				new Uri("https://graph.facebook.com/v2.9/me/events"),
-				new Dictionary<string, string> { { "fields", "id,name,start_time,end_time" } },
+				new Dictionary<string, string> { { "fields", "id,name,start_time,end_time,cover{id,source}" } },
 				account
 			);
 			Response response = await initialRequest.GetResponseAsync();

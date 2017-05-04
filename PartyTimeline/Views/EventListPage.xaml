@@ -30,22 +30,47 @@
 								<MenuItem x:Name="MenuItemOnDelete" Text="Delete" IsDestructive="true" Command="{Binding OnDelete}" CommandParameter="{Binding .}"/>
 							</ViewCell.ContextActions>
                          
-                            <AbsoluteLayout Padding="0,0,0,0" HorizontalOptions="StartAndExpand">
+                            <AbsoluteLayout HorizontalOptions="CenterAndExpand">
 								<ffimageloading:CachedImage
 									x:Name="EventPreviewImage"
 									AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
 									AbsoluteLayout.LayoutFlags="All"
 									Aspect="AspectFill"
-									DownsampleHeight="100"
-									DownsampleUseDipUnits="true"
 									ErrorPlaceholder="image_error.png"
-									Source="{Binding GetPreviewURL}"
-									>
-								</ffimageloading:CachedImage>
-                                <Label Text="{Binding Name}" AbsoluteLayout.LayoutBounds="0.03, 0.85, autosize, autosize" AbsoluteLayout.LayoutFlags="PositionProportional"/>
-                                <Label Text="{Binding StartDateTime}" AbsoluteLayout.LayoutBounds="0.03, 0.95, autosize, autosize" AbsoluteLayout.LayoutFlags="PositionProportional" FontSize="10"/>
-                                <Label Text="{Binding GetNrPicturesString}" AbsoluteLayout.LayoutBounds="0.97, 3, autosize, autosize" AbsoluteLayout.LayoutFlags="XProportional" HorizontalTextAlignment="End" FontSize="10"/>
-                                <Label Text="{Binding GetNrContributorsString}" AbsoluteLayout.LayoutBounds="0.97, 15, autosize, autosize" AbsoluteLayout.LayoutFlags="XProportional" HorizontalTextAlignment="End" FontSize="10"/>
+									Source="{Binding Cover.Source}"
+									/>
+								
+								<BoxView
+									AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+									AbsoluteLayout.LayoutFlags="All"
+									Color="{x:Static local:MyColors.OpaqueBlack}"
+									/>
+
+                                <Label Text="{Binding Name}"
+                                	TextColor="White"
+									AbsoluteLayout.LayoutBounds="0.03, 0.85, autosize, autosize"
+									AbsoluteLayout.LayoutFlags="PositionProportional"
+									/>
+                                <Label Text="{Binding StartDateTime}"
+                                	TextColor="White"
+                                	AbsoluteLayout.LayoutBounds="0.03, 0.95, autosize, autosize"
+                                	AbsoluteLayout.LayoutFlags="PositionProportional"
+                                	FontSize="10"
+                                	/>
+                                <Label Text="{Binding GetNrPicturesString}"
+                                	TextColor="White"
+                                	AbsoluteLayout.LayoutBounds="0.97, 3, autosize, autosize"
+                                	AbsoluteLayout.LayoutFlags="XProportional"
+                                	HorizontalTextAlignment="End"
+                                	FontSize="10"
+                                	/>
+                                <Label Text="{Binding GetNrContributorsString}"
+                                	TextColor="White"
+                                	AbsoluteLayout.LayoutBounds="0.97, 15, autosize, autosize"
+                                	AbsoluteLayout.LayoutFlags="XProportional"
+                                	HorizontalTextAlignment="End"
+                                	FontSize="10"
+                                	/>
                             </AbsoluteLayout>
                         </ViewCell>
                     </DataTemplate>

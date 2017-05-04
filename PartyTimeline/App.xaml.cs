@@ -1,12 +1,9 @@
-﻿using DLToolkit.Forms.Controls;
-
-using System;
-
+﻿
 using Xamarin.Forms;
 
 namespace PartyTimeline
 {
-	public class App : Application
+	public partial class App : Application
 	{
 		public App()
 		{

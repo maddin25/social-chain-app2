@@ -27,6 +27,10 @@ namespace PartyTimeline
 		[Column("end_date")]
 		public DateTime EndDateTime { get; set; }
 
+		[JsonProperty("cover")]
+		[Ignore]
+		public CoverImage Cover { get; set; }
+
 		// TODO: add these properties as well
 		//public string Location { get; set; }
 		[Ignore]
@@ -44,8 +48,6 @@ namespace PartyTimeline
 		[Ignore]
 		public string GetNrContributorsString { get { return (NrContributors.ToString() + " User" + (NrContributors == 1 ? "" : "s")); } }
 		// The image should be in dimensions 3:1 (width:height)
-		[Ignore]
-		public string GetPreviewURL { get { return "https://farm8.staticflickr.com/7351/16355627795_204bf423e9.jpg"; } }
 
 		public Event(DateTime dateCreated) : base(dateCreated)
 		{

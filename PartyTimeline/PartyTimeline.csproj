@@ -86,6 +86,7 @@
     </Compile>
     <Compile Include="Helper\SessionState.cs" />
     <Compile Include="Helper\SyncState.cs" />
+    <Compile Include="Database\EventMembershipRoles.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Plugin.Media, Version=2.6.3.14, Culture=neutral, processorArchitecture=MSIL">

@@ -77,6 +77,7 @@ namespace PartyTimeline
 				}
 				else // this event is new
 				{
+					localDb.AssociateEventMemberWithEvent(fe, SessionInformationProvider.INSTANCE.CurrentUserEventMember, EventMembershipRoles.ROLES.Contributor);
 					eventsRequiredUpdate.Add(fe.Id);
 				}
 			}
@@ -217,7 +218,7 @@ namespace PartyTimeline
 
 		private void SortEventList()
 		{
-			EventList.SortDescending((arg) => arg.StartDateTime.ToFileTimeUtc());
+			EventList.SortDescending((e) => e.StartDateTime.ToFileTimeUtc());
 		}
 
 		private void SortEventImageList(Event eventReference)

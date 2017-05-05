@@ -28,7 +28,7 @@ namespace PartyTimeline
 		private readonly string RequestGet = "GET";
 		private readonly string RequestParameterFields = "fields";
 
-		public void Authorize(Action<bool> callback)
+		public void Authorize(Action callbackOnFailure)
 		{
 			var authenticator = new OAuth2Authenticator(
 				clientId: AppId,
@@ -42,13 +42,12 @@ namespace PartyTimeline
 			{
 				if (e.IsAuthenticated)
 				{
-					SessionInformationProvider.INSTANCE.BeginSession(e.Account);
 					await CompleteAccountInformation(e.Account);
-					callback.Invoke(true);
+					SessionInformationProvider.INSTANCE.BeginSession(e.Account);
 				}
 				else
 				{
-					callback.Invoke(false);
+					callbackOnFailure.Invoke();
 				}
 				Debug.WriteLine($"Authenticated: {e.IsAuthenticated}");
 			};
@@ -58,7 +57,7 @@ namespace PartyTimeline
 
 		public async Task<Event> GetEventDetails(long id)
 		{
-			string response = await MakeIdRequest(SessionInformationProvider.INSTANCE.CurrentUser,
+			string response = await MakeIdRequest(SessionInformationProvider.INSTANCE.CurrentUserAccount,
 			                                      id,
 			                                      new Dictionary<string, string> {
 				{ RequestParameterFields, "id,name,start_time,end_time,updated_time,cover{id,source}" }
@@ -75,7 +74,7 @@ namespace PartyTimeline
 				method: RequestGet,
 				url: WebUriBuilder(GraphApiUrl, ApiVersion, GraphApiNodeMe, GraphApiNodeEvents),
 				parameters: new Dictionary<string, string> { { RequestParameterFields, "id,start_time,updated_time,is_canceled,is_draft" } },
-				account: SessionInformationProvider.INSTANCE.CurrentUser
+				account: SessionInformationProvider.INSTANCE.CurrentUserAccount
 			);
 			Response response = await initialRequest.GetResponseAsync();
 
@@ -141,7 +140,7 @@ namespace PartyTimeline
 			account.Properties[FacebookAccountProperties.ExpiresOn] = expiresOn.ToFileTimeUtc().ToString();
 			// Pull the remaining information from the server
 			var request = new OAuth2Request(
-				"GET",
+				RequestGet,
 				WebUriBuilder(GraphApiUrl, ApiVersion, GraphApiNodeMe),
 				new Dictionary<string, string> { { RequestParameterFields, "id,name,email" } },
 				account
@@ -153,7 +152,6 @@ namespace PartyTimeline
 				account.Properties[FacebookAccountProperties.Id] = accountInformation.id;
 				account.Properties[FacebookAccountProperties.Name] = accountInformation.name;
 				account.Properties[FacebookAccountProperties.EMail] = accountInformation.email;
-				await SessionInformationProvider.INSTANCE.UpdateSession(account);
 			}
 			else
 			{

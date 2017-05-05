@@ -13,7 +13,6 @@ namespace PartyTimeline
 {
 	public class LocalDatabaseAccess
 	{
-		private static readonly string databaseDirectory = Path.Combine("");
 		private static readonly string databaseFilename = "PartyTimeline.sqlite3";
 		// TODO: remove this property in realease builds and implement migration behavior
 		private readonly bool dropTables = false;
@@ -59,6 +58,17 @@ namespace PartyTimeline
 			return eventImages;
 		}
 
+		public void AssociateEventMemberWithEvent(Event e, EventMember em, EventMembershipRoles.ROLES role)
+		{
+			var entry = new Event_EventMember
+			{
+				EventId = e.Id,
+				EventMemberId = em.Id,
+				Role = EventMembershipRoles.RoleId(role)
+			};
+			dbConnection.InsertOrReplaceAsync(entry);
+		}
+
 		public void WriteEvent(Event eventReference)
 		{
 			dbConnection.InsertAsync(eventReference);
@@ -67,7 +77,7 @@ namespace PartyTimeline
 		public void WriteEventImage(EventImage eventImage, Event eventReference)
 		{
 			eventImage.EventId = eventReference.Id;
-			eventImage.EventMemberId = SessionInformationProvider.INSTANCE.UserId;
+			eventImage.EventMemberId = SessionInformationProvider.INSTANCE.CurrentUserEventMember.Id;
 			dbConnection.InsertAsync(eventImage);
 		}
 
@@ -86,10 +96,7 @@ namespace PartyTimeline
 			List<EventImage> eventImages = await dbConnection.Table<EventImage>()
 															 .Where((image) => image.EventId == e.Id)
 															 .ToListAsync();
-			foreach (EventImage image in eventImages)
-			{
-				dbConnection.DeleteAsync(image);
-			}
+			Task.WhenAll(eventImages.Select((EventImage image) => dbConnection.DeleteAsync(image)));
 			dbConnection.DeleteAsync(e);
 		}
 

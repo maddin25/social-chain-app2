@@ -82,5 +82,29 @@ namespace PartyTimeline.Resources {
                 return ResourceManager.GetString("ButtonLoginWithFacebook", resourceCulture);
             }
         }
+        
+        internal static string EventMembershipDescriptionAdministrator {
+            get {
+                return ResourceManager.GetString("EventMembershipDescriptionAdministrator", resourceCulture);
+            }
+        }
+        
+        internal static string EventMembershipDescriptionModerator {
+            get {
+                return ResourceManager.GetString("EventMembershipDescriptionModerator", resourceCulture);
+            }
+        }
+        
+        internal static string EventMembershipDescriptionContributor {
+            get {
+                return ResourceManager.GetString("EventMembershipDescriptionContributor", resourceCulture);
+            }
+        }
+        
+        internal static string EventMembershipDescriptionViewer {
+            get {
+                return ResourceManager.GetString("EventMembershipDescriptionViewer", resourceCulture);
+            }
+        }
     }
 }

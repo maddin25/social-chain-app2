@@ -10,13 +10,32 @@ namespace PartyTimeline
 	public class SessionInformationProvider
 	{
 		private Account _currentUser;
+		private EventMember _currentUserEventMember;
 		private static SessionInformationProvider _instance;
 
+		#region PublicMethods
 		public static readonly string AppName = "PartyTimeline";
 
 		public EventHandler SessionStateChanged;
 
-		public Account CurrentUser
+		public EventMember CurrentUserEventMember
+		{
+			get
+			{
+				if (_currentUserEventMember == null && CurrentUserAccount != null)
+				{
+					_currentUserEventMember = new EventMember
+					{
+						Id = long.Parse(CurrentUserAccount.Properties[FacebookAccountProperties.Id]),
+						Name = CurrentUserAccount.Properties[FacebookAccountProperties.Name],
+						EmailAddress = CurrentUserAccount.Properties[FacebookAccountProperties.EMail]
+					};
+				}
+				return _currentUserEventMember;
+			}
+		}
+
+		public Account CurrentUserAccount
 		{
 			get
 			{
@@ -28,26 +47,27 @@ namespace PartyTimeline
 			}
 			private set
 			{
+				_currentUserEventMember = null;
 				_currentUser = value;
 			}
 		}
 
-		// TODO: remove
-		public long UserId
+		public bool ActiveSessionAvailable
 		{
 			get
 			{
-				lock (CurrentUser)
+				if (CurrentUserAccount == null)
 				{
-					if (CurrentUser.Properties.ContainsKey(FacebookAccountProperties.Id))
-					{
-						return long.Parse(CurrentUser.Properties[FacebookAccountProperties.Id]);
-					}
-					else
-					{
-						throw new InvalidOperationException("The current user's ID is not known");
-					}
+					return false;
 				}
+				if (!CurrentUserAccount.Properties.ContainsKey(FacebookAccountProperties.ExpiresOn))
+				{
+					Debug.WriteLine($"WARNING: Account {CurrentUserAccount.Username} does not contain the {nameof(FacebookAccountProperties.ExpiresOn)} property");
+					EndSession();
+					return false;
+				}
+				DateTime expiresOn = DateTime.FromFileTime(long.Parse(CurrentUserAccount.Properties[FacebookAccountProperties.ExpiresOn]));
+				return expiresOn > DateTime.Now; // is true, if the Account token is not yet expired
 			}
 		}
 
@@ -64,52 +84,37 @@ namespace PartyTimeline
 			set { _instance = value; }
 		}
 
+		#endregion
+
+		#region PublicMethods
+
 		public string GetUserProperty(string propertyName)
 		{
-			if (CurrentUser?.Properties.ContainsKey(propertyName) ?? false)
+			if (CurrentUserAccount?.Properties.ContainsKey(propertyName) ?? false)
 			{
-				return CurrentUser.Properties[propertyName];
+				return CurrentUserAccount.Properties[propertyName];
 			}
 			return null;
 		}
 
 		public void BeginSession(Account account)
 		{
-			AccountStore.Create().Save(account, AppName);
-			CurrentUser = account;
+			UpdateSession(account);
 			OnSessionStateChanged(new SessionState { IsAuthenticated = true });
 		}
 
 		public void EndSession()
 		{
-			AccountStore.Create().Delete(CurrentUser, AppName);
-			CurrentUser = null;
+			AccountStore.Create().Delete(CurrentUserAccount, AppName);
+			CurrentUserAccount = null;
 			OnSessionStateChanged(new SessionState { IsAuthenticated = false });
 		}
 
-		public Task UpdateSession(Account account)
+		public void UpdateSession(Account account)
 		{
-			UpdateCurrentUser(account);
-			return AccountStore.Create().SaveAsync(CurrentUser, AppName);
-		}
-
-		public bool ActiveSessionAvailable
-		{
-			get
-			{
-				if (CurrentUser == null)
-				{
-					return false;
-				}
-				if (!CurrentUser.Properties.ContainsKey(FacebookAccountProperties.ExpiresOn))
-				{
-					Debug.WriteLine($"WARNING: Account {CurrentUser.Username} does not contain the {nameof(FacebookAccountProperties.ExpiresOn)} property");
-					EndSession();
-					return false;
-				}
-				DateTime expiresOn = DateTime.FromFileTime(long.Parse(CurrentUser.Properties[FacebookAccountProperties.ExpiresOn]));
-				return expiresOn > DateTime.Now; // is true, if the Account token is not yet expired
-			}
+			AccountStore.Create().Save(account, AppName);
+			CurrentUserAccount = account;
+			EventService.INSTANCE.AddEventMember(CurrentUserEventMember);
 		}
 
 		public void AuthenticateUserIfRequired()
@@ -117,7 +122,8 @@ namespace PartyTimeline
 			if (!ActiveSessionAvailable)
 			{
 				FacebookClient fbCommunicator = new FacebookClient();
-				fbCommunicator.Authorize((success) => OnSessionStateChanged(new SessionState { IsAuthenticated = success }));
+				// TODO: remove callback if possible
+				fbCommunicator.Authorize(() => OnSessionStateChanged(new SessionState { IsAuthenticated = false }));
 			}
 			else
 			{
@@ -125,34 +131,36 @@ namespace PartyTimeline
 			}
 		}
 
+		#endregion
+
 		private void UpdateCurrentUser(Account account)
 		{
-			lock (CurrentUser)
+			lock (CurrentUserAccount)
 			{
-				if (CurrentUser == null)
+				if (CurrentUserAccount == null)
 				{
-					CurrentUser = account;
+					CurrentUserAccount = account;
 					return;
 				}
 				if (account.Properties.ContainsKey(FacebookAccountProperties.Id))
 				{
-					CurrentUser.Properties[FacebookAccountProperties.Id] = account.Properties[FacebookAccountProperties.Id];
+					CurrentUserAccount.Properties[FacebookAccountProperties.Id] = account.Properties[FacebookAccountProperties.Id];
 				}
 				if (account.Properties.ContainsKey(FacebookAccountProperties.Name))
 				{
-					CurrentUser.Properties[FacebookAccountProperties.Name] = account.Properties[FacebookAccountProperties.Name];
+					CurrentUserAccount.Properties[FacebookAccountProperties.Name] = account.Properties[FacebookAccountProperties.Name];
 				}
 				if (account.Properties.ContainsKey(FacebookAccountProperties.EMail))
 				{
-					CurrentUser.Properties[FacebookAccountProperties.EMail] = account.Properties[FacebookAccountProperties.EMail];
+					CurrentUserAccount.Properties[FacebookAccountProperties.EMail] = account.Properties[FacebookAccountProperties.EMail];
 				}
 				if (account.Properties.ContainsKey(FacebookAccountProperties.AccessToken))
 				{
-					CurrentUser.Properties[FacebookAccountProperties.AccessToken] = account.Properties[FacebookAccountProperties.AccessToken];
+					CurrentUserAccount.Properties[FacebookAccountProperties.AccessToken] = account.Properties[FacebookAccountProperties.AccessToken];
 				}
 				if (account.Properties.ContainsKey(FacebookAccountProperties.ExpiresOn))
 				{
-					CurrentUser.Properties[FacebookAccountProperties.ExpiresOn] = account.Properties[FacebookAccountProperties.ExpiresOn];
+					CurrentUserAccount.Properties[FacebookAccountProperties.ExpiresOn] = account.Properties[FacebookAccountProperties.ExpiresOn];
 				}
 			}
 		}

@@ -30,12 +30,13 @@
 								<MenuItem x:Name="MenuItemOnDelete" Text="Delete" IsDestructive="true" Command="{Binding OnDelete}" CommandParameter="{Binding .}"/>
 							</ViewCell.ContextActions>
                          
-                            <AbsoluteLayout HorizontalOptions="CenterAndExpand">
+                            <AbsoluteLayout HorizontalOptions="FillAndExpand">
 								<ffimageloading:CachedImage
 									x:Name="EventPreviewImage"
 									AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
 									AbsoluteLayout.LayoutFlags="All"
 									Aspect="AspectFill"
+									HorizontalOptions="FillAndExpand"
 									ErrorPlaceholder="image_error.png"
 									Source="{Binding CoverUrl}"
 									/>

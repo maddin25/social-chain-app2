@@ -57,14 +57,14 @@
                                 	AbsoluteLayout.LayoutFlags="PositionProportional"
                                 	FontSize="10"
                                 	/>
-                                <Label Text="{Binding Images.Count, StringFormat='Nr. Images: {0:N}'}"
+                                <Label Text="{Binding Images.Count, StringFormat='Nr. Images: {0:N0}'}"
                                 	TextColor="White"
                                 	AbsoluteLayout.LayoutBounds="0.97, 3, autosize, autosize"
                                 	AbsoluteLayout.LayoutFlags="XProportional"
                                 	HorizontalTextAlignment="End"
                                 	FontSize="10"
                                 	/>
-                                <Label Text="{Binding Contributors.Count, StringFormat='Nr. Contributors: {0:N}'}"
+                                <Label Text="{Binding Contributors.Count, StringFormat='Nr. Contributors: {0:N0}'}"
                                 	TextColor="White"
                                 	AbsoluteLayout.LayoutBounds="0.97, 15, autosize, autosize"
                                 	AbsoluteLayout.LayoutFlags="XProportional"

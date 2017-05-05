@@ -6,7 +6,7 @@ using System.Collections.Specialized;
 
 namespace PartyTimeline
 {
-	public class SortableObservableCollection<T> : ObservableCollection<T>
+	public class SortableObservableCollection<T> : ObservableCollection<T> where T : BaseModel
 	{
 		public SortableObservableCollection(IEnumerable<T> collection) :
 			base(collection)
@@ -54,9 +54,20 @@ namespace PartyTimeline
 			}
 		}
 
+		public void Update(int index, T update)
+		{
+			this[index].Update(update);
+            OnCollectionChanged(new NotifyCollectionChangedEventArgs(
+				NotifyCollectionChangedAction.Replace,
+				update,
+				update,
+				index
+			));
+		}
+
 		public void Replace(int index, T newT)
 		{
-			T oldT = this[index];
+			BaseModel oldT = this[index];
 			this[index] = newT;
 			OnCollectionChanged(new NotifyCollectionChangedEventArgs(
 				NotifyCollectionChangedAction.Replace,

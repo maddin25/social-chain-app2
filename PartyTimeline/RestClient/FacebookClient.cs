@@ -20,7 +20,7 @@ namespace PartyTimeline
 		private readonly string GraphApiUrl = "https://graph.facebook.com";
 		private readonly string ApiVersion = "v2.9";
 
-		private readonly string FacebookApiLoginOauth = "dialog/oauth/";
+		private readonly string FacebookApiLoginOauth = "dialog/oauth";
 		private readonly string FacebookApiLoginRedirect = "connect/login_success.html";
 		private readonly string GraphApiNodeMe = "me";
 		private readonly string GraphApiNodeEvents = "events";

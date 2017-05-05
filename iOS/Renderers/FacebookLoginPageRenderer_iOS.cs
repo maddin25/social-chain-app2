@@ -6,10 +6,10 @@ using PartyTimeline.iOS;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 
-[assembly: ExportRenderer(typeof(FacebookLoginPage), typeof(FacebookLoginPageRenderer))]
+[assembly: ExportRenderer(typeof(FacebookLoginPage), typeof(FacebookLoginPageRenderer_iOS))]
 namespace PartyTimeline.iOS
 {
-	public class FacebookLoginPageRenderer : PageRenderer
+	public class FacebookLoginPageRenderer_iOS : PageRenderer
 	{
 		FacebookLoginPage facebookLoginPage
 		{

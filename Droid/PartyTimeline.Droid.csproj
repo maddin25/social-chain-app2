@@ -16,7 +16,7 @@
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <AndroidUseLatestPlatformSdk>False</AndroidUseLatestPlatformSdk>
+    <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
     <AndroidTlsProvider>
     </AndroidTlsProvider>
     <NuGetPackageImportStamp>
@@ -250,7 +250,7 @@
     <Compile Include="Services\EventSyncServiceConnection.cs" />
     <Compile Include="Helpers\AndroidBug5497WorkaroundForXamarinAndroid.cs" />
     <Compile Include="InterfaceImplementations\FacebookInterface_Android.cs" />
-    <Compile Include="Renderers\FacebookLoginPageRenderer.cs" />
+    <Compile Include="Renderers\FacebookLoginPageRenderer_Droid.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

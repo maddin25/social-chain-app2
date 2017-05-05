@@ -19,6 +19,7 @@ namespace PartyTimeline
 	public abstract class UIBindingHelper<T> : INotifyPropertyChanged
 	{
 		private T _selectedItem;
+		protected ListView RefreshableListView;
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		public T SelectedItem
@@ -40,12 +41,13 @@ namespace PartyTimeline
 
 		public UIBindingHelper(ListView refreshableListView)
 		{
+			RefreshableListView = refreshableListView;
 			RefreshListCommand = new Command(async () =>
 			{
 				Debug.WriteLine("Refreshing list");
-				refreshableListView.IsRefreshing = true;
+				//refreshableListView.IsRefreshing = true;
 				await OnRefreshTriggered();
-				refreshableListView.IsRefreshing = false;
+				//refreshableListView.IsRefreshing = false;
 				Debug.WriteLine("Finished refreshing list");
 			});
 		}

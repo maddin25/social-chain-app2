@@ -11,11 +11,11 @@ namespace PartyTimeline
 	[Table("events")]
 	public class Event : BaseModel
 	{
-		[JsonProperty("name", Required = Required.Always)]
+		[JsonProperty("name")]
 		[Column("event_name"), NotNull]
 		public string Name { get; set; }
 
-		[JsonProperty("description", NullValueHandling = NullValueHandling.Ignore)]
+		[JsonProperty("description")]
 		[Column("event_description")]
 		public string Description { get; set; }
 
@@ -39,19 +39,29 @@ namespace PartyTimeline
 		[Ignore]
 		public bool IsDraft { get; set; }
 
+		[JsonIgnore]
 		[Column("cover_url")]
 		public string CoverUrl
-		{ 
-			get { return Cover?.Source.AbsoluteUri; }
+		{
+			get { return Cover.Source?.AbsoluteUri ?? string.Empty; }
 			set { Cover.Source = new Uri(value); }
 		}
 
 		// TODO: add these properties as well
 		//public string Location { get; set; }
+
+		[JsonIgnore]
 		[Ignore]
 		public SortableObservableCollection<EventMember> Contributors { get; set; }
+
+		[JsonIgnore]
 		[Ignore]
 		public SortableObservableCollection<EventImage> Images { get; set; }
+
+		public void Update(Event e)
+		{
+			// TODO: implement
+		}
 
 		public Event(DateTime dateCreated) : base(dateCreated)
 		{
@@ -68,6 +78,7 @@ namespace PartyTimeline
 			OnDelete = new Command<BaseModel>(EventService.INSTANCE.Remove);
 			Images = new SortableObservableCollection<EventImage>();
 			Contributors = new SortableObservableCollection<EventMember>();
+			Cover = new CoverImage();
 		}
 	}
 }

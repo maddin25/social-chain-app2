@@ -82,7 +82,7 @@ namespace PartyTimeline.ViewModels
 						{
 							Id = new Random().Next();
 							SetDateCreated(DateTime.Now);
-							EventService.INSTANCE.AddNewEvent(this);
+							//EventService.INSTANCE.AddNewEvent(this);
 							saveSuccessful = true;
 							Application.Current.MainPage.Navigation.PopAsync(true);
 						}

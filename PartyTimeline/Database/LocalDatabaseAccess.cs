@@ -1,9 +1,10 @@
 using System;
-using System.Linq;
-using System.Linq.Expressions;
 using System.Collections.Generic;
-using System.IO;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+
 using SQLite;
 
 using Xamarin.Forms;
@@ -16,37 +17,42 @@ namespace PartyTimeline
 		private static readonly string databaseFilename = "PartyTimeline.sqlite3";
 		// TODO: remove this property in realease builds and implement migration behavior
 		private readonly bool dropTables = false;
-		private SQLiteConnection dbConnection;
+		private SQLiteAsyncConnection dbConnection;
 
 		public LocalDatabaseAccess()
 		{
 			string applicationFolder = DependencyService.Get<SystemInterface>().GetApplicationDataFolder();
 			string dbPath = Path.Combine(applicationFolder, databaseFilename);
 			Debug.WriteLine($"Connecting to local SQLite database '{dbPath}'");
-			dbConnection = new SQLiteConnection(dbPath);
+			dbConnection = new SQLiteAsyncConnection(dbPath);
 			Init();
 		}
 
-		public List<Event> ReadEvents()
+		public async Task<List<Event>> ReadEvents()
 		{
-			var cursor = dbConnection.Table<Event>();
+			DateTime EventStartTimeThreshold = DateTime.Now.Subtract(EventService.LimitEventsInPast);
+			List<Event> dbEvents = await dbConnection.Table<Event>()
+									.Where((Event e) => e.StartDateTime > EventStartTimeThreshold)
+									.ToListAsync();
+			
 			// TODO: modify table query such as to look only events where the current user is an active member
 			List<Event> events = new List<Event>();
-			foreach (var eventReference in cursor)
+			foreach (Event e in dbEvents)
 			{
-				events.Add(eventReference);
-				Debug.WriteLine(eventReference);
+				events.Add(e);
+				Debug.WriteLine(e);
 			}
 			return events;
 		}
 
-		public List<EventImage> ReadEventImages(Event eventReference)
+		public async Task<List<EventImage>> ReadEventImages(Event eventReference)
 		{
-			var cursor = from image in dbConnection.Table<EventImage>()
-						 where image.EventId == eventReference.Id
-						 select image;
+			List<EventImage> dbEvents = await dbConnection.Table<EventImage>().Where(
+				(EventImage image) => image.EventId == eventReference.Id
+			).ToListAsync();
+
 			List<EventImage> eventImages = new List<EventImage>();
-			foreach (EventImage image in cursor)
+			foreach (EventImage image in dbEvents)
 			{
 				eventImages.Add(image);
 			}
@@ -55,53 +61,44 @@ namespace PartyTimeline
 
 		public void WriteEvent(Event eventReference)
 		{
-			dbConnection.Insert(eventReference);
+			dbConnection.InsertAsync(eventReference);
 		}
 
 		public void WriteEventImage(EventImage eventImage, Event eventReference)
 		{
 			eventImage.EventId = eventReference.Id;
 			eventImage.EventMemberId = SessionInformationProvider.INSTANCE.UserId;
-			dbConnection.Insert(eventImage);
+			dbConnection.InsertAsync(eventImage);
+		}
+
+		public void UpdateEvent(Event e)
+		{
+			dbConnection.InsertOrReplaceAsync(e);
 		}
 
 		public void WriteEventMember(EventMember member)
 		{
-			EventMember dbMember = null;
-			try
-			{
-				dbMember = dbConnection.Get<EventMember>(member.Id);
-			}
-			catch { }
-			if (dbMember == null)
-			{
-				dbConnection.Insert(member);
-			}
-			else
-			{
-				// TODO: implement update query
-				Debug.WriteLine($"EventMember {member.Name} (id={member.Id}) already exists in the database");
-			}
+			dbConnection.InsertOrReplaceAsync(member);
 		}
 
-		public void RemoveEvent(Event eventReference)
+		public async Task RemoveEvent(Event e)
 		{
-			var cursor = from image in dbConnection.Table<EventImage>()
-						 where image.EventId == eventReference.Id
-						 select image;
-			foreach (EventImage image in cursor)
+			List<EventImage> eventImages = await dbConnection.Table<EventImage>()
+															 .Where((image) => image.EventId == e.Id)
+															 .ToListAsync();
+			foreach (EventImage image in eventImages)
 			{
-				dbConnection.Delete<EventImage>(image.Id);
+				dbConnection.DeleteAsync(image);
 			}
-			dbConnection.Delete<Event>(eventReference.Id);
+			dbConnection.DeleteAsync(e);
 		}
 
-		public long RemoveEventImage(EventImage image)
+		public async Task<long> RemoveEventImage(EventImage image)
 		{
 			// TODO: this Get method can throw a NotFoundException, surround with try - catch block
-			Event eventReference = dbConnection.Get<Event>(image.EventId);
-			dbConnection.Delete<EventImage>(image.Id);
-			return eventReference != null ? eventReference.Id : -1;
+			Event e = await dbConnection.FindAsync<Event>((Event de) => de.Id == image.EventId);
+			dbConnection.DeleteAsync(image);
+			return e?.Id ?? -1;
 		}
 
 		private void Init()
@@ -115,20 +112,17 @@ namespace PartyTimeline
 
 		private void DropAllTables()
 		{
-			dbConnection.DropTable<Event>();
-			dbConnection.DropTable<EventMember>();
-			dbConnection.DropTable<Event_EventMember>();
-			dbConnection.DropTable<EventImage>();
+			dbConnection.DropTableAsync<Event>();
+			dbConnection.DropTableAsync<EventMember>();
+			dbConnection.DropTableAsync<Event_EventMember>();
+			dbConnection.DropTableAsync<EventImage>();
 		}
 
 		private void CreateAllTables()
 		{
 			try
 			{
-				dbConnection.CreateTable<Event>();
-				dbConnection.CreateTable<EventMember>();
-				dbConnection.CreateTable<Event_EventMember>();
-				dbConnection.CreateTable<EventImage>();
+				dbConnection.CreateTablesAsync<Event, EventMember, Event_EventMember, EventImage>();
 			}
 			catch (Exception e)
 			{

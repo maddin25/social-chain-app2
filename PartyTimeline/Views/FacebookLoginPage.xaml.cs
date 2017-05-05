@@ -94,6 +94,7 @@ namespace PartyTimeline
 						+ SessionInformationProvider.INSTANCE.GetUserProperty(FacebookAccountProperties.Name) ?? string.Empty;
 					SessionInformationProvider.INSTANCE.SessionStateChanged -= OnSessionStateChanged;
 					DependencyService.Get<FacebookInterface>().CloseLogin();
+					Task.Run(EventService.INSTANCE.LoadEventList);
 					Application.Current.MainPage.Navigation.PushModalAsync(new NavigationPage(new EventListPage()));
 				}
 				else

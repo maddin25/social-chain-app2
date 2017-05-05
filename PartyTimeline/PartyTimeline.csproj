@@ -85,6 +85,7 @@
       <DependentUpon>AppResources_de.resx</DependentUpon>
     </Compile>
     <Compile Include="Helper\SessionState.cs" />
+    <Compile Include="Helper\SyncState.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Plugin.Media, Version=2.6.3.14, Culture=neutral, processorArchitecture=MSIL">

@@ -1,7 +1,9 @@
+using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
-
-using System.Diagnostics;
 
 using Acr.UserDialogs;
 
@@ -15,6 +17,9 @@ namespace PartyTimeline
 		private LocalDatabaseAccess localDb;
 		private FacebookClient fbClient;
 
+		public EventHandler SyncStateChanged { get; set; }
+
+		public static readonly TimeSpan LimitEventsInPast = TimeSpan.FromDays(180);
 		public SortableObservableCollection<Event> EventList { get; private set; }
 
 		public static EventService INSTANCE
@@ -38,22 +43,65 @@ namespace PartyTimeline
 			SessionInformationProvider.INSTANCE.SessionStateChanged += (sender, e) => EventList.Clear();
 		}
 
-		public async Task QueryFacebookEventListAsync()
+		public async Task LoadEventList()
 		{
-			foreach (Event eventReference in await Task.Run(() => fbClient.GetEvents(SessionInformationProvider.INSTANCE.CurrentUser)))
+			OnSyncStateChanged(new SyncState { IsSyncing = true, SyncService = SyncServices.EventList });
+			Task<List<Event>> fbEvents = Task.Run(fbClient.GetEventHeaders);
+			List<Event> localEvents = await localDb.ReadEvents(); // TODO: read events in relevant timespan
+			List<long> eventsRequiredUpdate = new List<long>();
+			// TODO: remove local events that are outdated?
+
+			foreach (Event fe in await fbEvents)
 			{
-				ParseReceivedEvent(eventReference);
+				if (fe.IsDraft || fe.IsCancelled)
+				{
+					continue;
+				}
+
+				if (localEvents.Contains(fe))
+				{
+					Event le = localEvents[localEvents.IndexOf(fe)];
+					if (le.DateLastModified < fe.DateLastModified) // the local event is outdated
+					{
+						eventsRequiredUpdate.Add(fe.Id);
+					}
+					else
+					{
+						AddEventToEventList(le, false);
+					}
+				}
+				else // this event is new
+				{
+					eventsRequiredUpdate.Add(fe.Id);
+				}
 			}
+			await Task.WhenAll(eventsRequiredUpdate.Select((long id) => UpdateLocalEvent(id)));
 			SortEventList();
+            OnSyncStateChanged(new SyncState { IsSyncing = false, SyncService = SyncServices.EventList });
 		}
 
-		public async Task QueryLocalEventListAsync()
+		public async Task UpdateLocalEvent(long eventId)
 		{
-			foreach (Event eventReference in await Task.Run(() => localDb.ReadEvents()))
+			Event fe = await fbClient.GetEventDetails(eventId);
+			localDb.UpdateEvent(fe);
+			AddEventToEventList(fe, true);
+		}
+
+		public void AddEventToEventList(Event e, bool updateIfExisting = false)
+		{
+			int index = EventList.IndexOf(e);
+			if (index >= 0)
 			{
-				ParseReceivedEvent(eventReference);
+				if (updateIfExisting)
+				{
+					// TODO: fire element updated event
+					EventList[index].Update(e);
+				}
 			}
-			SortEventList();
+			else
+			{
+				EventList.Add(e);
+			}
 		}
 
 		public async Task QueryLocalEventImageList(Event eventReference)
@@ -92,14 +140,6 @@ namespace PartyTimeline
 			//DependencyService.Get<EventSyncInterface>().UploadNewImageLowRes(image);
 		}
 
-		public void AddNewEvent(Event eventReference)
-		{
-			EventList.Add(eventReference);
-			localDb.WriteEvent(eventReference);
-			SortEventList();
-			//DependencyService.Get<EventListInterface>().PushServerEvent(eventReference);
-		}
-
 		public void AddEventMember(EventMember member)
 		{
 			localDb.WriteEventMember(member);
@@ -112,9 +152,9 @@ namespace PartyTimeline
 			SortEventList();
 		}
 
-		public void Remove(EventImage image)
+		public async Task Remove(EventImage image)
 		{
-			long eventId = localDb.RemoveEventImage(image);
+			long eventId = await localDb.RemoveEventImage(image);
 			if (eventId != -1)
 			{
 				int eventIndex = EventList.IndexOf(new Event { Id = eventId });
@@ -144,31 +184,10 @@ namespace PartyTimeline
 			}
 		}
 
-		private void ParseReceivedEvent(Event eventReference)
+		private void OnSyncStateChanged(SyncState state)
 		{
-			int index = EventList.IndexOf(eventReference);
-			if (index >= 0)
-			{
-				if (EventList[index].ModifiedAfter(eventReference))
-				{
-					/* The event in the EventList is somehow newer than the event stored in the local database. That
-					 * should not be. */
-					Debug.WriteLine($"WARNING: event '{eventReference.Name}' in local database is outdated!");
-				}
-				else if (eventReference.IsDraft || eventReference.IsCancelled)
-				{
-					// TODO: skip it and optionally remove it from the list and the DB
-				}
-				else
-				{
-					// TODO: update event in local DB if necessay (modified dates differ)
-					EventList[index] = eventReference;
-				}
-			}
-			else
-			{
-				EventList.Add(eventReference);
-			}
+			Debug.WriteLine($"SyncStateChanged event triggered with state {state.ToString()}");
+			SyncStateChanged?.Invoke(this, state);
 		}
 
 		private bool DeleteFile(string path)

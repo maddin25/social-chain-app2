@@ -16,6 +16,7 @@ namespace PartyTimeline.ViewModels
 		public EventListViewModel(ListView refreshableListView) : base(refreshableListView)
 		{
 			EventList = EventService.INSTANCE.EventList;
+			EventService.INSTANCE.SyncStateChanged += OnSyncStateChanged;
 			AddEventCommand = new Command(() => Application.Current.MainPage.Navigation.PushAsync(new AddEventPage()));
 			LogoutCommand = new Command(async () =>
 			{
@@ -33,6 +34,18 @@ namespace PartyTimeline.ViewModels
 			});
 		}
 
+		public void OnSyncStateChanged(object sender, EventArgs e)
+		{
+			if (e is SyncState)
+			{
+				SyncState state = e as SyncState;
+				if (state.SyncService == SyncServices.EventList)
+				{
+					RefreshableListView.IsRefreshing = state.IsSyncing;
+				}
+			}
+		}
+
 		protected override void OnSelect(ref Event selectedEvent)
 		{
 			var indexOfSelectedEvent = EventList.IndexOf(selectedEvent);
@@ -42,14 +55,7 @@ namespace PartyTimeline.ViewModels
 
 		protected override async Task OnRefreshTriggered()
 		{
-			await EventService.INSTANCE.QueryFacebookEventListAsync();
-			//await EventService.INSTANCE.QueryLocalEventListAsync();
-		}
-
-		public override void OnAppearing()
-		{
-			base.OnAppearing();
-			RefreshListCommand.Execute(null);
+			await EventService.INSTANCE.LoadEventList();
 		}
 	}
 }

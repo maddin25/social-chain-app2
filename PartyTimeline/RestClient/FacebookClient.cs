@@ -16,15 +16,25 @@ namespace PartyTimeline
 	public class FacebookClient
 	{
 		private readonly string AppId = "1632106426819143";
-		private readonly TimeSpan LimitEventsInPast = TimeSpan.FromDays(180);
+		private readonly string FacebookApiUrl = "https://www.facebook.com";
+		private readonly string GraphApiUrl = "https://graph.facebook.com";
+		private readonly string ApiVersion = "v2.9";
+
+		private readonly string FacebookApiLoginOauth = "dialog/oauth/";
+		private readonly string FacebookApiLoginRedirect = "connect/login_success.html";
+		private readonly string GraphApiNodeMe = "me";
+		private readonly string GraphApiNodeEvents = "events";
+
+		private readonly string RequestGet = "GET";
+		private readonly string RequestParameterFields = "fields";
 
 		public void Authorize(Action<bool> callback)
 		{
 			var authenticator = new OAuth2Authenticator(
 				clientId: AppId,
 				scope: "email,user_events",
-				authorizeUrl: new Uri("https://www.facebook.com/v2.9/dialog/oauth/"),
-				redirectUrl: new Uri("https://www.facebook.com/connect/login_success.html"),
+				authorizeUrl: WebUriBuilder(FacebookApiUrl, ApiVersion, FacebookApiLoginOauth),
+				redirectUrl: WebUriBuilder(FacebookApiUrl, FacebookApiLoginRedirect),
 				isUsingNativeUI: false
 			);
 
@@ -46,15 +56,26 @@ namespace PartyTimeline
 			DependencyService.Get<FacebookInterface>().LaunchLogin(authenticator);
 		}
 
-		public async Task<List<Event>> GetEvents(Account account)
+		public async Task<Event> GetEventDetails(long id)
+		{
+			string response = await MakeIdRequest(SessionInformationProvider.INSTANCE.CurrentUser,
+			                                      id,
+			                                      new Dictionary<string, string> {
+				{ RequestParameterFields, "id,name,start_time,end_time,updated_time,cover{id,source}" }
+			});
+			Event eventReference = JsonConvert.DeserializeObject<Event>(response);
+			return eventReference;
+		}
+
+		public async Task<List<Event>> GetEventHeaders()
 		{
 			List<Event> events = new List<Event>();
 
 			var initialRequest = new OAuth2Request(
-				"GET",
-				new Uri("https://graph.facebook.com/v2.9/me/events"),
-				new Dictionary<string, string> { { "fields", "id,name,start_time,end_time,updated_time,is_cancelled,is_draft,cover{id,source}" } },
-				account
+				method: RequestGet,
+				url: WebUriBuilder(GraphApiUrl, ApiVersion, GraphApiNodeMe, GraphApiNodeEvents),
+				parameters: new Dictionary<string, string> { { RequestParameterFields, "id,start_time,updated_time,is_canceled,is_draft" } },
+				account: SessionInformationProvider.INSTANCE.CurrentUser
 			);
 			Response response = await initialRequest.GetResponseAsync();
 
@@ -70,7 +91,7 @@ namespace PartyTimeline
 				return;
 			}
 			List<Event> eventsInResponse = JObject.Parse(response).SelectToken("data").ToObject<List<Event>>();
-			DateTime toleranzeInPast = DateTime.Now.Subtract(LimitEventsInPast);
+			DateTime toleranzeInPast = DateTime.Now.Subtract(EventService.LimitEventsInPast);
 			foreach (Event eventReference in eventsInResponse)
 			{
 				if (eventReference.StartDateTime < toleranzeInPast)
@@ -79,7 +100,7 @@ namespace PartyTimeline
 				}
 				events.Add(eventReference);
 			}
-
+			// Look, if a pager is available and if yes, follow it
 			string cursor = JObject.Parse(response).SelectToken("paging")?.ToObject<FacebookPager>()?.next;
 			if (!string.IsNullOrEmpty(cursor))
 			{
@@ -121,8 +142,8 @@ namespace PartyTimeline
 			// Pull the remaining information from the server
 			var request = new OAuth2Request(
 				"GET",
-				new Uri("https://graph.facebook.com/v2.9/me?fields=id,name,email"),
-				null,
+				WebUriBuilder(GraphApiUrl, ApiVersion, GraphApiNodeMe),
+				new Dictionary<string, string> { { RequestParameterFields, "id,name,email" } },
 				account
 			);
 			var response = await request.GetResponseAsync();
@@ -140,9 +161,16 @@ namespace PartyTimeline
 			}
 		}
 
-		public void OnIsAuthorized()
+		private async Task<string> MakeIdRequest(Account account, long id, Dictionary<string, string> parameters = null)
 		{
-			Application.Current.MainPage.Navigation.PushModalAsync(new EventListPage());
+			var request = new OAuth2Request(
+				method: RequestGet,
+				url: WebUriBuilder(GraphApiUrl, ApiVersion, id.ToString()),
+				parameters: parameters,
+				account: account
+			);
+			var response = await request.GetResponseAsync();
+			return response.GetResponseText();
 		}
 
 		private class FacebookAccountInformation
@@ -161,6 +189,11 @@ namespace PartyTimeline
 			public long issued_at { get; set; }
 			public bool is_valid { get; set; }
 			public List<string> scopes { get; set; }
+		}
+
+		private static Uri WebUriBuilder(params string[] parts)
+		{
+			return new Uri(string.Join("/", parts));
 		}
 
 		private class FacebookPager

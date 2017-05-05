@@ -76,6 +76,11 @@ namespace PartyTimeline
 			return CompareTo(other) > 0;
 		}
 
+		public virtual void Update(BaseModel update)
+		{
+			DateLastModified = update.DateLastModified;
+		}
+
 		private void SetRandomId()
 		{
 			Id = idGenerator.Next();

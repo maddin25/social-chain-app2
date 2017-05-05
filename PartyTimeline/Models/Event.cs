@@ -58,22 +58,20 @@ namespace PartyTimeline
 		[Ignore]
 		public SortableObservableCollection<EventImage> Images { get; set; }
 
-		public void Update(Event e)
+		public override void Update(BaseModel update)
 		{
-			this.DateLastModified = e.DateLastModified;
-			this.Name = e.Name;
-			this.Description = e.Description;
-			this.StartDateTime = e.StartDateTime;
-			this.EndDateTime = e.EndDateTime;
-			this.Cover = e.Cover;
-			this.IsCancelled = e.IsCancelled;
-			this.IsDraft = e.IsDraft;
-		}
-
-		public Event Updated(Event e)
-		{
-			Update(e);
-			return this;
+			base.Update(update);
+			if (update is Event)
+			{
+				Event e = update as Event;
+				this.Name = e.Name;
+				this.Description = e.Description;
+				this.StartDateTime = e.StartDateTime;
+				this.EndDateTime = e.EndDateTime;
+				this.Cover = e.Cover;
+				this.IsCancelled = e.IsCancelled;
+				this.IsDraft = e.IsDraft;
+			}
 		}
 
 		public Event(DateTime dateCreated) : base(dateCreated)

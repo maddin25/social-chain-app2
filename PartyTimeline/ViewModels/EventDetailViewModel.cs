@@ -12,14 +12,14 @@ using Xamarin.Forms;
 
 namespace PartyTimeline.ViewModels
 {
-	public abstract class EventDetailModel : UIBindingHelper<EventImage>
+	public abstract class EventDetailViewModel : UIBindingHelper<EventImage>
 	{
 		protected Event _eventReference;
 		public Command TakePhotoButtonCommand { get; set; }
 		public Command PickPhotoButtonCommand { get; set; }
 		public Event EventReference { get { return _eventReference; } set { _eventReference = value; } }
 
-		public EventDetailModel(ListView refreshableListView) : base(refreshableListView)
+		public EventDetailViewModel(ListView refreshableListView) : base(refreshableListView)
 		{
 			TakePhotoButtonCommand = new Command(async () => await CheckCameraPermissions(TakePhoto));
 			PickPhotoButtonCommand = new Command(async () => await CheckCameraPermissions(PickPhoto));

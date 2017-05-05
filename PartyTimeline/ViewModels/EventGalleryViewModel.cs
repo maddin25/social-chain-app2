@@ -7,9 +7,9 @@ using PartyTimeline.Views;
 
 namespace PartyTimeline.ViewModels
 {
-	public class EventPageViewModel : EventDetailModel
+	public class EventGalleryViewModel : EventDetailViewModel
 	{
-		public EventPageViewModel(ref Event eventReference, ListView refreshableListView) : base(refreshableListView)
+		public EventGalleryViewModel(ref Event eventReference, ListView refreshableListView) : base(refreshableListView)
 		{
 			EventReference = eventReference;
 		}

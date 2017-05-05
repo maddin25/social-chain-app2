@@ -61,7 +61,7 @@
     </Compile>
     <Compile Include="ViewModels\EditEventViewModel.cs" />
     <Compile Include="Models\BaseModel.cs" />
-    <Compile Include="ViewModels\EventDetailModel.cs" />
+    <Compile Include="ViewModels\EventDetailViewModel.cs" />
     <Compile Include="Helper\SortableObserveableCollection.cs" />
     <Compile Include="Helper\UIBindingHelper.cs" />
     <Compile Include="Database\LocalDatabaseAccess.cs" />

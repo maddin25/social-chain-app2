@@ -90,16 +90,11 @@ namespace PartyTimeline
 				SessionState state = e as SessionState;
 				if (state.IsAuthenticated)
 				{
+					SessionInformationProvider.INSTANCE.SessionStateChanged -= OnSessionStateChanged;
 					StatusMessage = AppResources.LoginStatusSuccess
 						+ SessionInformationProvider.INSTANCE.GetUserProperty(FacebookAccountProperties.Name) ?? string.Empty;
-					SessionInformationProvider.INSTANCE.SessionStateChanged -= OnSessionStateChanged;
 					DependencyService.Get<FacebookInterface>().CloseLogin();
-
-					// Create the page first to let it register to the EventService events
-					EventListPage eventListPage = new EventListPage();
-
-					Task.Run(EventService.INSTANCE.LoadEventList);
-					Application.Current.MainPage.Navigation.PushModalAsync(new NavigationPage(eventListPage));
+					Application.Current.MainPage.Navigation.PushModalAsync(new NavigationPage(new EventListPage()));
 				}
 				else
 				{

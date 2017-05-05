@@ -21,6 +21,7 @@ namespace PartyTimeline.ViewModels
 			LogoutCommand = new Command(async () =>
 			{
 				bool logout = await Application.Current.MainPage.DisplayAlert(
+					// TODO: use resource strings here
 					"Confirm Logout",
 					"Are you sure want to log out?",
 					"Yes",
@@ -32,6 +33,8 @@ namespace PartyTimeline.ViewModels
 					await Application.Current.MainPage.Navigation.PushModalAsync(new FacebookLoginPage(inhibitAutomaticPrompt: true));
 				}
 			});
+			// If this command is run on on a different thread, the app crashes
+			EventService.INSTANCE.LoadEventList();
 		}
 
 		public void OnSyncStateChanged(object sender, EventArgs e)

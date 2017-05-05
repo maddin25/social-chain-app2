@@ -60,7 +60,14 @@ namespace PartyTimeline
 
 		public void Update(Event e)
 		{
-			// TODO: implement
+			this.DateLastModified = e.DateLastModified;
+			this.Name = e.Name;
+			this.Description = e.Description;
+			this.StartDateTime = e.StartDateTime;
+			this.EndDateTime = e.EndDateTime;
+			this.Cover = e.Cover;
+			this.IsCancelled = e.IsCancelled;
+			this.IsDraft = e.IsDraft;
 		}
 
 		public Event(DateTime dateCreated) : base(dateCreated)
@@ -79,6 +86,11 @@ namespace PartyTimeline
 			Images = new SortableObservableCollection<EventImage>();
 			Contributors = new SortableObservableCollection<EventMember>();
 			Cover = new CoverImage();
+		}
+
+		public override string ToString()
+		{
+			return string.Format($"[Event: Name={Name}, StartDateTime={StartDateTime}, Id={Id}");
 		}
 	}
 }

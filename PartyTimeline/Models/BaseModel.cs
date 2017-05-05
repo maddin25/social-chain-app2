@@ -16,6 +16,7 @@ namespace PartyTimeline
 		[PrimaryKey, Column("_id")]
 		public long Id { get; set; }
 
+		[JsonIgnore]
 		[Column("date_created"), NotNull]
 		public DateTime DateCreated { get; set; }
 
@@ -23,6 +24,7 @@ namespace PartyTimeline
 		[Column("date_modified"), NotNull]
 		public DateTime DateLastModified { get; set; }
 
+		[JsonIgnore]
 		[Ignore]
 		public Command OnDelete { get; set; }
 
@@ -68,6 +70,7 @@ namespace PartyTimeline
 			return this.DateLastModified.Subtract(other.DateLastModified).Milliseconds;
 		}
 
+		// TODO: remove this
 		public bool ModifiedAfter(BaseModel other)
 		{
 			return CompareTo(other) > 0;

@@ -29,18 +29,34 @@ namespace PartyTimeline
 
 		public async Task<List<Event>> ReadEvents()
 		{
-			DateTime EventStartTimeThreshold = DateTime.Now.Subtract(EventService.LimitEventsInPast);
-			List<Event> dbEvents = await dbConnection.Table<Event>()
-									.Where((Event e) => e.StartDateTime > EventStartTimeThreshold)
-									.ToListAsync();
-			
-			// TODO: modify table query such as to look only events where the current user is an active member
 			List<Event> events = new List<Event>();
-			foreach (Event e in dbEvents)
+			long currentUserId = SessionInformationProvider.INSTANCE.CurrentUserEventMember.Id;
+			List<Event_EventMember> userEventMemberships = await dbConnection
+				.Table<Event_EventMember>()
+				.Where((Event_EventMember eem) => eem.EventMemberId == currentUserId)
+				.ToListAsync();
+			Debug.WriteLine($"{nameof(LocalDatabaseAccess)}: Found {userEventMemberships.Count} events for the relevant user.");
+			if (userEventMemberships.Count == 0)
 			{
-				events.Add(e);
-				Debug.WriteLine(e);
+				return events;
 			}
+
+			DateTime EventStartTimeThreshold = DateTime.Now.Subtract(EventService.LimitEventsInPast);
+			await Task.WhenAll(userEventMemberships.Select(async (Event_EventMember arg) =>
+			{
+				Event e = await dbConnection.GetAsync<Event>((Event ie) => ie.Id == arg.EventId);
+				if (e.StartDateTime > EventStartTimeThreshold)
+				{
+					Debug.WriteLine($"{nameof(ReadEvents)}: {e.ToString()}");
+					lock (events)
+					{
+						events.Add(e);
+					}
+				}
+			}));
+
+			Debug.WriteLine($"{nameof(LocalDatabaseAccess)}: Found {events.Count} events in the relevant time frame");
+
 			return events;
 		}
 

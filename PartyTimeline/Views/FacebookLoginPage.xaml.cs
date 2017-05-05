@@ -73,6 +73,16 @@ namespace PartyTimeline
 			BindingContext = this;
 		}
 
+		protected override bool OnBackButtonPressed()
+		{
+			Debug.WriteLine($"Back pressed in {nameof(FacebookLoginPage)}");
+			if (Device.RuntimePlatform == Device.Android)
+			{
+				DependencyService.Get<SystemInterface>().Close();
+			}
+			return true;
+		}
+
 		public void OnSessionStateChanged(object sender, EventArgs e)
 		{
 			if (e is SessionState)

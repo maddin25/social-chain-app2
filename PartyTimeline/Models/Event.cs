@@ -39,23 +39,19 @@ namespace PartyTimeline
 		[Ignore]
 		public bool IsDraft { get; set; }
 
+		[Column("cover_url")]
+		public string CoverUrl
+		{ 
+			get { return Cover?.Source.AbsoluteUri; }
+			set { Cover.Source = new Uri(value); }
+		}
+
 		// TODO: add these properties as well
 		//public string Location { get; set; }
 		[Ignore]
 		public SortableObservableCollection<EventMember> Contributors { get; set; }
 		[Ignore]
 		public SortableObservableCollection<EventImage> Images { get; set; }
-		[Ignore]
-		public string GetDateTimeString { get { return DateCreated.ToString(); } }
-		[Ignore]
-		public int NrPictures { get { return Images == null ? 0 : Images.Count; } }
-		[Ignore]
-		public int NrContributors { get { return Contributors == null ? 0 : Contributors.Count; } }
-		[Ignore]
-		public string GetNrPicturesString { get { return (NrPictures.ToString() + " Picture" + (NrPictures == 1 ? "" : "s")); } }
-		[Ignore]
-		public string GetNrContributorsString { get { return (NrContributors.ToString() + " User" + (NrContributors == 1 ? "" : "s")); } }
-		// The image should be in dimensions 3:1 (width:height)
 
 		public Event(DateTime dateCreated) : base(dateCreated)
 		{

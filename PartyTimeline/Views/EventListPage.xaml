@@ -37,7 +37,7 @@
 									AbsoluteLayout.LayoutFlags="All"
 									Aspect="AspectFill"
 									ErrorPlaceholder="image_error.png"
-									Source="{Binding Cover.Source}"
+									Source="{Binding CoverUrl}"
 									/>
 								
 								<BoxView
@@ -57,14 +57,14 @@
                                 	AbsoluteLayout.LayoutFlags="PositionProportional"
                                 	FontSize="10"
                                 	/>
-                                <Label Text="{Binding GetNrPicturesString}"
+                                <Label Text="{Binding Images.Count, StringFormat='Nr. Images: {0:N}'}"
                                 	TextColor="White"
                                 	AbsoluteLayout.LayoutBounds="0.97, 3, autosize, autosize"
                                 	AbsoluteLayout.LayoutFlags="XProportional"
                                 	HorizontalTextAlignment="End"
                                 	FontSize="10"
                                 	/>
-                                <Label Text="{Binding GetNrContributorsString}"
+                                <Label Text="{Binding Contributors.Count, StringFormat='Nr. Contributors: {0:N}'}"
                                 	TextColor="White"
                                 	AbsoluteLayout.LayoutBounds="0.97, 15, autosize, autosize"
                                 	AbsoluteLayout.LayoutFlags="XProportional"

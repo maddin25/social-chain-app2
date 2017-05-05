@@ -94,7 +94,7 @@ namespace PartyTimeline
 					StatusMessage = AppResources.LoginStatusSuccess
 						+ SessionInformationProvider.INSTANCE.GetUserProperty(FacebookAccountProperties.Name) ?? string.Empty;
 					DependencyService.Get<FacebookInterface>().CloseLogin();
-					Application.Current.MainPage.Navigation.PushModalAsync(new NavigationPage(new EventListPage()));
+					Application.Current.MainPage.Navigation.PushAsync(new EventListPage());
 				}
 				else
 				{

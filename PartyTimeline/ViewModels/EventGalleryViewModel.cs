@@ -14,9 +14,9 @@ namespace PartyTimeline.ViewModels
 			EventReference = eventReference;
 		}
 
-		protected override void OnSelect(ref EventImage eventImage)
+		protected override void OnSelect(ref EventImage element)
 		{
-			Application.Current.MainPage.Navigation.PushAsync(new ImageGalleryPage(ref eventImage, ref _eventReference));
+			Application.Current.MainPage.Navigation.PushAsync(new ImageGalleryPage(ref element, ref _eventReference));
 		}
 	}
 }

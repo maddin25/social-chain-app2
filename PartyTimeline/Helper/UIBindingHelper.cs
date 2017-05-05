@@ -67,7 +67,7 @@ namespace PartyTimeline
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 
-		protected abstract void OnSelect(ref T selectedItem);
+		protected abstract void OnSelect(ref T element);
 
 		protected abstract Task OnRefreshTriggered();
 	}

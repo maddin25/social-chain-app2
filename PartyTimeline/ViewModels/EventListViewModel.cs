@@ -49,11 +49,11 @@ namespace PartyTimeline.ViewModels
 			}
 		}
 
-		protected override void OnSelect(ref Event selectedEvent)
+		protected override void OnSelect(ref Event element)
 		{
-			var indexOfSelectedEvent = EventList.IndexOf(selectedEvent);
+			var indexOfSelectedEvent = EventList.IndexOf(element);
 			Debug.WriteLine($"Event Nr. {indexOfSelectedEvent + 1} selected");
-			Application.Current.MainPage.Navigation.PushAsync(new EventThumbnailsPage(ref selectedEvent));
+			Application.Current.MainPage.Navigation.PushAsync(new EventThumbnailsPage(ref element));
 		}
 
 		protected override async Task OnRefreshTriggered()

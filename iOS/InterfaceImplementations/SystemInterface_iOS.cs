@@ -2,6 +2,8 @@
 using System.IO;
 using System.Diagnostics;
 
+using Xamarin.Forms.Platform.iOS;
+
 using Xamarin.Forms;
 
 [assembly: Dependency(typeof(PartyTimeline.iOS.SystemInterface_iOS))]

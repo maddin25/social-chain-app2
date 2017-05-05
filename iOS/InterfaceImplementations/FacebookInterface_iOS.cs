@@ -20,9 +20,11 @@ namespace PartyTimeline.iOS
 				// native: SFSafariViewController
 				loginViewController = (UIViewController)authenticator.GetUI();
 				UIViewController rootViewController = UIApplication.SharedApplication.KeyWindow.RootViewController;
-
-				//UIViewController rootViewController = window.RootViewController;
-				rootViewController.PresentViewController(loginViewController, false, null);
+				while (rootViewController.PresentedViewController != null)
+				{
+					rootViewController = rootViewController.PresentedViewController;
+				}
+				Device.BeginInvokeOnMainThread(() => rootViewController.PresentViewController(loginViewController, true, null));
 			}
 			catch (Exception ex)
 			{

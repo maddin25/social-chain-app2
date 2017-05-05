@@ -25,6 +25,9 @@
 	<data name="LoginStatusSuccess" xml:space="preserve">
 		<value>Successfully logged in as </value>
 	</data>
+	<data name="LoginStatusWaitForUser" xml:space="preserve">
+		<value>Click to login</value>
+	</data>
 	<data name="ButtonLoginWithFacebook" xml:space="preserve">
 		<value>Login with Facebook</value>
 	</data>

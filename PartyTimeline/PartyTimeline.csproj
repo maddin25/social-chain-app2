@@ -16,12 +16,12 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>bin\Debug</OutputPath>
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\PartyTimeline.xml</DocumentationFile>
+    <DocumentationFile></DocumentationFile>
     <NoWarn>1591</NoWarn>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
@@ -65,7 +65,7 @@
     <Compile Include="Helper\SortableObserveableCollection.cs" />
     <Compile Include="Helper\UIBindingHelper.cs" />
     <Compile Include="Database\LocalDatabaseAccess.cs" />
-    <Compile Include="Services\SessionInformation.cs" />
+    <Compile Include="Services\SessionInformationProvider.cs" />
     <Compile Include="Database\Event_EventMember.cs" />
     <Compile Include="Views\FacebookLoginPage.xaml.cs">
       <DependentUpon>FacebookLoginPage.xaml</DependentUpon>
@@ -84,6 +84,7 @@
     <Compile Include="Resources\AppResources_de.Designer.cs">
       <DependentUpon>AppResources_de.resx</DependentUpon>
     </Compile>
+    <Compile Include="Helper\SessionState.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Plugin.Media, Version=2.6.3.14, Culture=neutral, processorArchitecture=MSIL">

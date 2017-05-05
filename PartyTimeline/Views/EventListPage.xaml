@@ -83,9 +83,5 @@
 	<ContentPage.ToolbarItems>
 	    <ToolbarItem Name="Logout" Text="Logout" Order="Primary" Icon="logout.png" Priority="0" Command="{Binding LogoutCommand}"/>
 	</ContentPage.ToolbarItems>
-	
-    <ContentPage.Padding>
-        <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" WinPhone="20,20,20,20"/>
-    </ContentPage.Padding>
 
 </ContentPage>

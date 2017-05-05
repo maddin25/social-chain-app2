@@ -13,14 +13,6 @@
             BackgroundColor="{x:Static local:MyColors.FacebookBlue}"
             Padding="10, 0, 10, 0"
             >
-			            
-			<ActivityIndicator
-				AbsoluteLayout.LayoutBounds="0.5, 0.2, autosize, autosize"
-				AbsoluteLayout.LayoutFlags="PositionProportional"
-				IsRunning="{Binding IsAuthorizing}"
-				Color="White"
-				VerticalOptions="Center"
-				/>
 			
 			<Button
 				AbsoluteLayout.LayoutBounds="0.5, 0.3, autosize, autosize"
@@ -29,8 +21,9 @@
 				Text="{x:Static localResources:AppResources.ButtonLoginWithFacebook}"
 				TextColor="Black"
 				FontSize="22"
-				Command="{Binding StartLoginCommand}"
+				Command="{Binding ManualLoginCommand}"
 				BackgroundColor="White"
+				Margin="5,0,5,0"
 				/>
 
 			<Label
@@ -41,7 +34,7 @@
 				Text="{Binding StatusMessage}"
 				FontSize="18"
 				TextColor="White"
-				VerticalTextAlignment="Center"
+				HorizontalTextAlignment="Center"
 				LineBreakMode="WordWrap"
 				/>
 		</AbsoluteLayout>

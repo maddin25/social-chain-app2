@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Collections.Generic;
@@ -61,7 +61,7 @@ namespace PartyTimeline
 		public void WriteEventImage(EventImage eventImage, Event eventReference)
 		{
 			eventImage.EventId = eventReference.Id;
-			eventImage.EventMemberId = SessionInformation.INSTANCE.UserId;
+			eventImage.EventMemberId = SessionInformationProvider.INSTANCE.UserId;
 			dbConnection.Insert(eventImage);
 		}
 

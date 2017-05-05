@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 
 using Xamarin.Forms;
+using Xamarin.Forms.Internals;
 
 using PartyTimeline.Resources;
 
@@ -11,16 +12,37 @@ namespace PartyTimeline
 {
 	public partial class FacebookLoginPage : ContentPage
 	{
-		private bool inhibitAutomaticPrompt;
+		private bool _inhibitAutomaticPrompt;
 		private bool _isAuthorizing;
-		private string _statusMessage = AppResources.LoginStatusLoggingIn;
+		private string _statusMessage;
 		public bool IsAuthorizing
 		{
 			get { return _isAuthorizing; }
 			set
 			{
 				_isAuthorizing = value;
+				if (_isAuthorizing)
+				{
+					StatusMessage = AppResources.LoginStatusLoggingIn;
+				}
 				OnPropertyChanged(nameof(IsAuthorizing));
+			}
+		}
+		public bool InhibitAutomaticPrompt
+		{
+			get { return _inhibitAutomaticPrompt; }
+			set
+			{
+				_inhibitAutomaticPrompt = value;
+				if (_inhibitAutomaticPrompt)
+				{
+					StatusMessage = AppResources.LoginStatusWaitForUser;
+				}
+				else
+				{
+					StatusMessage = AppResources.LoginStatusLoggingIn;
+				}
+				OnPropertyChanged(nameof(InhibitAutomaticPrompt));
 			}
 		}
 		public string StatusMessage
@@ -35,55 +57,41 @@ namespace PartyTimeline
 
 		FacebookClient fbCommunicator;
 
-		public Command StartLoginCommand { get; set;}
+		public Command ManualLoginCommand { get; set; }
 
-		public FacebookLoginPage()
+		public FacebookLoginPage(bool inhibitAutomaticPrompt)
 		{
 			InitializeComponent();
-			StartLoginCommand = new Command(() =>
+			InhibitAutomaticPrompt = inhibitAutomaticPrompt;
+			ManualLoginCommand = new Command(() =>
 			{
-				IsAuthorizing = true;
-				StatusMessage = AppResources.LoginStatusLoggingIn;
-				fbCommunicator = new FacebookClient();
-				fbCommunicator.Authorize(onSessionReady, onFailure);
+				Debug.WriteLine($"{nameof(ManualLoginCommand)} called");
+				SessionInformationProvider.INSTANCE.AuthenticateUserIfRequired();
 			});
-			BindingContext = this;
+			SessionInformationProvider.INSTANCE.SessionStateChanged += OnSessionStateChanged;
 			NavigationPage.SetHasNavigationBar(this, false);
+			BindingContext = this;
 		}
 
-		protected override void OnAppearing()
+		public void OnSessionStateChanged(object sender, EventArgs e)
 		{
-			base.OnAppearing();
-			if (IsAuthorizing || inhibitAutomaticPrompt)
+			if (e is SessionState)
 			{
-				return;
+				SessionState state = e as SessionState;
+				if (state.IsAuthenticated)
+				{
+					StatusMessage = AppResources.LoginStatusSuccess
+						+ SessionInformationProvider.INSTANCE.GetUserProperty(FacebookAccountProperties.Name) ?? string.Empty;
+					SessionInformationProvider.INSTANCE.SessionStateChanged -= OnSessionStateChanged;
+					DependencyService.Get<FacebookInterface>().CloseLogin();
+					Application.Current.MainPage.Navigation.PushModalAsync(new NavigationPage(new EventListPage()));
+				}
+				else
+				{
+					InhibitAutomaticPrompt = true;
+					StatusMessage = AppResources.LoginStatusFailed;
+				}
 			}
-			// FIXME: launching new page several times
-			if (SessionInformation.INSTANCE.ActiveSessionAvailable())
-			{
-				onSessionReady();
-			}
-			else
-			{
-				StartLoginCommand.Execute(null);
-			}
-		}
-
-		protected void onSessionReady()
-		{
-			Debug.WriteLine("User session is ready.");
-			IsAuthorizing = false;
-			StatusMessage = AppResources.LoginStatusSuccess
-        		+ SessionInformation.INSTANCE.GetUserProperty(FacebookAccountProperties.Name) ?? string.Empty;
-			Task.Delay(2000);
-			Application.Current.MainPage.Navigation.PushModalAsync(new EventListPage());
-		}
-
-		protected void onFailure(string reason)
-		{
-			StatusMessage = AppResources.LoginStatusFailed;
-			IsAuthorizing = false;
-            inhibitAutomaticPrompt = true;
 		}
 	}
 }

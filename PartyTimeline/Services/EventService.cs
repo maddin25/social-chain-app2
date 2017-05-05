@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Threading.Tasks;
 
 using System.Diagnostics;
@@ -35,12 +35,12 @@ namespace PartyTimeline
 			EventList = new SortableObservableCollection<Event>();
 			localDb = new LocalDatabaseAccess();
 			fbClient = new FacebookClient();
-			SessionInformation.INSTANCE.SessionEnded += (sender, e) => EventList.Clear();
+			SessionInformationProvider.INSTANCE.SessionStateChanged += (sender, e) => EventList.Clear();
 		}
 
 		public async Task QueryFacebookEventListAsync()
 		{
-			foreach (Event eventReference in await Task.Run(() => fbClient.GetEvents(SessionInformation.INSTANCE.CurrentUser)))
+			foreach (Event eventReference in await Task.Run(() => fbClient.GetEvents(SessionInformationProvider.INSTANCE.CurrentUser)))
 			{
 				ParseReceivedEvent(eventReference);
 			}

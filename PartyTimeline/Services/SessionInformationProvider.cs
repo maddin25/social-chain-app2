@@ -7,14 +7,14 @@ using Xamarin.Auth;
 
 namespace PartyTimeline
 {
-	public class SessionInformation
+	public class SessionInformationProvider
 	{
 		private Account _currentUser;
-		private static SessionInformation _instance;
+		private static SessionInformationProvider _instance;
 
 		public static readonly string AppName = "PartyTimeline";
 
-		public EventHandler SessionEnded;
+		public EventHandler SessionStateChanged;
 
 		public Account CurrentUser
 		{
@@ -51,13 +51,13 @@ namespace PartyTimeline
 			}
 		}
 
-		public static SessionInformation INSTANCE
+		public static SessionInformationProvider INSTANCE
 		{
 			get
 			{
 				if (_instance == null)
 				{
-					_instance = new SessionInformation();
+					_instance = new SessionInformationProvider();
 				}
 				return _instance;
 			}
@@ -77,13 +77,14 @@ namespace PartyTimeline
 		{
 			AccountStore.Create().Save(account, AppName);
 			CurrentUser = account;
+			OnSessionStateChanged(new SessionState { IsAuthenticated = true });
 		}
 
 		public void EndSession()
 		{
 			AccountStore.Create().Delete(CurrentUser, AppName);
 			CurrentUser = null;
-			OnSessionEnded(EventArgs.Empty);
+			OnSessionStateChanged(new SessionState { IsAuthenticated = false });
 		}
 
 		public Task UpdateSession(Account account)
@@ -92,20 +93,36 @@ namespace PartyTimeline
 			return AccountStore.Create().SaveAsync(CurrentUser, AppName);
 		}
 
-		public bool ActiveSessionAvailable()
+		public bool ActiveSessionAvailable
 		{
-			if (CurrentUser == null)
+			get
 			{
-				return false;
+				if (CurrentUser == null)
+				{
+					return false;
+				}
+				if (!CurrentUser.Properties.ContainsKey(FacebookAccountProperties.ExpiresOn))
+				{
+					Debug.WriteLine($"WARNING: Account {CurrentUser.Username} does not contain the {nameof(FacebookAccountProperties.ExpiresOn)} property");
+					EndSession();
+					return false;
+				}
+				DateTime expiresOn = DateTime.FromFileTime(long.Parse(CurrentUser.Properties[FacebookAccountProperties.ExpiresOn]));
+				return expiresOn > DateTime.Now; // is true, if the Account token is not yet expired
 			}
-			if (!CurrentUser.Properties.ContainsKey(FacebookAccountProperties.ExpiresOn))
+		}
+
+		public void AuthenticateUserIfRequired()
+		{
+			if (!ActiveSessionAvailable)
 			{
-				Debug.WriteLine($"WARNING: Account {CurrentUser.Username} does not contain the {nameof(FacebookAccountProperties.ExpiresOn)} property");
-				EndSession();
-				return false;
+				FacebookClient fbCommunicator = new FacebookClient();
+				fbCommunicator.Authorize((success) => OnSessionStateChanged(new SessionState { IsAuthenticated = success }));
 			}
-			DateTime expiresOn = DateTime.FromFileTime(long.Parse(CurrentUser.Properties[FacebookAccountProperties.ExpiresOn]));
-			return expiresOn > DateTime.Now; // is true, if the Account token is not yet expired
+			else
+			{
+				OnSessionStateChanged(new SessionState { IsAuthenticated = true });
+			}
 		}
 
 		private void UpdateCurrentUser(Account account)
@@ -162,13 +179,13 @@ namespace PartyTimeline
 			return accounts[0];
 		}
 
-		private void OnSessionEnded(EventArgs e)
+		private void OnSessionStateChanged(SessionState state)
 		{
-			Debug.WriteLine($"{nameof(SessionEnded)} event triggered");
-			SessionEnded?.Invoke(this, e);
+			Debug.WriteLine($"{nameof(SessionStateChanged)} event triggered with state {state.ToString()}");
+			SessionStateChanged?.Invoke(this, state);
 		}
 
-		private SessionInformation()
+		private SessionInformationProvider()
 		{
 
 		}

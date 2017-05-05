@@ -224,6 +224,7 @@
     <Compile Include="InterfaceImplementations\SystemInterface_iOS.cs" />
     <Compile Include="InterfaceImplementations\EventSyncInterface_iOS.cs" />
     <Compile Include="InterfaceImplementations\FacebookInterface_iOS.cs" />
+    <Compile Include="Renderers\FacebookLoginPageRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\image_error.png" />

@@ -71,6 +71,12 @@ namespace PartyTimeline.Resources {
             }
         }
         
+        internal static string LoginStatusWaitForUser {
+            get {
+                return ResourceManager.GetString("LoginStatusWaitForUser", resourceCulture);
+            }
+        }
+        
         internal static string ButtonLoginWithFacebook {
             get {
                 return ResourceManager.GetString("ButtonLoginWithFacebook", resourceCulture);

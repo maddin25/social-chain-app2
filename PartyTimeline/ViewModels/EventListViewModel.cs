@@ -27,8 +27,8 @@ namespace PartyTimeline.ViewModels
 				);
 				if (logout)
 				{
-					SessionInformation.INSTANCE.EndSession();
-					await Application.Current.MainPage.Navigation.PushModalAsync(new FacebookLoginPage());
+					SessionInformationProvider.INSTANCE.EndSession();
+					await Application.Current.MainPage.Navigation.PushModalAsync(new FacebookLoginPage(inhibitAutomaticPrompt: true));
 				}
 			});
 		}

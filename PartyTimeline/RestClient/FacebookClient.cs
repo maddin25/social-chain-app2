@@ -18,7 +18,7 @@ namespace PartyTimeline
 		private readonly string AppId = "1632106426819143";
 		private readonly TimeSpan LimitEventsInPast = TimeSpan.FromDays(180);
 
-		public void Authorize(Action onSuccess, Action<string> onFailure)
+		public void Authorize(Action<bool> callback)
 		{
 			var authenticator = new OAuth2Authenticator(
 				clientId: AppId,
@@ -27,20 +27,22 @@ namespace PartyTimeline
 				redirectUrl: new Uri("https://www.facebook.com/connect/login_success.html"),
 				isUsingNativeUI: false
 			);
+
 			authenticator.Completed += async (object sender, AuthenticatorCompletedEventArgs e) =>
 			{
 				if (e.IsAuthenticated)
 				{
-					SessionInformation.INSTANCE.BeginSession(e.Account);
+					SessionInformationProvider.INSTANCE.BeginSession(e.Account);
 					await CompleteAccountInformation(e.Account);
-					onSuccess.BeginInvoke(onSuccess.EndInvoke, null);
+					callback.Invoke(true);
 				}
 				else
 				{
-					onFailure.BeginInvoke("cancelled or failed", onFailure.EndInvoke, null);
+					callback.Invoke(false);
 				}
 				Debug.WriteLine($"Authenticated: {e.IsAuthenticated}");
 			};
+
 			DependencyService.Get<FacebookInterface>().LaunchLogin(authenticator);
 		}
 
@@ -130,7 +132,7 @@ namespace PartyTimeline
 				account.Properties[FacebookAccountProperties.Id] = accountInformation.id;
 				account.Properties[FacebookAccountProperties.Name] = accountInformation.name;
 				account.Properties[FacebookAccountProperties.EMail] = accountInformation.email;
-				await SessionInformation.INSTANCE.UpdateSession(account);
+				await SessionInformationProvider.INSTANCE.UpdateSession(account);
 			}
 			else
 			{

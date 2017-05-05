@@ -123,10 +123,19 @@ namespace PartyTimeline
 
 		private void CreateAllTables()
 		{
-			dbConnection.CreateTable<Event>();
-			dbConnection.CreateTable<EventMember>();
-			dbConnection.CreateTable<Event_EventMember>();
-			dbConnection.CreateTable<EventImage>();
+			try
+			{
+				dbConnection.CreateTable<Event>();
+				dbConnection.CreateTable<EventMember>();
+				dbConnection.CreateTable<Event_EventMember>();
+				dbConnection.CreateTable<EventImage>();
+			}
+			catch (Exception e)
+			{
+				Debug.WriteLine($"Failed creating tables: {e.Message}\nTrying again.");
+				DropAllTables();
+				CreateAllTables();
+			}
 		}
 	}
 }

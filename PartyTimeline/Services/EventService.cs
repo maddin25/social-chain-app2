@@ -47,8 +47,13 @@ namespace PartyTimeline
 		{
 			OnSyncStateChanged(new SyncState { IsSyncing = true, SyncService = SyncServices.EventList });
 			Task<List<Event>> fbEvents = Task.Run(fbClient.GetEventHeaders);
-			List<Event> localEvents = await localDb.ReadEvents(); // TODO: read events in relevant timespan
 			List<long> eventsRequiredUpdate = new List<long>();
+
+			List<Event> localEvents = await localDb.ReadEvents();
+			foreach (Event e in localEvents)
+			{
+				AddEventToEventList(e);
+			}
 			// TODO: remove local events that are outdated?
 
 			foreach (Event fe in await fbEvents)

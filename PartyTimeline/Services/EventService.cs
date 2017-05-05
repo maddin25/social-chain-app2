@@ -100,8 +100,7 @@ namespace PartyTimeline
 			{
 				if (updateIfExisting)
 				{
-					// TODO: fire element updated event
-					EventList[index].Update(e);
+					EventList.Replace(index, EventList.ElementAt(index).Updated(e));
 				}
 			}
 			else

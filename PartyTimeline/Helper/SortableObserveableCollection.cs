@@ -53,5 +53,17 @@ namespace PartyTimeline
 				}
 			}
 		}
+
+		public void Replace(int index, T newT)
+		{
+			T oldT = this[index];
+			this[index] = newT;
+			OnCollectionChanged(new NotifyCollectionChangedEventArgs(
+				NotifyCollectionChangedAction.Replace,
+				newT,
+				oldT,
+				index
+			));
+		}
 	}
 }

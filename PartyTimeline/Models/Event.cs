@@ -70,6 +70,12 @@ namespace PartyTimeline
 			this.IsDraft = e.IsDraft;
 		}
 
+		public Event Updated(Event e)
+		{
+			Update(e);
+			return this;
+		}
+
 		public Event(DateTime dateCreated) : base(dateCreated)
 		{
 			Initialize();

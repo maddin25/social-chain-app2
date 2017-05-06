@@ -11,15 +11,25 @@ namespace PartyTimeline
 		// TODO: how to create unique EventImage ID?
 		[Column("caption")]
 		public string Caption { get; set; }
+
 		[Column("path"), NotNull, Unique]
 		public string Path { get; set; }
+
 		[Column("path_small"), Unique]
 		public string PathSmall { get; set; }
+
 		[Column("event_id"), NotNull]
 		public long EventId { get; set; }
+
+		/// <summary>
+		/// The event member who took the picture
+		/// </summary>
+		/// <value>The event member identifier</value>
 		[Column("event_member_id"), NotNull]
 		public long EventMemberId { get; set; }
-		// TODO: introduce a date taken DateTime and use it for sorting
+
+		[Column("daten_taken"), NotNull]
+		public DateTime DateTaken { get; set; }
 
 		public EventImage(DateTime dateCreated) : base(dateCreated)
 		{

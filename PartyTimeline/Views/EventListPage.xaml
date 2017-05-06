@@ -26,9 +26,6 @@
 				<ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-							<ViewCell.ContextActions>
-								<MenuItem x:Name="MenuItemOnDelete" Text="Delete" IsDestructive="true" Command="{Binding OnDelete}" CommandParameter="{Binding .}"/>
-							</ViewCell.ContextActions>
                          
                             <AbsoluteLayout HorizontalOptions="FillAndExpand">
 								<ffimageloading:CachedImage

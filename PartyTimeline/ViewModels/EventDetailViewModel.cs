@@ -83,12 +83,10 @@ namespace PartyTimeline.ViewModels
 				return;
 			}
 
-			var file = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
+			var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
 			{
-				Directory = "Sample",
-				Name = "test.jpg",
-				PhotoSize = PhotoSize.Medium,
-				SaveToAlbum = false,
+				Directory = EventReference.Id.ToString(),
+				PhotoSize = PhotoSize.Full,
 				AllowCropping = true,
 				CompressionQuality = 92
 			});
@@ -100,14 +98,7 @@ namespace PartyTimeline.ViewModels
 
 			Debug.WriteLine($"Photo file Location: {file.Path}");
 
-			AddEventImage(file.Path);
-
-			//            testImage.Source = ImageSource.FromStream(() =>
-			//	        {
-			//	            var stream = file.GetStream();
-			//	            file.Dispose();
-			//	            return stream;
-			//	        });
+			AddEventImage(file);
 		}
 
 		private async void PickPhoto(bool permissionResult)
@@ -117,20 +108,29 @@ namespace PartyTimeline.ViewModels
 				Debug.WriteLine("Photos Not Supported: Permission not granted to photos.");
 				return;
 			}
-			var file = await CrossMedia.Current.PickPhotoAsync(new PickMediaOptions { PhotoSize = PhotoSize.Medium });
+			MediaFile file = await CrossMedia.Current.PickPhotoAsync(new PickMediaOptions
+			{
+				PhotoSize = PhotoSize.Full,
+				CompressionQuality = 92
+			});
 
 			if (file == null)
 			{
 				return;
 			}
+			// TODO copy this image to the app memory
 
-			AddEventImage(file.Path);
+			AddEventImage(file);
 		}
 
-		private void AddEventImage(String path)
+		private void AddEventImage(MediaFile file)
 		{
-			EventImage newEventImage = new EventImage(DateTime.Now) { Path = path };
-			EventService.INSTANCE.AddImageToEvent(newEventImage, EventReference);
+			EventImage newEventImage = new EventImage(DateTime.Now) {
+				Path = file.Path,
+				EventMemberId=SessionInformationProvider.INSTANCE.CurrentUserEventMember.Id,
+				EventId = EventReference.Id
+			};
+			EventService.INSTANCE.AddImage(newEventImage);
 		}
 
 		public void OnEventServicePropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -146,5 +146,7 @@ namespace PartyTimeline.ViewModels
 		{
 			await EventService.INSTANCE.QueryLocalEventImageList(EventReference);
 		}
+
+		// TODO maybe store every picture in the Album, read https://github.com/jamesmontemagno/MediaPlugin
 	}
 }

@@ -62,15 +62,11 @@ namespace PartyTimeline
 
 		public async Task<List<EventImage>> ReadEventImages(Event eventReference)
 		{
-			List<EventImage> dbEvents = await dbConnection.Table<EventImage>().Where(
-				(EventImage image) => image.EventId == eventReference.Id
-			).ToListAsync();
-
-			List<EventImage> eventImages = new List<EventImage>();
-			foreach (EventImage image in dbEvents)
-			{
-				eventImages.Add(image);
-			}
+			List<EventImage> eventImages = await dbConnection
+				.Table<EventImage>()
+				.Where((EventImage image) => image.EventId == eventReference.Id)
+				.ToListAsync();
+			
 			return eventImages;
 		}
 
@@ -90,10 +86,9 @@ namespace PartyTimeline
 			dbConnection.InsertAsync(eventReference);
 		}
 
-		public void WriteEventImage(EventImage eventImage, Event eventReference)
+		public void WriteEventImage(EventImage eventImage)
 		{
-			eventImage.EventId = eventReference.Id;
-			eventImage.EventMemberId = SessionInformationProvider.INSTANCE.CurrentUserEventMember.Id;
+			// TODO: verify that all properties are set
 			dbConnection.InsertAsync(eventImage);
 		}
 

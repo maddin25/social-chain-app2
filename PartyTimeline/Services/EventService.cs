@@ -135,13 +135,12 @@ namespace PartyTimeline
 			SortEventImageList(eventReference);
 		}
 
-		public void AddImageToEvent(EventImage image, Event eventReference)
+		public void AddImage(EventImage image)
 		{
-			// TODO: verify that also the "global" event list is being updated
-			int index = EventList.IndexOf(eventReference);
-			EventList[index].Images.Add(image);
-			localDb.WriteEventImage(image, EventList[index]);
-			SortEventImageList(eventReference);
+			Event e = EventList.FirstOrDefault((arg) => arg.Id == image.EventId);
+			e?.Images.Add(image);
+			localDb.WriteEventImage(image);
+			SortEventImageList(e);
 			//DependencyService.Get<EventSyncInterface>().UploadNewImageLowRes(image);
 		}
 

@@ -172,22 +172,6 @@ namespace PartyTimeline
 			DeleteFileWithDialog(image.PathSmall);
 		}
 
-		public void Remove(BaseModel item)
-		{
-			if (item is EventImage)
-			{
-				Remove((EventImage)item);
-			}
-			else if (item is Event)
-			{
-				Remove((Event)item);
-			}
-			else
-			{
-				Debug.WriteLine($"Deleting instances of {item.GetType()} not supported");
-			}
-		}
-
 		private void OnSyncStateChanged(SyncState state)
 		{
 			Debug.WriteLine($"SyncStateChanged event triggered with state {state.ToString()}");

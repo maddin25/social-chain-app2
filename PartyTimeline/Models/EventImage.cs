@@ -41,9 +41,13 @@ namespace PartyTimeline
 			Initialize();
 		}
 
+		public override void Delete()
+		{
+			EventService.INSTANCE.Remove(this);
+		}
+
 		private void Initialize()
 		{
-			OnDelete = new Command<BaseModel>(EventService.INSTANCE.Remove);
 			Caption = string.Empty;
 		}
 	}

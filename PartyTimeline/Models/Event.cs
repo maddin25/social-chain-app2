@@ -86,7 +86,6 @@ namespace PartyTimeline
 
 		private void Initialize()
 		{
-			OnDelete = new Command<BaseModel>(EventService.INSTANCE.Remove);
 			Images = new SortableObservableCollection<EventImage>();
 			Contributors = new SortableObservableCollection<EventMember>();
 			Cover = new CoverImage();

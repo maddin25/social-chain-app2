@@ -26,7 +26,7 @@ namespace PartyTimeline
 
 		[JsonIgnore]
 		[Ignore]
-		public Command OnDelete { get; set; }
+		public Command OnDelete { get; private set; }
 
 
 		public BaseModel()
@@ -81,6 +81,11 @@ namespace PartyTimeline
 			DateLastModified = update.DateLastModified;
 		}
 
+		public virtual void Delete()
+		{
+
+		}
+
 		private void SetRandomId()
 		{
 			Id = idGenerator.Next();
@@ -89,7 +94,7 @@ namespace PartyTimeline
 		private void Initialize()
 		{
 			SetRandomId();
-			OnDelete = new Command(() => new object()); // dummy
+			OnDelete = new Command(Delete); // dummy
 		}
 	}
 }

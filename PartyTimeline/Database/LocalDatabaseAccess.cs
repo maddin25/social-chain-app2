@@ -107,15 +107,15 @@ namespace PartyTimeline
 			List<EventImage> eventImages = await dbConnection.Table<EventImage>()
 															 .Where((image) => image.EventId == e.Id)
 															 .ToListAsync();
-			Task.WhenAll(eventImages.Select((EventImage image) => dbConnection.DeleteAsync(image)));
-			dbConnection.DeleteAsync(e);
+			await Task.WhenAll(eventImages.Select((EventImage image) => dbConnection.DeleteAsync(image)));
+			await dbConnection.DeleteAsync(e);
 		}
 
 		public async Task<long> RemoveEventImage(EventImage image)
 		{
 			// TODO: this Get method can throw a NotFoundException, surround with try - catch block
 			Event e = await dbConnection.FindAsync<Event>((Event de) => de.Id == image.EventId);
-			dbConnection.DeleteAsync(image);
+			await dbConnection.DeleteAsync(image);
 			return e?.Id ?? -1;
 		}
 

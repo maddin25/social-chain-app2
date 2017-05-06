@@ -10,14 +10,12 @@ namespace PartyTimeline.ViewModels
 	public class EventListViewModel : UIBindingHelper<Event>
 	{
 		public ObservableCollection<Event> EventList { get; private set; }
-		public Command AddEventCommand { get; set; }
 		public Command LogoutCommand { get; set; }
 
 		public EventListViewModel(ListView refreshableListView) : base(refreshableListView)
 		{
 			EventList = EventService.INSTANCE.EventList;
 			EventService.INSTANCE.SyncStateChanged += OnSyncStateChanged;
-			AddEventCommand = new Command(() => Application.Current.MainPage.Navigation.PushAsync(new AddEventPage()));
 			LogoutCommand = new Command(async () =>
 			{
 				bool logout = await Application.Current.MainPage.DisplayAlert(

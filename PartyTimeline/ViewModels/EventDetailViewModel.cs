@@ -125,10 +125,15 @@ namespace PartyTimeline.ViewModels
 
 		private void AddEventImage(MediaFile file)
 		{
-			EventImage newEventImage = new EventImage(DateTime.Now) {
+			/** TODO: exif information is not contained in the images that are produced by Plugin.Media. However a fix
+			 *	pull request is already on it's way: https://github.com/jamesmontemagno/MediaPlugin/pull/207/commits
+			 */
+			EventImage newEventImage = new EventImage(DateTime.Now)
+			{
 				Path = file.Path,
-				EventMemberId=SessionInformationProvider.INSTANCE.CurrentUserEventMember.Id,
-				EventId = EventReference.Id
+				EventMemberId = SessionInformationProvider.INSTANCE.CurrentUserEventMember.Id,
+				EventId = EventReference.Id,
+				DateTaken = DateTime.Now
 			};
 			EventService.INSTANCE.AddImage(newEventImage);
 		}

@@ -29,6 +29,7 @@ namespace PartyTimeline
 
 		public async Task<List<Event>> ReadEvents()
 		{
+			// TODO: maybe use SortedSet -> https://msdn.microsoft.com/en-us/library/dd412070(v=vs.110).aspx
 			List<Event> events = new List<Event>();
 			long currentUserId = SessionInformationProvider.INSTANCE.CurrentUserEventMember.Id;
 			List<Event_EventMember> userEventMemberships = await dbConnection
@@ -56,17 +57,17 @@ namespace PartyTimeline
 			}));
 
 			Debug.WriteLine($"{nameof(LocalDatabaseAccess)}: Found {events.Count} events in the relevant time frame");
-
-			return events;
+			return events.OrderByDescending((Event e) => e.StartDateTime).ToList();
 		}
 
 		public async Task<List<EventImage>> ReadEventImages(Event eventReference)
 		{
 			List<EventImage> eventImages = await dbConnection
 				.Table<EventImage>()
+				.OrderByDescending((EventImage image) => image.DateTaken)
 				.Where((EventImage image) => image.EventId == eventReference.Id)
 				.ToListAsync();
-			
+
 			return eventImages;
 		}
 

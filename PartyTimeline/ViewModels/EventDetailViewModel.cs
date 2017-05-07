@@ -19,24 +19,28 @@ namespace PartyTimeline.ViewModels
 		public Command PickPhotoButtonCommand { get; set; }
 		public Event EventReference { get { return _eventReference; } set { _eventReference = value; } }
 
-		public EventDetailViewModel(ListView refreshableListView) : base(refreshableListView)
+		public EventDetailViewModel()
 		{
 			TakePhotoButtonCommand = new Command(async () => await CheckCameraPermissions(TakePhoto));
 			PickPhotoButtonCommand = new Command(async () => await CheckCameraPermissions(PickPhoto));
 		}
 
-		public override void OnAppearing()
+		public override void Initialize()
 		{
-			// So far is never called
-			base.OnAppearing();
-			DependencyService.Get<EventSyncInterface>().StartEventSyncing(EventReference);
+			base.Initialize();
+			//DependencyService.Get<EventSyncInterface>().StartEventSyncing(EventReference);
 		}
 
-		public override void OnDisappearing()
+		public override void Deinitialize()
 		{
-			// So far is never called
-			base.OnDisappearing();
-			DependencyService.Get<EventSyncInterface>().StopEventSyncing(EventReference);
+			base.Deinitialize();
+			//DependencyService.Get<EventSyncInterface>().StopEventSyncing(EventReference);
+		}
+
+		protected override async Task OnRefreshTriggered()
+		{
+			// TODO: only refresh from server here
+			await EventService.INSTANCE.LoadEventImageList(EventReference);
 		}
 
 		private async Task CheckCameraPermissions(Action<bool> callBack)
@@ -138,22 +142,6 @@ namespace PartyTimeline.ViewModels
 			EventService.INSTANCE.AddImage(newEventImage);
 		}
 
-		public void OnSyncStateChanged(object sender, EventArgs e)
-		{
-			if (e is SyncState)
-			{
-				SyncState state = e as SyncState;
-				if (state.SyncService == SyncServices.EventDetails)
-				{
-					SetActivityIndicator(state.IsSyncing);
-				}
-			}
-		}
-
-		protected override async Task OnRefreshTriggered()
-		{
-			await EventService.INSTANCE.QueryLocalEventImageList(EventReference);
-		}
 		// TODO maybe store every picture in the Album, read https://github.com/jamesmontemagno/MediaPlugin
 	}
 }

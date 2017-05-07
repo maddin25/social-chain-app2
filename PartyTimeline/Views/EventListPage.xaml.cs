@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
@@ -12,9 +13,31 @@ namespace PartyTimeline
 		public EventListPage()
 		{
 			InitializeComponent();
-			BindingContext = new EventListViewModel(ListViewEvents);
+			BindingContext = new EventListViewModel();
 			NavigationPage.SetHasNavigationBar(this, true);
 			NavigationPage.SetHasBackButton(this, false);
+		}
+
+		protected override void OnAppearing()
+		{
+			base.OnAppearing();
+			EventService.INSTANCE.SyncStateChanged += OnSyncStateChanged;
+			SetActivityIndicator(EventService.INSTANCE.CurrentSyncState.EventListSyncing);
+		}
+
+		protected override void OnDisappearing()
+		{
+			base.OnDisappearing();
+			EventService.INSTANCE.SyncStateChanged -= OnSyncStateChanged;
+		}
+
+		public void OnSyncStateChanged(object sender, EventArgs e)
+		{
+			if (e is SyncState)
+			{
+				SyncState state = e as SyncState;
+				SetActivityIndicator(state.EventListSyncing);
+			}
 		}
 
 		protected override bool OnBackButtonPressed()
@@ -25,6 +48,12 @@ namespace PartyTimeline
 				DependencyService.Get<SystemInterface>().Close();
 			}
 			return true;
+		}
+
+		private void SetActivityIndicator(bool active)
+		{
+			Debug.WriteLine($"{nameof(EventListPage)}:{nameof(SetActivityIndicator)}: active={active}");
+			ListViewEvents.IsRefreshing = active;
 		}
 	}
 }

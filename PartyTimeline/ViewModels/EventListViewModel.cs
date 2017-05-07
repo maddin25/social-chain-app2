@@ -12,10 +12,9 @@ namespace PartyTimeline.ViewModels
 		public ObservableCollection<Event> EventList { get; private set; }
 		public Command LogoutCommand { get; set; }
 
-		public EventListViewModel(ListView refreshableListView) : base(refreshableListView)
+		public EventListViewModel()
 		{
 			EventList = EventService.INSTANCE.EventList;
-			EventService.INSTANCE.SyncStateChanged += OnSyncStateChanged;
 			LogoutCommand = new Command(async () =>
 			{
 				bool logout = await Application.Current.MainPage.DisplayAlert(
@@ -33,18 +32,6 @@ namespace PartyTimeline.ViewModels
 			});
 			// If this command is run on on a different thread, the app crashes
 			EventService.INSTANCE.LoadEventList();
-		}
-
-		public void OnSyncStateChanged(object sender, EventArgs e)
-		{
-			if (e is SyncState)
-			{
-				SyncState state = e as SyncState;
-				if (state.SyncService == SyncServices.EventList)
-				{
-					SetActivityIndicator(state.IsSyncing);
-				}
-			}
 		}
 
 		protected override void OnSelect(ref Event element)

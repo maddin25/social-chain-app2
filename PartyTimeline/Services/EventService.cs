@@ -19,6 +19,8 @@ namespace PartyTimeline
 
 		public EventHandler SyncStateChanged { get; set; }
 
+		public SyncState CurrentSyncState { get; set; }
+
 		public static readonly TimeSpan LimitEventsInPast = TimeSpan.FromDays(180);
 		public SortableObservableCollection<Event> EventList { get; private set; }
 
@@ -40,19 +42,31 @@ namespace PartyTimeline
 			EventList = new SortableObservableCollection<Event>();
 			localDb = new LocalDatabaseAccess();
 			fbClient = new FacebookClient();
-			SessionInformationProvider.INSTANCE.SessionStateChanged += (sender, e) => EventList.Clear();
+			CurrentSyncState = new SyncState();
+			SessionInformationProvider.INSTANCE.SessionStateChanged += (sender, e) =>
+			{
+				if (e is SessionState)
+				{
+					SessionState state = e as SessionState;
+					if (state.IsAuthenticated == false)
+					{
+						EventList.Clear();
+					}
+				}
+			};
 		}
 
 		public async Task LoadEventList()
 		{
-			OnSyncStateChanged(new SyncState { IsSyncing = true, SyncService = SyncServices.EventList });
+			CurrentSyncState.EventListSyncing = true;
+			OnSyncStateChanged();
 			Task<List<Event>> fbEvents = Task.Run(fbClient.GetEventHeaders);
 			List<long> eventsRequiredUpdate = new List<long>();
 
 			List<Event> localEvents = await localDb.ReadEvents();
 			foreach (Event e in localEvents)
 			{
-				AddEventToEventList(e);
+				AddToEventList(e);
 			}
 			// TODO: remove local events that are outdated?
 
@@ -80,17 +94,69 @@ namespace PartyTimeline
 			}
 			await Task.WhenAll(eventsRequiredUpdate.Select((long id) => UpdateLocalEvent(id)));
 			SortEventList();
-            OnSyncStateChanged(new SyncState { IsSyncing = false, SyncService = SyncServices.EventList });
+			CurrentSyncState.EventListSyncing = false;
+			OnSyncStateChanged();
+		}
+
+		public async Task LoadEventImageList(Event e)
+		{
+			CurrentSyncState.EventDetailsSyncing = true;
+			CurrentSyncState.EventIdSyncing = e.Id;
+			OnSyncStateChanged();
+			// TODO pull this list from the server
+			List<EventImage> serverEventImages = new List<EventImage>();
+			List<EventImage> localEventImages = await localDb.ReadEventImages(e.Id);
+			foreach (EventImage img in localEventImages)
+			{
+				AddToEventImageList(e, img, false);
+			}
+			/**
+			foreach (EventImage serverImage in serverEventImages)
+			{
+				if (localEventImages.Contains(serverImage))
+				{
+					EventImage lImg = localEventImages[localEventImages.IndexOf(serverImage)];
+					if (lImg.DateLastModified < serverImage.DateLastModified) // the local event image is outdated
+					{
+						// TODO: mark this image to be updated
+					}
+				}
+				else
+				{
+					// TODO: mark this image to be updated
+				}
+			}
+			*/
+			// TODO: update all marked images
+			SortEventImageList(e);
+			CurrentSyncState.EventDetailsSyncing = false;
+			OnSyncStateChanged();
 		}
 
 		public async Task UpdateLocalEvent(long eventId)
 		{
 			Event fe = await fbClient.GetEventDetails(eventId);
 			localDb.UpdateEvent(fe);
-			AddEventToEventList(fe, true);
+			AddToEventList(fe, true);
 		}
 
-		public void AddEventToEventList(Event e, bool updateIfExisting = false)
+		public void AddToEventImageList(Event e, EventImage img, bool updateIfExisting = false)
+		{
+			int index = e.Images.IndexOf(img);
+			if (index >= 0)
+			{
+				if (updateIfExisting)
+				{
+					e.Images.Update(index, img);
+				}
+			}
+			else
+			{
+				e.Images.Add(img);
+			}
+		}
+
+		public void AddToEventList(Event e, bool updateIfExisting = false)
 		{
 			int index = EventList.IndexOf(e);
 			if (index >= 0)
@@ -104,32 +170,6 @@ namespace PartyTimeline
 			{
 				EventList.Add(e);
 			}
-		}
-
-		public async Task QueryLocalEventImageList(Event eventReference)
-		{
-			foreach (EventImage image in await Task.Run(() => localDb.ReadEventImages(eventReference)))
-			{
-				int index = eventReference.Images.IndexOf(image);
-				if (index >= 0)
-				{
-					if (eventReference.Images[index].ModifiedAfter(image))
-					{
-						/* The image in the Event is somehow newer than the image stored in the local database. That
-						 * should not be. */
-						Debug.WriteLine($"WARNING: image with URI '{image.Path}' in local database is outdated!");
-					}
-					else
-					{
-						eventReference.Images[index] = image;
-					}
-				}
-				else
-				{
-					eventReference.Images.Add(image);
-				}
-			}
-			SortEventImageList(eventReference);
 		}
 
 		public void AddImage(EventImage image)
@@ -169,10 +209,10 @@ namespace PartyTimeline
 			DeleteFileWithDialog(image.PathSmall);
 		}
 
-		private void OnSyncStateChanged(SyncState state)
+		private void OnSyncStateChanged()
 		{
-			Debug.WriteLine($"SyncStateChanged event triggered with state {state.ToString()}");
-			SyncStateChanged?.Invoke(this, state);
+			Debug.WriteLine($"SyncStateChanged event triggered with state {CurrentSyncState.ToString()}");
+			SyncStateChanged?.Invoke(this, CurrentSyncState);
 		}
 
 		private bool DeleteFile(string path)

@@ -19,7 +19,6 @@ namespace PartyTimeline
 	public abstract class UIBindingHelper<T> : INotifyPropertyChanged
 	{
 		private T _selectedItem;
-		protected ListView RefreshableListView;
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		public T SelectedItem
@@ -39,25 +38,22 @@ namespace PartyTimeline
 
 		public Command RefreshListCommand { get; set; }
 
-		public UIBindingHelper(ListView refreshableListView)
+		public UIBindingHelper()
 		{
-			RefreshableListView = refreshableListView;
 			RefreshListCommand = new Command(async () =>
 			{
 				Debug.WriteLine("Refreshing list");
-				//refreshableListView.IsRefreshing = true;
 				await OnRefreshTriggered();
-				//refreshableListView.IsRefreshing = false;
 				Debug.WriteLine("Finished refreshing list");
 			});
 		}
 
-		public virtual void OnAppearing()
+		public virtual void Initialize()
 		{
 			
 		}
 		
-		public virtual void OnDisappearing()
+		public virtual void Deinitialize()
 		{
 			
 		}
@@ -65,11 +61,6 @@ namespace PartyTimeline
 		protected virtual void OnPropertyChanged(string propertyName)
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-		}
-
-		protected void SetActivityIndicator(bool active)
-		{
-			Device.BeginInvokeOnMainThread(() => RefreshableListView.IsRefreshing = active);
 		}
 
 		protected abstract void OnSelect(ref T element);

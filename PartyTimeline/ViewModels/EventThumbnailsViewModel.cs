@@ -9,9 +9,10 @@ namespace PartyTimeline.ViewModels
 {
 	public class EventThumbnailsViewModel : EventDetailViewModel
 	{
-		public EventThumbnailsViewModel(ref Event eventReference, ListView refreshableListView) : base(refreshableListView)
+		public EventThumbnailsViewModel(ref Event eventReference)
 		{
 			EventReference = eventReference;
+			EventService.INSTANCE.LoadEventImageList(eventReference);
 		}
 
 		protected override void OnSelect(ref EventImage element)

@@ -60,14 +60,16 @@ namespace PartyTimeline
 			return events.OrderByDescending((Event e) => e.StartDateTime).ToList();
 		}
 
-		public async Task<List<EventImage>> ReadEventImages(Event eventReference)
+		public async Task<List<EventImage>> ReadEventImages(long eventId)
 		{
+			Debug.WriteLine($"{nameof(ReadEventImages)}: Reading local event images for event with ID {eventId}");
 			List<EventImage> eventImages = await dbConnection
 				.Table<EventImage>()
+				.Where((EventImage image) => image.EventId == eventId)
 				.OrderByDescending((EventImage image) => image.DateTaken)
-				.Where((EventImage image) => image.EventId == eventReference.Id)
 				.ToListAsync();
 
+			Debug.WriteLine($"{nameof(ReadEventImages)}: Read {eventImages.Count} local event images for event with ID {eventId}");
 			return eventImages;
 		}
 

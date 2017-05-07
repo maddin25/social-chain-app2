@@ -6,6 +6,7 @@
 	x:Class="PartyTimeline.EventListPage"
     xmlns:viewModels="clr-namespace:PartyTimeline.ViewModels;assembly=PartyTimeline.ViewModels"
     xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+	Title="Event List"
 	>
 	
     <ContentPage.Content>

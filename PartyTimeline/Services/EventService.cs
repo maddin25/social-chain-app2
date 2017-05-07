@@ -205,7 +205,7 @@ namespace PartyTimeline
 
 		private void SortEventImageList(Event eventReference)
 		{
-			eventReference.Images.SortDescending((image) => image.DateCreated.ToFileTimeUtc());
+			eventReference.Images.SortDescending((image) => image.DateTaken.ToFileTimeUtc());
 		}
 	}
 }

@@ -46,6 +46,21 @@ namespace PartyTimeline
 			EventService.INSTANCE.Remove(this);
 		}
 
+		public override void Update(BaseModel update)
+		{
+			base.Update(update);
+			if (update is EventImage)
+			{
+				EventImage img = update as EventImage;
+				Caption = img.Caption;
+				Path = img.Path;
+				PathSmall = img.PathSmall;
+				EventId = img.EventId;
+				EventMemberId = img.EventMemberId;
+				DateTaken = img.DateTaken;
+			}
+		}
+
 		private void Initialize()
 		{
 			Caption = string.Empty;

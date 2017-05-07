@@ -42,7 +42,7 @@ namespace PartyTimeline.ViewModels
 				SyncState state = e as SyncState;
 				if (state.SyncService == SyncServices.EventList)
 				{
-					Device.BeginInvokeOnMainThread(() => RefreshableListView.IsRefreshing = state.IsSyncing);
+					SetActivityIndicator(state.IsSyncing);
 				}
 			}
 		}

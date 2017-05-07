@@ -138,13 +138,16 @@ namespace PartyTimeline.ViewModels
 			EventService.INSTANCE.AddImage(newEventImage);
 		}
 
-		public void OnEventServicePropertyChanged(object sender, PropertyChangedEventArgs e)
+		public void OnSyncStateChanged(object sender, EventArgs e)
 		{
-			if (e.PropertyName == EventReference.Name)
+			if (e is SyncState)
 			{
-				Debug.WriteLine($"The referenced event {EventReference.Name} has been updated");
+				SyncState state = e as SyncState;
+				if (state.SyncService == SyncServices.EventDetails)
+				{
+					SetActivityIndicator(state.IsSyncing);
+				}
 			}
-			Debug.WriteLine($"Called {nameof(OnEventServicePropertyChanged)} of {this.GetType().Name}");
 		}
 
 		protected override async Task OnRefreshTriggered()

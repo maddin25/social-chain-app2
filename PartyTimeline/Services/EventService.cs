@@ -70,10 +70,7 @@ namespace PartyTimeline
 					{
 						eventsRequiredUpdate.Add(fe.Id);
 					}
-					else
-					{
-						AddEventToEventList(le, false);
-					}
+					// else: it is already in the list and does not need to be updated
 				}
 				else // this event is new
 				{

@@ -27,13 +27,14 @@ namespace PartyTimeline.ViewModels
 
 		public override void OnAppearing()
 		{
+			// So far is never called
 			base.OnAppearing();
 			DependencyService.Get<EventSyncInterface>().StartEventSyncing(EventReference);
-			RefreshListCommand.Execute(null);
 		}
 
 		public override void OnDisappearing()
 		{
+			// So far is never called
 			base.OnDisappearing();
 			DependencyService.Get<EventSyncInterface>().StopEventSyncing(EventReference);
 		}
@@ -110,8 +111,7 @@ namespace PartyTimeline.ViewModels
 			}
 			MediaFile file = await CrossMedia.Current.PickPhotoAsync(new PickMediaOptions
 			{
-				PhotoSize = PhotoSize.Full,
-				CompressionQuality = 92
+				PhotoSize = PhotoSize.Full
 			});
 
 			if (file == null)
@@ -151,7 +151,6 @@ namespace PartyTimeline.ViewModels
 		{
 			await EventService.INSTANCE.QueryLocalEventImageList(EventReference);
 		}
-
 		// TODO maybe store every picture in the Album, read https://github.com/jamesmontemagno/MediaPlugin
 	}
 }

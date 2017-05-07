@@ -54,7 +54,7 @@
       <DependentUpon>EventGalleryPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\LoginViewModel.cs" />
-    <Compile Include="ViewModels\EventGalleryViewModel.cs" />
+    <Compile Include="ViewModels\EventThumbnailsViewModel.cs" />
     <Compile Include="Interfaces\EventSyncInterface.cs" />
     <Compile Include="Views\EditEventPage.xaml.cs">
       <DependentUpon>EditEventPage.xaml</DependentUpon>

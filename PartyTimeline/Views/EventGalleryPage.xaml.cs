@@ -5,9 +5,9 @@ using Xamarin.Forms.Xaml;
 namespace PartyTimeline.Views
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class ImageGalleryPage : CarouselPage
+	public partial class EventGalleryPage : CarouselPage
 	{
-		public ImageGalleryPage(ref EventImage eventImage, ref Event eventReference)
+		public EventGalleryPage(ref EventImage eventImage, ref Event eventReference)
 		{
 			// TODO: create a new ViewModel based on EventDetailModel
 			InitializeComponent();

@@ -14,7 +14,7 @@ namespace PartyTimeline
 		public EventThumbnailsPage(ref Event eventReference)
 		{
 			InitializeComponent();
-			BindingContext = new EventGalleryViewModel(ref eventReference, ListViewEventThumbnails);
+			BindingContext = new EventThumbnailsViewModel(ref eventReference, ListViewEventThumbnails);
 		}
 	}
 }

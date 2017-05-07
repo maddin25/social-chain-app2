@@ -67,6 +67,11 @@ namespace PartyTimeline
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 
+		protected void SetActivityIndicator(bool active)
+		{
+			Device.BeginInvokeOnMainThread(() => RefreshableListView.IsRefreshing = active);
+		}
+
 		protected abstract void OnSelect(ref T element);
 
 		protected abstract Task OnRefreshTriggered();

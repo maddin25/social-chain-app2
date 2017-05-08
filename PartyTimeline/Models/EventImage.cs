@@ -28,7 +28,7 @@ namespace PartyTimeline
 		[Column("event_member_id"), NotNull]
 		public long EventMemberId { get; set; }
 
-		[Column("daten_taken"), NotNull]
+		[Column("date_taken"), NotNull]
 		public DateTime DateTaken { get; set; }
 
 		public EventImage(DateTime dateCreated) : base(dateCreated)

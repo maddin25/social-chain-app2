@@ -2,6 +2,8 @@
 using System.IO;
 using SDebug = System.Diagnostics.Debug;
 
+using Android.Graphics;
+
 using Xamarin.Forms;
 
 [assembly: Dependency(typeof(PartyTimeline.Droid.SystemInterface_Android))]
@@ -39,6 +41,33 @@ namespace PartyTimeline.Droid
 		{
 			PrintPaths();
 			return Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+		}
+
+		public bool CompressImage(Stream fileStream, string outputFile)
+		{
+			Bitmap img = BitmapFactory.DecodeStream(fileStream); // async version available
+			switch (ImageCompression.DeterminePrimaryScaleDimension(img.Height, img.Width))
+			{
+				case ImageCompression.ScaleDown.Height:
+					img = Bitmap.CreateScaledBitmap(
+						img,
+						ImageCompression.SecondaryTargetSize(img.Height, img.Width),
+						ImageCompression.MaximumDimension,
+						true);
+					break;
+				case ImageCompression.ScaleDown.Width:
+					img = Bitmap.CreateScaledBitmap(
+						img,
+						ImageCompression.MaximumDimension,
+						ImageCompression.SecondaryTargetSize(img.Width, img.Height),
+						true);
+					break;
+				case ImageCompression.ScaleDown.None:
+					break;
+			}
+
+			FileStream writeStream = new FileStream(outputFile, FileMode.Create, FileAccess.Write);  // async version available
+			return img.Compress(Bitmap.CompressFormat.Jpeg, ImageCompression.CompressionFactorJpeg, writeStream);  // async version available
 		}
 
 		private void PrintPaths()

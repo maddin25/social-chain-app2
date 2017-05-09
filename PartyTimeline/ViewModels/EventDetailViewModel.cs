@@ -1,6 +1,6 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 
 using Plugin.Media;
@@ -132,9 +132,20 @@ namespace PartyTimeline.ViewModels
 			/** TODO: exif information is not contained in the images that are produced by Plugin.Media. However a fix
 			 *	pull request is already on it's way: https://github.com/jamesmontemagno/MediaPlugin/pull/207/commits
 			 */
+			string pathNormal = file.Path;
+			string pathSmall = Path.Combine(
+				Path.GetDirectoryName(pathNormal),
+				Path.GetFileNameWithoutExtension(pathNormal) + "small" + Path.GetExtension(pathNormal)
+			);
+			if (!DependencyService.Get<SystemInterface>().CompressImage(file.GetStream(), pathSmall))
+			{
+				Debug.WriteLine("Failed compressing image");
+			}
+
 			EventImage newEventImage = new EventImage(DateTime.Now)
 			{
-				Path = file.Path,
+				Path = pathNormal,
+				PathSmall = pathSmall,
 				EventMemberId = SessionInformationProvider.INSTANCE.CurrentUserEventMember.Id,
 				EventId = EventReference.Id,
 				DateTaken = DateTime.Now

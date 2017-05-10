@@ -43,8 +43,9 @@ namespace PartyTimeline.Droid
 			return Environment.GetFolderPath(Environment.SpecialFolder.Personal);
 		}
 
-		public bool CompressImage(Stream fileStream, string outputFile)
+		public bool CompressImage(Stream fileStream, string inputFile, string outputFile)
 		{
+			SDebug.WriteLine($"Original image file '{inputFile}' (Size: {new FileInfo(inputFile).Length / 1024} KB)");
 			Bitmap img = BitmapFactory.DecodeStream(fileStream); // async version available
 			switch (ImageCompression.DeterminePrimaryScaleDimension(img.Height, img.Width))
 			{
@@ -67,7 +68,9 @@ namespace PartyTimeline.Droid
 			}
 
 			FileStream writeStream = new FileStream(outputFile, FileMode.Create, FileAccess.Write);  // async version available
-			return img.Compress(Bitmap.CompressFormat.Jpeg, ImageCompression.CompressionFactorJpeg, writeStream);  // async version available
+			bool success = img.Compress(Bitmap.CompressFormat.Jpeg, ImageCompression.CompressionFactorJpeg, writeStream);  // async version available
+			SDebug.WriteLine($"Wrote compressed image file to '{outputFile}' (Size: {new FileInfo(outputFile).Length / 1024} KB)");
+			return success;
 		}
 
 		private void PrintPaths()

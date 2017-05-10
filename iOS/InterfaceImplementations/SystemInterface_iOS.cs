@@ -2,7 +2,9 @@
 using System.IO;
 using System.Diagnostics;
 
-using Xamarin.Forms.Platform.iOS;
+using CoreGraphics;
+using Foundation;
+using UIKit;
 
 using Xamarin.Forms;
 
@@ -38,6 +40,37 @@ namespace PartyTimeline.iOS
 		{
 			PrintPaths();
 			return Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+		}
+
+		public bool CompressImage(Stream fileStream, string inputFile, string outputFile)
+		{
+			Debug.WriteLine($"Original image file '{inputFile}' (Size: {new FileInfo(inputFile).Length / 1024} KB)");
+			UIImage img = new UIImage(NSData.FromStream(fileStream));
+			CGSize imgSize = img.Size;
+			switch (ImageCompression.DeterminePrimaryScaleDimension(imgSize.Height, imgSize.Width))
+			{
+				case ImageCompression.ScaleDown.Height:
+					imgSize = new CGSize(
+						ImageCompression.SecondaryTargetSize(imgSize.Height, imgSize.Width),
+						ImageCompression.MaximumDimension
+					);
+					img = img.Scale(imgSize);
+					break;
+				case ImageCompression.ScaleDown.Width:
+					imgSize = new CGSize(
+						ImageCompression.MaximumDimension,
+						ImageCompression.SecondaryTargetSize(imgSize.Width, imgSize.Height)
+					);
+					img = img.Scale(imgSize);
+					break;
+				case ImageCompression.ScaleDown.None:
+					break;
+			}
+			NSData imgData = img.AsJPEG(ImageCompression.CompressionFactorJpegFloat);
+			NSError error;
+			imgData.Save(outputFile, NSDataWritingOptions.FileProtectionCompleteUntilFirstUserAuthentication, out error);
+			Debug.WriteLine($"Wrote compressed image file to '{outputFile}' (Size: {new FileInfo(outputFile).Length / 1024} KB)");
+			return error == null;
 		}
 
 		private void PrintPaths()

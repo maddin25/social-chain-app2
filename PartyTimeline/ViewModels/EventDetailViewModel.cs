@@ -92,7 +92,6 @@ namespace PartyTimeline.ViewModels
 			{
 				Directory = EventReference.Id.ToString(),
 				PhotoSize = PhotoSize.Full,
-				AllowCropping = true,
 				CompressionQuality = 92
 			});
 
@@ -137,7 +136,7 @@ namespace PartyTimeline.ViewModels
 				Path.GetDirectoryName(pathNormal),
 				Path.GetFileNameWithoutExtension(pathNormal) + "small" + Path.GetExtension(pathNormal)
 			);
-			if (!DependencyService.Get<SystemInterface>().CompressImage(file.GetStream(), pathSmall))
+			if (!DependencyService.Get<SystemInterface>().CompressImage(file.GetStream(), pathNormal, pathSmall))
 			{
 				Debug.WriteLine("Failed compressing image");
 			}

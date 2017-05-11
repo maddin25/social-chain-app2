@@ -1,20 +1,72 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<CarouselPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PartyTimeline.Views.EventGalleryPage"
-             Title="Event Images"
-             ItemsSource="{Binding Images}"
+<CarouselPage
+	xmlns="http://xamarin.com/schemas/2014/forms"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+	xmlns:l="clr-namespace:PartyTimeline;assembly=PartyTimeline"
+	xmlns:lr="clr-namespace:PartyTimeline.Resources;assembly=PartyTimeline"
+	x:Class="PartyTimeline.Views.EventGalleryPage"
+	Title="Event Images"
+	ItemsSource="{Binding Images}"
 	>
+	
     <CarouselPage.ItemTemplate>
         <DataTemplate>
             <ContentPage>
-                <ContentPage.Padding>
-                    <OnPlatform x:TypeArguments="Thickness" iOS="0,40,0,0" Android="0,40,0,0" />
-                </ContentPage.Padding>
-                <StackLayout>
-                    <Image Source="{Binding URI}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
-                    <Label Text="{Binding ShortAnnotation}" FontSize="Medium" HorizontalOptions="Center" />
-                </StackLayout>
+				
+				<ContentPage.Content>
+
+	                <StackLayout Orientation="Vertical">
+
+						<Image
+							Source="{Binding PathSmall}"
+							VerticalOptions="FillAndExpand"
+							/>
+						
+	                   <!-- <ffimageloading:CachedImage
+							AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
+							AbsoluteLayout.LayoutFlags="All"
+							Aspect="AspectFit"
+							DownsampleUseDipUnits="true"
+							DownsampleToViewSize="true"
+							LoadingPlaceholder="image_loading.png"
+							ErrorPlaceholder="image_error.png"
+							Source="{Binding Path}"
+							>
+	                    </ffimageloading:CachedImage>-->
+
+						<!--Text="{x:Static lr:AppResources.ImageCaption}"-->
+						<!--TODO: get this assembly stuff fixed-->
+						<StackLayout
+							Orientation="Horizontal"
+							HorizontalOptions="FillAndExpand">
+							<Label
+								Text="Caption"
+								HorizontalTextAlignment="Start"
+								/>
+
+							<Label
+								Text="{Binding CaptionLength}"
+								HorizontalTextAlignment="End"
+								/>
+						</StackLayout>
+						
+	                    <Entry
+							x:Name="LabelImageCaption"
+							VerticalOptions="Fill"
+							Keyboard="Chat"
+							Text="{Binding Caption}"
+							Placeholder="Enter a caption here"
+							>
+							<Entry.Behaviors>
+								<l:EntryBehavior Command="{Binding OnCaptionEditCompletedCommand}" />
+							</Entry.Behaviors>
+						</Entry>
+						
+	                </StackLayout>
+
+				</ContentPage.Content>
+				
             </ContentPage>
         </DataTemplate>
     </CarouselPage.ItemTemplate>

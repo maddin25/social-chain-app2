@@ -16,6 +16,9 @@
 	<data name="AppName" xml:space="preserve">
 	    <value>PartyTimeline</value>
 	</data>
+	<data name="LabelImageCaption" xml:space="preserve">
+		<value>Caption</value>
+	</data>
 	<data name="LoginStatusLoggingIn" xml:space="preserve">
 		<value>Logging in ...</value>
 	</data>

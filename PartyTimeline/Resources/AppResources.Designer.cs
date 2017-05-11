@@ -53,6 +53,12 @@ namespace PartyTimeline.Resources {
             }
         }
         
+        internal static string LabelImageCaption {
+            get {
+                return ResourceManager.GetString("LabelImageCaption", resourceCulture);
+            }
+        }
+        
         internal static string LoginStatusLoggingIn {
             get {
                 return ResourceManager.GetString("LoginStatusLoggingIn", resourceCulture);

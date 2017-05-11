@@ -28,7 +28,7 @@ namespace PartyTimeline.Droid
             global::Xamarin.Forms.Forms.Init(this, bundle);
 
 			Window.SetSoftInputMode(Android.Views.SoftInput.AdjustResize);
-			AndroidBug5497WorkaroundForXamarinAndroid.assistActivity(this);
+			//AndroidBug5497WorkaroundForXamarinAndroid.assistActivity(this);
 
 			LoadApplication(new App());
 		}

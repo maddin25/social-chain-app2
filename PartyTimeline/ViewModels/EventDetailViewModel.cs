@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
@@ -157,7 +157,7 @@ namespace PartyTimeline.ViewModels
 				else
 				{
 					newEventImage.PathSmall = pathSmall;
-					await EventService.INSTANCE.UpdateElement(newEventImage);
+					await EventService.INSTANCE.PersistElement(newEventImage);
 					// TODO: upload compressed image here or in the UpdateElement method
 				}
 			});

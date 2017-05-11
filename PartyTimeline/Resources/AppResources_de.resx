@@ -28,4 +28,7 @@
 	<data name="ButtonLoginWithFacebook" xml:space="preserve">
 		<value>Login with Facebook</value>
 	</data>
+	<data name="LabelImageCaption" xml:space="preserve">
+		<value>Überschrift</value>
+	</data>
 </root>

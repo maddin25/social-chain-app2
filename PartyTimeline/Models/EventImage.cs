@@ -1,19 +1,35 @@
 ﻿using System;
+using System.Diagnostics;
+
 using SQLite;
 
 using Xamarin.Forms;
 
 namespace PartyTimeline
 {
+
 	[Table("event_images")]
 	public class EventImage : BaseModel
 	{
+		private string caption;
 		private string pathSmall;
 		private string pathOriginal;
 
+		public const int CaptionCharacterLimit = 80;
+
 		// TODO: how to create unique EventImage ID?
-		[Column("caption")]
-		public string Caption { get; set; }
+		[Column("caption"), MaxLength(CaptionCharacterLimit)]
+		public string Caption
+		{
+			get { return caption; }
+			set
+			{
+				caption = value;
+				// TODO: Maybe check constraints here
+				OnPropertyChanged(nameof(CaptionLength));
+				OnPropertyChanged(nameof(Caption));
+			}
+		}
 
 		[Column("path"), NotNull, Unique]
 		public string Path
@@ -64,6 +80,20 @@ namespace PartyTimeline
 		[Column("date_taken"), NotNull]
 		public DateTime DateTaken { get; set; }
 
+		#region UIRelated
+		[Ignore]
+		public Command OnCaptionEditCompletedCommand { get; set; }
+
+		[Ignore]
+		public string CaptionLength
+		{
+			get
+			{
+				return $"{Caption.Length} / {CaptionCharacterLimit}";
+			}
+		}
+		#endregion
+
 		public EventImage(DateTime dateCreated) : base(dateCreated)
 		{
 			Initialize();
@@ -94,9 +124,15 @@ namespace PartyTimeline
 			}
 		}
 
+		public static string ImageCaption { get { return "Caption"; } }
+
 		private void Initialize()
 		{
 			Caption = string.Empty;
+			OnCaptionEditCompletedCommand = new Command(async (obj) =>
+			{
+				await EventService.INSTANCE.PersistElement(this).ConfigureAwait(false);
+			});
 		}
 	}
 }

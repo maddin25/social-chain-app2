@@ -39,7 +39,7 @@
 									DownsampleUseDipUnits="true"
 									LoadingPlaceholder="image_loading.png"
 									ErrorPlaceholder="image_error.png"
-									Source="{Binding Path}"
+									Source="{Binding PathSmall}"
 									>
 	                            </ffimageloading:CachedImage>
 								

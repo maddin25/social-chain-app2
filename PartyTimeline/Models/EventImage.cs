@@ -8,15 +8,48 @@ namespace PartyTimeline
 	[Table("event_images")]
 	public class EventImage : BaseModel
 	{
+		private string pathSmall;
+		private string pathOriginal;
+
 		// TODO: how to create unique EventImage ID?
 		[Column("caption")]
 		public string Caption { get; set; }
 
 		[Column("path"), NotNull, Unique]
-		public string Path { get; set; }
+		public string Path
+		{
+			get
+			{
+				if (string.IsNullOrEmpty(pathOriginal))
+				{
+					return pathSmall;
+				}
+				return pathOriginal;
+			}
+			set
+			{
+				pathOriginal = value;
+				OnPropertyChanged(nameof(Path));
+			}
+		}
 
 		[Column("path_small"), Unique]
-		public string PathSmall { get; set; }
+		public string PathSmall
+		{
+			get
+			{
+				if (string.IsNullOrEmpty(pathSmall))
+				{
+					return pathOriginal;
+				}
+				return pathSmall;
+			}
+			set
+			{
+				pathSmall = value;
+				OnPropertyChanged(nameof(PathSmall));
+			}
+		}
 
 		[Column("event_id"), NotNull]
 		public long EventId { get; set; }

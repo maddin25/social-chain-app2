@@ -95,9 +95,9 @@ namespace PartyTimeline
 			dbConnection.InsertAsync(eventImage);
 		}
 
-		public void UpdateEvent(Event e)
+		public void Update(BaseModel element)
 		{
-			dbConnection.InsertOrReplaceAsync(e);
+			dbConnection.InsertOrReplaceAsync(element);
 		}
 
 		public void WriteEventMember(EventMember member)

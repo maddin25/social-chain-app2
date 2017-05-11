@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+
 using SQLite;
 
 using Xamarin.Forms;
@@ -8,11 +10,11 @@ using Newtonsoft.Json;
 namespace PartyTimeline
 {
 	[Table("BaseModel")]
-	public class BaseModel : IComparable<BaseModel>
+	public class BaseModel : IComparable<BaseModel>, INotifyPropertyChanged
 	{
 		private static Random idGenerator = new Random(DateTime.Now.Millisecond);
 
-		[JsonProperty("id", Required=Required.Always)]
+		[JsonProperty("id", Required = Required.Always)]
 		[PrimaryKey, Column("_id")]
 		public long Id { get; set; }
 
@@ -20,7 +22,7 @@ namespace PartyTimeline
 		[Column("date_created"), NotNull]
 		public DateTime DateCreated { get; set; }
 
-		[JsonProperty("updated_time", Required=Required.Always)]
+		[JsonProperty("updated_time", Required = Required.Always)]
 		[Column("date_modified"), NotNull]
 		public DateTime DateLastModified { get; set; }
 
@@ -28,6 +30,7 @@ namespace PartyTimeline
 		[Ignore]
 		public Command OnDelete { get; private set; }
 
+		public event PropertyChangedEventHandler PropertyChanged;
 
 		public BaseModel()
 		{
@@ -84,6 +87,11 @@ namespace PartyTimeline
 		public virtual void Delete()
 		{
 
+		}
+
+		protected virtual void OnPropertyChanged(string propertyName)
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 
 		private void SetRandomId()

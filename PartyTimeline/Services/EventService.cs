@@ -136,8 +136,14 @@ namespace PartyTimeline
 		public async Task UpdateLocalEvent(long eventId)
 		{
 			Event fe = await fbClient.GetEventDetails(eventId);
-			localDb.UpdateEvent(fe);
+			await UpdateElement(fe);
 			AddToEventList(fe, true);
+		}
+
+		public async Task UpdateElement(BaseModel element)
+		{
+			localDb.Update(element);
+			// TODO: update changes on server as well
 		}
 
 		public void AddToEventImageList(Event e, EventImage img, bool updateIfExisting = false)

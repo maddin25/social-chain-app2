@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using SDebug = System.Diagnostics.Debug;
+using System.Threading.Tasks;
 
 using Android.Graphics;
 
@@ -43,10 +44,11 @@ namespace PartyTimeline.Droid
 			return Environment.GetFolderPath(Environment.SpecialFolder.Personal);
 		}
 
-		public bool CompressImage(Stream fileStream, string inputFile, string outputFile)
+		public async Task<bool> CompressImage(Stream fileStream, string inputFile, string outputFile)
 		{
 			SDebug.WriteLine($"Original image file '{inputFile}' (Size: {new FileInfo(inputFile).Length / 1024} KB)");
-			Bitmap img = BitmapFactory.DecodeStream(fileStream); // async version available
+			Bitmap img = await BitmapFactory.DecodeStreamAsync(fileStream);
+
 			switch (ImageCompression.DeterminePrimaryScaleDimension(img.Height, img.Width))
 			{
 				case ImageCompression.ScaleDown.Height:
@@ -67,9 +69,16 @@ namespace PartyTimeline.Droid
 					break;
 			}
 
-			FileStream writeStream = new FileStream(outputFile, FileMode.Create, FileAccess.Write);  // async version available
-			bool success = img.Compress(Bitmap.CompressFormat.Jpeg, ImageCompression.CompressionFactorJpeg, writeStream);  // async version available
+			FileStream writeStream = new FileStream(path: outputFile,
+			                                        mode: FileMode.Create,
+			                                        access: FileAccess.Write,
+			                                        share: FileShare.None,
+			                                        bufferSize: 8,
+			                                        useAsync: true);
+			bool success = await img.CompressAsync(Bitmap.CompressFormat.Jpeg, ImageCompression.CompressionFactorJpeg, writeStream);  // async version available
+			writeStream.Close();
 			SDebug.WriteLine($"Wrote compressed image file to '{outputFile}' (Size: {new FileInfo(outputFile).Length / 1024} KB)");
+
 			return success;
 		}
 

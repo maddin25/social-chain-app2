@@ -136,22 +136,32 @@ namespace PartyTimeline.ViewModels
 				Path.GetDirectoryName(pathNormal),
 				Path.GetFileNameWithoutExtension(pathNormal) + "small" + Path.GetExtension(pathNormal)
 			);
-			if (!DependencyService.Get<SystemInterface>().CompressImage(file.GetStream(), pathNormal, pathSmall))
-			{
-				Debug.WriteLine("Failed compressing image");
-			}
 
 			EventImage newEventImage = new EventImage(DateTime.Now)
 			{
 				Path = pathNormal,
-				PathSmall = pathSmall,
 				EventMemberId = SessionInformationProvider.INSTANCE.CurrentUserEventMember.Id,
 				EventId = EventReference.Id,
 				DateTaken = DateTime.Now
 			};
 			EventService.INSTANCE.AddImage(newEventImage);
+			DependencyService.Get<SystemInterface>()
+							 .CompressImage(file.GetStream(), pathNormal, pathSmall)
+							 .ContinueWith(async (Task<bool> compressTask) =>
+			{
+				bool success = await compressTask;
+				if (!success)
+				{
+					Debug.WriteLine("Failed compressing image");
+				}
+				else
+				{
+					newEventImage.PathSmall = pathSmall;
+					await EventService.INSTANCE.UpdateElement(newEventImage);
+					// TODO: upload compressed image here or in the UpdateElement method
+				}
+			});
 		}
-
 		// TODO maybe store every picture in the Album, read https://github.com/jamesmontemagno/MediaPlugin
 	}
 }

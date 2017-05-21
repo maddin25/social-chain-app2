@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -30,7 +31,7 @@ namespace PartyTimeline
 		public RestClient(string endpoint)
 		{
 			this.endpoint = endpoint;
-			serverUrl = string.Join("/", serverBaseUrl, appName, appApiNode, apiVersion, this.endpoint);
+			serverUrl = UrlJoin(serverBaseUrl, appName, appApiNode, apiVersion, this.endpoint);
 			Debug.WriteLine($"Using server URL {serverUrl} for type {this.GetType().ToString()}");
 			httpClient = new HttpClient();
 			serializationSettings = new JsonSerializerSettings()
@@ -40,29 +41,29 @@ namespace PartyTimeline
 			};
 		}
 
-		public async Task<List<T>> GetAsync()
+		public async Task<List<T>> GetAsync(string custom_endpoint = null)
 		{
-			var json = await httpClient.GetStringAsync(serverUrl);
+			var json = await httpClient.GetStringAsync(UrlJoin(serverUrl, custom_endpoint));
 
 			var taskModels = JsonConvert.DeserializeObject<List<T>>(json, serializationSettings);
 
 			return taskModels;
 		}
 
-		public async Task<bool> PostAsync(T t)
+		public async Task<bool> PostAsync(T t, string custom_endpoint = null)
 		{
 			var json = JsonConvert.SerializeObject(t, serializationSettings);
-			Debug.WriteLine($"POST: Serialized object for {this.GetType().ToString()}:\n{json}");
+			Debug.WriteLine($"POST: Serialized object for {this.GetType().ToString()}: {json}");
 			HttpContent httpContent = new StringContent(json);
 
 			httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-			var result = await httpClient.PostAsync(serverUrl, httpContent);
+			var result = await httpClient.PostAsync(UrlJoin(serverUrl, custom_endpoint), httpContent);
 			Debug.WriteLine($"POST result:\n\tStatusCode: {result.StatusCode}\n\tRequestMessage: {result.RequestMessage.ToString()}");
 			return result.IsSuccessStatusCode;
 		}
 
-		public async Task<bool> PutAsync(int id, T t)
+		public async Task<bool> PutAsync(int id, T t, string custom_endpoint = null)
 		{
 			var json = JsonConvert.SerializeObject(t, serializationSettings);
 
@@ -70,16 +71,21 @@ namespace PartyTimeline
 
 			httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-			var result = await httpClient.PutAsync(string.Join("/", serverUrl, id), httpContent);
+			var result = await httpClient.PutAsync(UrlJoin(serverUrl, custom_endpoint, id), httpContent);
 
 			return result.IsSuccessStatusCode;
 		}
 
-		public async Task<bool> DeleteAsync(int id, T t)
+		public async Task<bool> DeleteAsync(int id, T t, string custom_endpoint = null)
 		{
-			var response = await httpClient.DeleteAsync(string.Join("/", serverUrl, id));
+			var response = await httpClient.DeleteAsync(UrlJoin(serverUrl, custom_endpoint, id));
 
 			return response.IsSuccessStatusCode;
+		}
+
+		public static string UrlJoin(params object[] parts)
+		{
+			return string.Join("/", parts.Where((arg) => arg != null));
 		}
 	}
 }

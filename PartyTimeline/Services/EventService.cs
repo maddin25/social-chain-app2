@@ -88,6 +88,11 @@ namespace PartyTimeline
 					{
 						eventsRequiredUpdate.Add(fe.Id);
 					}
+					else
+					{
+						// HACK: remove this if a proper push routine is defined
+						await clientEvents.PostAsync(le);
+					}
 					// else: it is already in the list and does not need to be updated
 				}
 				else // this event is new
@@ -198,8 +203,10 @@ namespace PartyTimeline
 		public async void SmallImageAvailable(EventImage image)
 		{
 			Task persistTask = PersistElement(image);
-			Task uploadTask = clientImages.UploadImage(image, ImageQualities.SMALL);
-			await Task.WhenAll(persistTask, uploadTask);
+			Task<bool> uploadTask = clientImages.UploadImage(image, ImageQualities.SMALL);
+			bool success = await uploadTask;
+			Debug.WriteLineIf(!success, $"Failed uploading small version of image '{image.PathSmall}'");
+			await persistTask;
 		}
 
 		public void AddEventMember(EventMember member)

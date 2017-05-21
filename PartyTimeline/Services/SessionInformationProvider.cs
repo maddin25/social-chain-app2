@@ -10,7 +10,10 @@ namespace PartyTimeline
 	public class SessionInformationProvider
 	{
 		private Account _currentUser;
+		private UserSession _currentUserSession;
 		private EventMember _currentUserEventMember;
+
+		private RestClientSessions clientSessions;
 		private static SessionInformationProvider _instance;
 
 		#region PublicMethods
@@ -35,6 +38,23 @@ namespace PartyTimeline
 			}
 		}
 
+		public UserSession CurrentUserSession
+		{
+			get
+			{
+				if (_currentUserSession == null && CurrentUserAccount != null)
+				{
+					_currentUserSession = new UserSession
+					{
+						Id = GetUserProperty(FacebookAccountProperties.AccessToken),
+						EventMemberId = CurrentUserEventMember.Id,
+						ExpiresOn = DateTime.FromFileTime(long.Parse(GetUserProperty(FacebookAccountProperties.ExpiresOn)))
+					};
+				}
+				return _currentUserSession;
+			}
+		}
+
 		public Account CurrentUserAccount
 		{
 			get
@@ -48,6 +68,7 @@ namespace PartyTimeline
 			private set
 			{
 				_currentUserEventMember = null;
+				_currentUserSession = null;
 				_currentUser = value;
 			}
 		}
@@ -66,8 +87,7 @@ namespace PartyTimeline
 					EndSession();
 					return false;
 				}
-				DateTime expiresOn = DateTime.FromFileTime(long.Parse(CurrentUserAccount.Properties[FacebookAccountProperties.ExpiresOn]));
-				return expiresOn > DateTime.Now; // is true, if the Account token is not yet expired
+				return CurrentUserSession.ExpiresOn > DateTime.Now; // is true, if the Account token is not yet expired
 			}
 		}
 
@@ -110,10 +130,11 @@ namespace PartyTimeline
 			OnSessionStateChanged(new SessionState { IsAuthenticated = false });
 		}
 
-		public void UpdateSession(Account account)
+		public async void UpdateSession(Account account)
 		{
 			AccountStore.Create().Save(account, AppName);
 			CurrentUserAccount = account;
+			await clientSessions.Register(CurrentUserSession);
 			EventService.INSTANCE.AddEventMember(CurrentUserEventMember);
 		}
 
@@ -195,7 +216,7 @@ namespace PartyTimeline
 
 		private SessionInformationProvider()
 		{
-
+			clientSessions = new RestClientSessions();
 		}
 	}
 }

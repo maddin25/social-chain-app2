@@ -14,7 +14,9 @@ namespace PartyTimeline
 	{
 		private static Random idGenerator = new Random(DateTime.Now.Millisecond);
 
-		[JsonProperty("id", Required = Required.Always)]
+		public const string UidId = "id";
+
+		[JsonProperty(UidId, Required = Required.Always)]
 		[PrimaryKey, Column("_id")]
 		public long Id { get; set; }
 

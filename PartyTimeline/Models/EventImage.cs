@@ -3,21 +3,26 @@ using System.Diagnostics;
 
 using SQLite;
 
+using Newtonsoft.Json;
+
 using Xamarin.Forms;
 
 namespace PartyTimeline
 {
-
+	[JsonObject(MemberSerialization.OptIn)]
 	[Table("event_images")]
 	public class EventImage : BaseModel
 	{
 		private string caption;
-		private string pathSmall;
 		private string pathOriginal;
+		private string pathSmall;
 
+		public const string UidEventId = "event_id";
+		public const string UidEventMemberId = "event_member_id";
 		public const int CaptionCharacterLimit = 80;
 
 		// TODO: how to create unique EventImage ID?
+		[JsonProperty("caption")]
 		[Column("caption"), MaxLength(CaptionCharacterLimit)]
 		public string Caption
 		{
@@ -31,8 +36,9 @@ namespace PartyTimeline
 			}
 		}
 
-		[Column("path"), NotNull, Unique]
-		public string Path
+		[JsonIgnore]
+		[Column("path_original"), NotNull, Unique]
+		public string PathOriginal
 		{
 			get
 			{
@@ -45,10 +51,11 @@ namespace PartyTimeline
 			set
 			{
 				pathOriginal = value;
-				OnPropertyChanged(nameof(Path));
+				OnPropertyChanged(nameof(PathOriginal));
 			}
 		}
 
+		[JsonIgnore]
 		[Column("path_small"), Unique]
 		public string PathSmall
 		{
@@ -67,23 +74,28 @@ namespace PartyTimeline
 			}
 		}
 
-		[Column("event_id"), NotNull]
+		[JsonProperty(UidEventId)]
+		[Column(UidEventId), NotNull]
 		public long EventId { get; set; }
 
 		/// <summary>
 		/// The event member who took the picture
 		/// </summary>
 		/// <value>The event member identifier</value>
-		[Column("event_member_id"), NotNull]
+		[JsonProperty(UidEventMemberId)]
+		[Column(UidEventMemberId), NotNull]
 		public long EventMemberId { get; set; }
 
+		[JsonProperty("date_taken")]
 		[Column("date_taken"), NotNull]
 		public DateTime DateTaken { get; set; }
 
 		#region UIRelated
+		[JsonIgnore]
 		[Ignore]
 		public Command OnCaptionEditCompletedCommand { get; set; }
 
+		[JsonIgnore]
 		[Ignore]
 		public string CaptionLength
 		{
@@ -116,7 +128,7 @@ namespace PartyTimeline
 			{
 				EventImage img = update as EventImage;
 				Caption = img.Caption;
-				Path = img.Path;
+				PathOriginal = img.PathOriginal;
 				PathSmall = img.PathSmall;
 				EventId = img.EventId;
 				EventMemberId = img.EventMemberId;

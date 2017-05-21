@@ -81,6 +81,11 @@ namespace PartyTimeline.iOS
 			return error == null;
 		}
 
+		public byte[] ReadFile(string path)
+		{
+			return File.ReadAllBytes(path);
+		}
+
 		private void PrintPaths()
 		{
 			Debug.WriteLine($"MyDocuments: {Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}");

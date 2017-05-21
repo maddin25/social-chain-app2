@@ -15,7 +15,9 @@ namespace PartyTimeline
 	{
 		private static EventService _instance;
 		private LocalDatabaseAccess localDb;
-		private FacebookClient fbClient;
+		private FacebookClient clientFb;
+		private RestClientEvents clientEvents;
+		private RestClientImages clientImages;
 
 		public EventHandler SyncStateChanged { get; set; }
 
@@ -41,7 +43,9 @@ namespace PartyTimeline
 		{
 			EventList = new SortableObservableCollection<Event>();
 			localDb = new LocalDatabaseAccess();
-			fbClient = new FacebookClient();
+			clientFb = new FacebookClient();
+			clientEvents = new RestClientEvents();
+			clientImages = new RestClientImages();
 			CurrentSyncState = new SyncState();
 			SessionInformationProvider.INSTANCE.SessionStateChanged += (sender, e) =>
 			{
@@ -60,7 +64,7 @@ namespace PartyTimeline
 		{
 			CurrentSyncState.EventListSyncing = true;
 			OnSyncStateChanged();
-			Task<List<Event>> fbEvents = Task.Run(fbClient.GetEventHeaders);
+			Task<List<Event>> fbEvents = Task.Run(clientFb.GetEventHeaders);
 			List<long> eventsRequiredUpdate = new List<long>();
 
 			List<Event> localEvents = await localDb.ReadEvents();
@@ -72,7 +76,7 @@ namespace PartyTimeline
 
 			foreach (Event fe in await fbEvents)
 			{
-				if (fe.IsDraft || fe.IsCancelled)
+				if (fe.IsDraft || fe.IsCanceled)
 				{
 					continue;
 				}
@@ -135,15 +139,17 @@ namespace PartyTimeline
 
 		public async Task UpdateLocalEvent(long eventId)
 		{
-			Event fe = await fbClient.GetEventDetails(eventId);
-			await PersistElement(fe);
+			Event fe = await clientFb.GetEventDetails(eventId);
+			Task persistTask = PersistElement(fe);
+			Task<bool> postTask = clientEvents.PostAsync(fe);
 			AddToEventList(fe, true);
+			await Task.WhenAll(persistTask, postTask);
 		}
 
 		public async Task PersistElement(BaseModel element)
 		{
 			localDb.Update(element);
-			// TODO: update changes on server as well
+			// TODO: update changes on server as well if we implement a generic post interface
 		}
 
 		public void AddToEventImageList(Event e, EventImage img, bool updateIfExisting = false)
@@ -178,13 +184,22 @@ namespace PartyTimeline
 			}
 		}
 
-		public void AddImage(EventImage image)
+		public async void AddImage(EventImage image)
 		{
 			Event e = EventList.FirstOrDefault((arg) => arg.Id == image.EventId);
+			Task postTask = clientImages.PostAsync(image);
 			e?.Images.Add(image);
 			localDb.WriteEventImage(image);
 			SortEventImageList(e);
 			//DependencyService.Get<EventSyncInterface>().UploadNewImageLowRes(image);
+			await postTask;
+		}
+
+		public async void SmallImageAvailable(EventImage image)
+		{
+			Task persistTask = PersistElement(image);
+			Task uploadTask = clientImages.UploadImage(image, ImageQualities.SMALL);
+			await Task.WhenAll(persistTask, uploadTask);
 		}
 
 		public void AddEventMember(EventMember member)
@@ -211,7 +226,7 @@ namespace PartyTimeline
 				}
 				SortEventImageList(EventList[eventIndex]);
 			}
-			DeleteFileWithDialog(image.Path);
+			DeleteFileWithDialog(image.PathOriginal);
 			DeleteFileWithDialog(image.PathSmall);
 		}
 

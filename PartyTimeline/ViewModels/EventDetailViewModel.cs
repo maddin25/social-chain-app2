@@ -91,6 +91,7 @@ namespace PartyTimeline.ViewModels
 			var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
 			{
 				Directory = EventReference.Id.ToString(),
+				//Name = 123, // TODO: create unique name here
 				PhotoSize = PhotoSize.Full,
 				CompressionQuality = 92
 			});
@@ -139,7 +140,7 @@ namespace PartyTimeline.ViewModels
 
 			EventImage newEventImage = new EventImage(DateTime.Now)
 			{
-				Path = pathNormal,
+				PathOriginal = pathNormal,
 				EventMemberId = SessionInformationProvider.INSTANCE.CurrentUserEventMember.Id,
 				EventId = EventReference.Id,
 				DateTaken = DateTime.Now
@@ -157,8 +158,7 @@ namespace PartyTimeline.ViewModels
 				else
 				{
 					newEventImage.PathSmall = pathSmall;
-					await EventService.INSTANCE.PersistElement(newEventImage);
-					// TODO: upload compressed image here or in the UpdateElement method
+					EventService.INSTANCE.SmallImageAvailable(newEventImage);
 				}
 			});
 		}

@@ -7,4 +7,5 @@ public interface SystemInterface
 	bool DeleteFile(string path);
 	string GetApplicationDataFolder();
 	Task<bool> CompressImage(Stream fileStream, string inputFile, string outputFile);
+	byte[] ReadFile(string path);
 }

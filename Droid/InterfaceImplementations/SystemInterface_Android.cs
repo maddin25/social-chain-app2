@@ -70,16 +70,21 @@ namespace PartyTimeline.Droid
 			}
 
 			FileStream writeStream = new FileStream(path: outputFile,
-			                                        mode: FileMode.Create,
-			                                        access: FileAccess.Write,
-			                                        share: FileShare.None,
-			                                        bufferSize: 8,
-			                                        useAsync: true);
+													mode: FileMode.Create,
+													access: FileAccess.Write,
+													share: FileShare.None,
+													bufferSize: 8,
+													useAsync: true);
 			bool success = await img.CompressAsync(Bitmap.CompressFormat.Jpeg, ImageCompression.CompressionFactorJpeg, writeStream);  // async version available
 			writeStream.Close();
 			SDebug.WriteLine($"Wrote compressed image file to '{outputFile}' (Size: {new FileInfo(outputFile).Length / 1024} KB)");
 
 			return success;
+		}
+
+		public byte[] ReadFile(string path)
+		{
+			return File.ReadAllBytes(path);
 		}
 
 		private void PrintPaths()

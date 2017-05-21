@@ -33,7 +33,7 @@ namespace PartyTimeline
 
 		[JsonProperty("is_canceled")]
 		[Ignore]
-		public bool IsCancelled { get; set; }
+		public bool IsCanceled { get; set; }
 
 		[JsonProperty("is_draft")]
 		[Ignore]
@@ -69,7 +69,7 @@ namespace PartyTimeline
 				this.StartDateTime = e.StartDateTime;
 				this.EndDateTime = e.EndDateTime;
 				this.Cover = e.Cover;
-				this.IsCancelled = e.IsCancelled;
+				this.IsCanceled = e.IsCanceled;
 				this.IsDraft = e.IsDraft;
 			}
 		}

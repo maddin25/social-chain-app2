@@ -86,6 +86,9 @@
     <Compile Include="Database\EventMembershipRoles.cs" />
     <Compile Include="Resources\ImageCompression.cs" />
     <Compile Include="Behaviors\EntryBehavior.cs" />
+    <Compile Include="RestClient\RestClientImages.cs" />
+    <Compile Include="RestClient\RestClientEvents.cs" />
+    <Compile Include="Helper\ImageQualities.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Plugin.Media, Version=2.6.3.14, Culture=neutral, processorArchitecture=MSIL">

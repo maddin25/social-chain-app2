@@ -36,12 +36,12 @@ namespace PartyTimeline.Droid
 
 		public void UploadNewImageLowRes(ref EventImage image)
 		{
-			SDebug.WriteLine($"Uploading image {image.Path} to the server");
+			SDebug.WriteLine($"Uploading image {image.PathOriginal} to the server");
 		}
 
 		public void UpdateImageAnnotation(ref EventImage image)
 		{
-			SDebug.WriteLine($"Updating annotation of image {image.Path}");
+			SDebug.WriteLine($"Updating annotation of image {image.PathOriginal}");
 		}
 	}
 }

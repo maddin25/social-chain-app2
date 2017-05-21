@@ -35,7 +35,7 @@ namespace PartyTimeline
 				scope: "email,user_events",
 				authorizeUrl: WebUriBuilder(FacebookApiUrl, ApiVersion, FacebookApiLoginOauth),
 				redirectUrl: WebUriBuilder(FacebookApiUrl, FacebookApiLoginRedirect),
-				isUsingNativeUI: false
+				isUsingNativeUI: true
 			);
 
 			authenticator.Completed += async (object sender, AuthenticatorCompletedEventArgs e) =>
@@ -53,7 +53,9 @@ namespace PartyTimeline
 			};
 
 			DependencyService.Get<FacebookInterface>().LaunchLogin(authenticator);
-		}
+		    var presenter = new Xamarin.Auth.Presenters.OAuthLoginPresenter();
+		    presenter.Login(authenticator);
+        }
 
 		public async Task<Event> GetEventDetails(long id)
 		{

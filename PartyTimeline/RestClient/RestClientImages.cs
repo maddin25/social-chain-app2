@@ -43,7 +43,7 @@ namespace PartyTimeline
 			httpContent.Add(new StringContent(quality), ImageQualities.UidImageQuality);
 
 			Debug.WriteLine($"POST {nameof(EventImage)}:\n\t{httpContent.ToString()}");
-			var result = await httpClient.PostAsync(string.Join("/", serverUrl, "upload"), httpContent);
+			var result = await httpClient.PostAsync(UrlJoin(serverUrl, "upload"), httpContent);
 			return result.IsSuccessStatusCode;
 		}
 	}

@@ -249,6 +249,19 @@
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <Import Project="..\packages\Xamarin.Forms.2.3.5.239-pre3\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.3.5.239-pre3\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />
   <PropertyGroup>
-    <PreBuildEvent>(if exist "$(TargetDir)*old.pdb" del "$(TargetDir)*old.pdb") &amp; (if exist "$(TargetDir)*.pdb" ren "$(TargetDir)*.pdb" *.old.pdb)</PreBuildEvent>
+    <PreBuildEvent>echo "Target Directory: $(TargetDir)";
+
+if exist "$(TargetDir)*old.pdb" (
+del "$(TargetDir)*old.pdb"
+echo "Deleting *old.pdb files"
+);
+
+if exist "$(TargetDir)*.pdb" (
+ren "$(TargetDir)*.pdb" "*.old.pdb";
+echo "Renaming existing *.pdb files";
+)
+
+if exist "$(TargetPath).locked" del "$(TargetPath).locked";
+</PreBuildEvent>
   </PropertyGroup>
 </Project>

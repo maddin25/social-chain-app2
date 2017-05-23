@@ -22,7 +22,9 @@ namespace PartyTimeline
 
 		protected string endpoint = string.Empty;
 
-		protected const string serverBaseUrl = "http://lowcost-env.zk8xjtydiz.us-west-2.elasticbeanstalk.com";
+        protected const string sep = "/";
+
+        protected const string serverBaseUrl = "http://lowcost-env.zk8xjtydiz.us-west-2.elasticbeanstalk.com";
 		protected const string appName = "partytimeline";
 		protected const string appApiNode = "api";
 		protected const string apiVersion = "v1";
@@ -59,7 +61,7 @@ namespace PartyTimeline
 			httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
 			var result = await httpClient.PostAsync(UrlJoin(serverUrl, custom_endpoint), httpContent);
-			Debug.WriteLine($"POST result:\n\tStatusCode: {result.StatusCode}\n\tRequestMessage: {result.RequestMessage.ToString()}");
+            LogResponse(result);
 			return result.IsSuccessStatusCode;
 		}
 
@@ -72,20 +74,39 @@ namespace PartyTimeline
 			httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
 			var result = await httpClient.PutAsync(UrlJoin(serverUrl, custom_endpoint, id), httpContent);
-
-			return result.IsSuccessStatusCode;
+            LogResponse(result);
+            return result.IsSuccessStatusCode;
 		}
 
 		public async Task<bool> DeleteAsync(int id, T t, string custom_endpoint = null)
 		{
-			var response = await httpClient.DeleteAsync(UrlJoin(serverUrl, custom_endpoint, id));
+			var result = await httpClient.DeleteAsync(UrlJoin(serverUrl, custom_endpoint, id));
+            LogResponse(result);
 
-			return response.IsSuccessStatusCode;
-		}
+            return result.IsSuccessStatusCode;
+        }
 
-		public static string UrlJoin(params object[] parts)
+        public static string UrlJoin(params object[] parts)
 		{
-			return string.Join("/", parts.Where((arg) => arg != null));
+			return string.Join(sep, parts.Where((arg) => arg != null).Select<object, string>((part) =>
+            {
+                string partString = part.ToString();
+                while (partString.StartsWith(sep))
+                {
+                    partString.Remove(0);
+                }
+                while (partString.EndsWith(sep))
+                {
+                    partString.Remove(partString.Length - 1);
+                }
+                return partString;
+            }
+            )) + sep;
 		}
+
+        private void LogResponse(HttpResponseMessage msg)
+        {string log_sep = "#####\n";
+            Debug.WriteLine($"{log_sep}Response:\nStatusCode = {msg.StatusCode}\nRequestMessage = {msg.RequestMessage.ToString().Replace("\n", " ")}\nContent = {msg.Content}\n{log_sep}");
+        }
 	}
 }

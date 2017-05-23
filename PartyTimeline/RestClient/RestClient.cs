@@ -90,23 +90,18 @@ namespace PartyTimeline
 		{
 			return string.Join(sep, parts.Where((arg) => arg != null).Select<object, string>((part) =>
             {
-                string partString = part.ToString();
-                while (partString.StartsWith(sep))
-                {
-                    partString.Remove(0);
-                }
-                while (partString.EndsWith(sep))
-                {
-                    partString.Remove(partString.Length - 1);
-                }
-                return partString;
+                string s = part.ToString();
+                s = s.TrimStart(sep.ToCharArray());
+                s = s.TrimEnd(sep.ToCharArray());
+                    
+                return s;
             }
             )) + sep;
 		}
 
         private void LogResponse(HttpResponseMessage msg)
-        {string log_sep = "#####\n";
-            Debug.WriteLine($"{log_sep}Response:\nStatusCode = {msg.StatusCode}\nRequestMessage = {msg.RequestMessage.ToString().Replace("\n", " ")}\nContent = {msg.Content}\n{log_sep}");
+        {string log_sep = "\n#####\n";
+            Debug.WriteLine($"{log_sep}Response:\nStatusCode = {msg.StatusCode}\nRequestMessage = {msg.RequestMessage.ToString().Replace("\n", " ")}\nContent = {msg.Content}{log_sep}");
         }
 	}
 }

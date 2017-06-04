@@ -19,7 +19,9 @@ namespace PartyTimeline
 
 		public async Task<bool> UploadImage(EventImage image, string quality)
 		{
-			string path;
+            Debug.WriteLine($"{nameof(UploadImage)}: uploading {nameof(EventImage)} with '{EventImage.UidId}': {image.Id}");
+
+            string path;
 			switch (quality)
 			{
 				case ImageQualities.SMALL:
@@ -41,9 +43,9 @@ namespace PartyTimeline
 			httpContent.Add(new StringContent(image.EventId.ToString()), EventImage.UidEventId);
 			httpContent.Add(new StringContent(image.EventMemberId.ToString()), EventImage.UidEventMemberId);
 			httpContent.Add(new StringContent(quality), ImageQualities.UidImageQuality);
-
-			Debug.WriteLine($"POST {nameof(EventImage)}:\n\t{httpContent.ToString()}");
+            
 			var result = await httpClient.PostAsync(UrlJoin(serverUrl, "upload"), httpContent);
+            LogResponse(result);
 			return result.IsSuccessStatusCode;
 		}
 	}

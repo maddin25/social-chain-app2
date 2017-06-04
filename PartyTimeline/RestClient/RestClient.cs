@@ -38,8 +38,7 @@ namespace PartyTimeline
 			httpClient = new HttpClient();
 			serializationSettings = new JsonSerializerSettings()
 			{
-				DateTimeZoneHandling = DateTimeZoneHandling.Utc,
-				DateFormatString = "yyyy-MM-dd HH:mm:ss"
+				DateTimeZoneHandling = DateTimeZoneHandling.Utc
 			};
 		}
 
@@ -99,7 +98,7 @@ namespace PartyTimeline
             )) + sep;
 		}
 
-        private void LogResponse(HttpResponseMessage msg)
+        protected void LogResponse(HttpResponseMessage msg)
         {string log_sep = "\n#####\n";
             Debug.WriteLine($"{log_sep}Response:\nStatusCode = {msg.StatusCode}\nRequestMessage = {msg.RequestMessage.ToString().Replace("\n", " ")}\nContent = {msg.Content}{log_sep}");
         }

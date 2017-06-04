@@ -18,8 +18,12 @@ namespace PartyTimeline
 		private string pathSmall;
 
 		public const string UidEventId = "event_id";
-		public const string UidEventMemberId = "event_member_id";
-		public const int CaptionCharacterLimit = 80;
+		public const string UidEventMemberId = "userId";
+        public const string UidPathSmall = "path_small";
+        public const string UidPathOriginal = "path_original";
+        public const string UidDateTaken = "date_taken";
+
+        public const int CaptionCharacterLimit = 80;
 
 		// TODO: how to create unique EventImage ID?
 		[JsonProperty("caption")]
@@ -36,8 +40,8 @@ namespace PartyTimeline
 			}
 		}
 
-		[JsonIgnore]
-		[Column("path_original"), NotNull, Unique]
+		[JsonProperty(UidPathOriginal)]
+		[Column(UidPathOriginal), NotNull, Unique]
 		public string PathOriginal
 		{
 			get
@@ -51,12 +55,13 @@ namespace PartyTimeline
 			set
 			{
 				pathOriginal = value;
-				OnPropertyChanged(nameof(PathOriginal));
+                OnPropertyChanged(nameof(PathSmall));
+                OnPropertyChanged(nameof(PathOriginal));
 			}
 		}
 
-		[JsonIgnore]
-		[Column("path_small"), Unique]
+        [JsonProperty(UidPathSmall)]
+		[Column(UidPathSmall), Unique]
 		public string PathSmall
 		{
 			get
@@ -71,7 +76,8 @@ namespace PartyTimeline
 			{
 				pathSmall = value;
 				OnPropertyChanged(nameof(PathSmall));
-			}
+                OnPropertyChanged(nameof(PathOriginal));
+            }
 		}
 
 		[JsonProperty(UidEventId)]
@@ -86,8 +92,8 @@ namespace PartyTimeline
 		[Column(UidEventMemberId), NotNull]
 		public long EventMemberId { get; set; }
 
-		[JsonProperty("date_taken")]
-		[Column("date_taken"), NotNull]
+		[JsonProperty(UidDateTaken)]
+		[Column(UidDateTaken), NotNull]
 		public DateTime DateTaken { get; set; }
 
 		#region UIRelated

@@ -18,11 +18,13 @@ namespace PartyTimeline
 	{
 		protected HttpClient httpClient;
 
-		private JsonSerializerSettings serializationSettings;
+		protected JsonSerializerSettings serializationSettings;
 
 		protected string endpoint = string.Empty;
 
         protected const string sep = "/";
+        protected const string RequestGet = "GET";
+        protected const string RequestPost = "POST";
 
         protected const string serverBaseUrl = "http://lowcost-env.zk8xjtydiz.us-west-2.elasticbeanstalk.com";
 		protected const string appName = "partytimeline";
@@ -36,15 +38,22 @@ namespace PartyTimeline
 			serverUrl = UrlJoin(serverBaseUrl, appName, appApiNode, apiVersion, this.endpoint);
 			Debug.WriteLine($"Using server URL {serverUrl} for type {this.GetType().ToString()}");
 			httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri(serverUrl);
+            //httpClient.Timeout = new TimeSpan(0, 0, 3); // [h, m, s]
+
+            httpClient.DefaultRequestHeaders.Clear();
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
 			serializationSettings = new JsonSerializerSettings()
 			{
-				DateTimeZoneHandling = DateTimeZoneHandling.Utc
-			};
+				DateTimeZoneHandling = DateTimeZoneHandling.Utc,
+                DateFormatString = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+            };
 		}
 
 		public async Task<List<T>> GetAsync(string custom_endpoint = null)
 		{
-			var json = await httpClient.GetStringAsync(UrlJoin(serverUrl, custom_endpoint));
+			var json = await httpClient.GetStringAsync(custom_endpoint);
 
 			var taskModels = JsonConvert.DeserializeObject<List<T>>(json, serializationSettings);
 
@@ -59,7 +68,7 @@ namespace PartyTimeline
 
 			httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-			var result = await httpClient.PostAsync(UrlJoin(serverUrl, custom_endpoint), httpContent);
+			var result = await httpClient.PostAsync(custom_endpoint, httpContent);
             LogResponse(result);
 			return result.IsSuccessStatusCode;
 		}
@@ -72,14 +81,14 @@ namespace PartyTimeline
 
 			httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-			var result = await httpClient.PutAsync(UrlJoin(serverUrl, custom_endpoint, id), httpContent);
+			var result = await httpClient.PutAsync(UrlJoin(custom_endpoint, id), httpContent);
             LogResponse(result);
             return result.IsSuccessStatusCode;
 		}
 
 		public async Task<bool> DeleteAsync(int id, T t, string custom_endpoint = null)
 		{
-			var result = await httpClient.DeleteAsync(UrlJoin(serverUrl, custom_endpoint, id));
+			var result = await httpClient.DeleteAsync(UrlJoin(custom_endpoint, id));
             LogResponse(result);
 
             return result.IsSuccessStatusCode;
@@ -95,12 +104,37 @@ namespace PartyTimeline
                     
                 return s;
             }
-            )) + sep;
+            ));
 		}
 
         protected void LogResponse(HttpResponseMessage msg)
         {string log_sep = "\n#####\n";
             Debug.WriteLine($"{log_sep}Response:\nStatusCode = {msg.StatusCode}\nRequestMessage = {msg.RequestMessage.ToString().Replace("\n", " ")}\nContent = {msg.Content}{log_sep}");
+        }
+
+        /// <summary>
+        /// Builds an html query string.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        protected string BuildHttpQuery(params string[] args)
+        {
+            int nargs = args.Length;
+            if (nargs % 2 != 0)
+            {
+                throw new ArgumentException("An even number of arguments needs to be passed");
+            }
+            if (args.Length == 0)
+            {
+                throw new ArgumentException("No query content provided");
+            }
+            
+            List<string> parts = new List<string>(nargs / 2);
+            for (int i = 0; i < nargs; i += 2)
+            {
+                parts.Add($"{args[i]}={args[i + 1]}");
+            }
+            return "?" + string.Join("&", parts);
         }
 	}
 }

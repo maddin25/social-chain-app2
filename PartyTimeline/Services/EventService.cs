@@ -101,7 +101,7 @@ namespace PartyTimeline
 					eventsRequiredUpdate.Add(fe.Id);
 				}
 			}
-			await Task.WhenAll(eventsRequiredUpdate.Select((long id) => UpdateLocalEvent(id)));
+			await Task.WhenAll(eventsRequiredUpdate.Select((long id) => UpdateEvent(id)));
 			SortEventList();
 			CurrentSyncState.EventListSyncing = false;
 			OnSyncStateChanged();
@@ -112,43 +112,44 @@ namespace PartyTimeline
 			CurrentSyncState.EventDetailsSyncing = true;
 			CurrentSyncState.EventIdSyncing = e.Id;
 			OnSyncStateChanged();
-			// TODO pull this list from the server
-			List<EventImage> serverEventImages = new List<EventImage>();
+            
+            Task<List<EventImage>> serverEventImages = Task.Run(() => clientImages.GetEventImages(e.Id));
 			List<EventImage> localEventImages = await localDb.ReadEventImages(e.Id);
 			foreach (EventImage img in localEventImages)
 			{
 				AddToEventImageList(e, img, false);
 			}
-			/**
-			foreach (EventImage serverImage in serverEventImages)
+			
+			foreach (EventImage sImg in await serverEventImages)
 			{
-				if (localEventImages.Contains(serverImage))
+				if (localEventImages.Contains(sImg))
 				{
-					EventImage lImg = localEventImages[localEventImages.IndexOf(serverImage)];
-					if (lImg.DateLastModified < serverImage.DateLastModified) // the local event image is outdated
+					EventImage lImg = localEventImages[localEventImages.IndexOf(sImg)];
+					if (lImg.DateLastModified < sImg.DateLastModified) // the local event image is outdated
 					{
-						// TODO: mark this image to be updated
+                        lImg.Update(sImg);
 					}
 				}
 				else
 				{
-					// TODO: mark this image to be updated
+                    // TODO: check, if the user who took this image is already in the DB
+                    AddToEventImageList(e, sImg, true);
 				}
 			}
-			*/
-			// TODO: update all marked images
+			
 			SortEventImageList(e);
 			CurrentSyncState.EventDetailsSyncing = false;
 			OnSyncStateChanged();
 		}
 
-		public async Task UpdateLocalEvent(long eventId)
+		public async Task UpdateEvent(long eventId)
 		{
 			Event fe = await clientFb.GetEventDetails(eventId);
 			Task persistTask = PersistElement(fe);
 			Task<bool> postTask = clientEvents.PostAsync(fe);
 			AddToEventList(fe, true);
 			await Task.WhenAll(persistTask, postTask);
+            Debug.WriteLine($"Finished updating event with ID {eventId} (local & server)");
 		}
 
 		public async Task PersistElement(BaseModel element)

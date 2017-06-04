@@ -15,17 +15,19 @@ namespace PartyTimeline
 		private static Random idGenerator = new Random(DateTime.Now.Millisecond);
 
 		public const string UidId = "id";
+        public const string UidDateCreated = "date_created";
+        public const string UidDateModified = "date_modified";
 
-		[JsonProperty(UidId, Required = Required.Always)]
+        [JsonProperty(UidId, Required = Required.Always)]
 		[PrimaryKey, Column("_id")]
 		public long Id { get; set; }
 
 		[JsonIgnore]
-		[Column("date_created"), NotNull]
+		[Column(UidDateCreated), NotNull]
 		public DateTime DateCreated { get; set; }
 
-		[JsonProperty("updated_time", Required = Required.Always)]
-		[Column("date_modified"), NotNull]
+		[JsonProperty(UidDateModified, Required = Required.Always)]
+		[Column(UidDateModified), NotNull]
 		public DateTime DateLastModified { get; set; }
 
 		[JsonIgnore]

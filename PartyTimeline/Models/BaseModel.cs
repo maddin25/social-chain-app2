@@ -68,13 +68,13 @@ namespace PartyTimeline
 		}
 
 		/// <summary>
-		/// Compares other with this instance using <see cref="BaseModel.SortDateCreatedDescending"/>.
+		/// Compares other with this instance using <see cref="DateLastModified"/>.
 		/// </summary>
-		/// <returns>A comparison value</returns>
+		/// <returns>A positive value, if this instance was modified after <paramref name="other"/></returns>
 		/// <param name="other">Other instance of a <see cref="BaseModel"/></param>
 		public int CompareTo(BaseModel other)
 		{
-			return this.DateLastModified.Subtract(other.DateLastModified).Milliseconds;
+			return DateLastModified.Subtract(other.DateLastModified).Milliseconds;
 		}
 
 		public virtual void Update(BaseModel update)

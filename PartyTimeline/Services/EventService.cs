@@ -62,6 +62,7 @@ namespace PartyTimeline
 
 		public async Task LoadEventList()
 		{
+            Debug.WriteLine("Loading event list ...");
 			CurrentSyncState.EventListSyncing = true;
 			OnSyncStateChanged();
 			Task<List<Event>> fbEvents = Task.Run(clientFb.GetEventHeaders);
@@ -104,6 +105,7 @@ namespace PartyTimeline
 			await Task.WhenAll(eventsRequiredUpdate.Select((long id) => UpdateEvent(id)));
 			SortEventList();
 			CurrentSyncState.EventListSyncing = false;
+            Debug.WriteLine("Finished loading event list");
 			OnSyncStateChanged();
 		}
 

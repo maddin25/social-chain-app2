@@ -68,7 +68,8 @@ namespace PartyTimeline
 
 		public async Task<List<Event>> GetEventHeaders()
 		{
-			List<Event> events = new List<Event>();
+            Debug.WriteLine($"Getting Facebook event headers for {SessionInformationProvider.INSTANCE.CurrentUserEventMember.Name}");
+            List<Event> events = new List<Event>();
 
 			var initialRequest = new OAuth2Request(
 				method: RequestGet,

@@ -13,7 +13,7 @@ namespace PartyTimeline
 
 		public async Task<bool> Register(UserSession session)
 		{
-			Debug.WriteLine($"Registering new {nameof(UserSession)} for {nameof(UserSession.EventMemberId)}: {session.EventMemberId}");
+			Debug.WriteLine($"Registering {session.ToString()}");
 			return await PostAsync(session, "login");
 		}
 	}

@@ -8,31 +8,34 @@ namespace PartyTimeline
 {
 	public class UserSession
 	{
-		[JsonProperty("id")]
+        public const string UidEventMemberId = "event_member_id";
+        public const string UidExpiresOn = "expires_on";
+        public const string UidDeviceOsVersion = "device_os_version";
+        public const string UidDevicePlatform = "device_platform";
+        public const string UidDeviceModel = "device_model";
+
+        [JsonProperty(BaseModel.UidId)]
 		public string Id { get; set; }
 
-		[JsonProperty("event_member_id")]
+		[JsonProperty(UidEventMemberId)]
 		public long EventMemberId { get; set; }
 
-		[JsonProperty("expires_on")]
+		[JsonProperty(UidExpiresOn)]
 		public DateTime ExpiresOn { get; set; }
 
-		[JsonProperty("device_os_version")]
-		public string DeviceOsVersion
-		{
-			get { return CrossDeviceInfo.Current.Version; }
-		}
+		[JsonProperty(UidDeviceOsVersion)]
+		public string DeviceOsVersion => CrossDeviceInfo.Current.Version;
 
-		[JsonProperty("device_platform")]
-		public string DevicePlatform
-		{
-			get { return CrossDeviceInfo.Current.Platform.ToString(); }
-		}
+	    [JsonProperty(UidDevicePlatform)]
+		public string DevicePlatform => CrossDeviceInfo.Current.Platform.ToString();
 
-		[JsonProperty("device_model")]
-		public string DeviceModel
-		{
-			get { return CrossDeviceInfo.Current.Model; }
-		}
+	    [JsonProperty(UidDeviceModel)]
+		public string DeviceModel => CrossDeviceInfo.Current.Model;
+
+	    public override string ToString()
+	    {
+	        return $"{nameof(UserSession)} for {EventMemberId}: {BaseModel.UidId}={Id}, {UidExpiresOn}={ExpiresOn}, " +
+	               $"{UidDeviceOsVersion}={DeviceOsVersion}, {UidDevicePlatform}={DevicePlatform}, {UidDeviceModel}={DeviceModel}";
+	    }
 	}
 }

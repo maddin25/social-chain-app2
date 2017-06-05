@@ -12,15 +12,9 @@ namespace PartyTimeline.Droid
 {
 	public class FacebookLoginPageRenderer : PageRenderer
 	{
-		FacebookLoginPage facebookLoginPage
-		{
-			get
-			{
-				return Element as FacebookLoginPage;
-			}
-		}
+		FacebookLoginPage facebookLoginPage => Element as FacebookLoginPage;
 
-		protected override void OnVisibilityChanged(Android.Views.View changedView, Android.Views.ViewStates visibility)
+	    protected override void OnVisibilityChanged(Android.Views.View changedView, Android.Views.ViewStates visibility)
 		{
 			base.OnVisibilityChanged(changedView, visibility);
 			SDebug.WriteLine($"{nameof(FacebookLoginPage)} became {visibility}");
@@ -29,9 +23,7 @@ namespace PartyTimeline.Droid
 			{
 				if (!facebookLoginPage.InhibitAutomaticPrompt)
 				{
-					facebookLoginPage.IsAuthorizing = true;
-					facebookLoginPage.InhibitAutomaticPrompt = true;
-					SessionInformationProvider.INSTANCE.AuthenticateUserIfRequired();
+				    facebookLoginPage.ManualLoginCommand.Execute(null);
 				}
 			}
 		}

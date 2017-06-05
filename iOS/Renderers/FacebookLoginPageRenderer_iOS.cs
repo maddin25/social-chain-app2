@@ -24,9 +24,7 @@ namespace PartyTimeline.iOS
 			base.ViewDidAppear(animated);
 			if (!facebookLoginPage.InhibitAutomaticPrompt)
 			{
-				facebookLoginPage.IsAuthorizing = true;
-				facebookLoginPage.InhibitAutomaticPrompt = true;
-				SessionInformationProvider.INSTANCE.AuthenticateUserIfRequired();
+				facebookLoginPage.ManualLoginCommand.Execute(null);
 			}
 		}
 	}

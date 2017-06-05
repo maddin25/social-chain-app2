@@ -50,6 +50,7 @@ namespace PartyTimeline.iOS
 				Debug.WriteLine($"Original image file '{inputFile}' (Size: {new FileInfo(inputFile).Length / 1024} KB)");
 
 				UIImage img = new UIImage(NSData.FromStream(fileStream));
+                fileStream.Close();
 
 				CGSize imgSize = img.Size;
 				switch (ImageCompression.DeterminePrimaryScaleDimension(imgSize.Height, imgSize.Width))

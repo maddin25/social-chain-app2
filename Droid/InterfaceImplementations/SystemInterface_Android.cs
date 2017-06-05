@@ -48,6 +48,7 @@ namespace PartyTimeline.Droid
 		{
 			SDebug.WriteLine($"Original image file '{inputFile}' (Size: {new FileInfo(inputFile).Length / 1024} KB)");
 			Bitmap img = await BitmapFactory.DecodeStreamAsync(fileStream);
+            fileStream.Close();
 
 			switch (ImageCompression.DeterminePrimaryScaleDimension(img.Height, img.Width))
 			{
@@ -77,6 +78,7 @@ namespace PartyTimeline.Droid
 													useAsync: true);
 			bool success = await img.CompressAsync(Bitmap.CompressFormat.Jpeg, ImageCompression.CompressionFactorJpeg, writeStream);  // async version available
 			writeStream.Close();
+
 			SDebug.WriteLine($"Wrote compressed image file to '{outputFile}' (Size: {new FileInfo(outputFile).Length / 1024} KB)");
 
 			return success;

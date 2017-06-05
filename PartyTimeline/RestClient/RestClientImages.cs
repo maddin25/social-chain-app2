@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 using Xamarin.Auth;
 using Xamarin.Forms;
@@ -68,11 +69,8 @@ namespace PartyTimeline
                 Debug.WriteLine($"ERROR: Failed getting the event images for event with ID {eventId}");
                 return null;
             }
-            List<EventImage> event_images = JsonConvert.DeserializeObject<List<EventImage>>(
-                await response.Content.ReadAsStringAsync(),
-                serializationSettings
-                );
-
+            var images_list = JObject.Parse(await response.Content.ReadAsStringAsync())["_embedded"];
+            List<EventImage> event_images = JsonConvert.DeserializeObject<List<EventImage>>(images_list.ToString(), serializationSettings);
             return event_images;
         }
 	}

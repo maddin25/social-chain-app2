@@ -41,8 +41,8 @@ namespace PartyTimeline
             httpClient.BaseAddress = new Uri(serverUrl);
             //httpClient.Timeout = new TimeSpan(0, 0, 3); // [h, m, s]
 
-            httpClient.DefaultRequestHeaders.Clear();
-            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //httpClient.DefaultRequestHeaders.Clear();
+            //httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
 			serializationSettings = new JsonSerializerSettings()
 			{
@@ -107,9 +107,10 @@ namespace PartyTimeline
             ));
 		}
 
-        protected void LogResponse(HttpResponseMessage msg)
-        {string log_sep = "\n#####\n";
-            Debug.WriteLine($"{log_sep}Response:\nStatusCode = {msg.StatusCode}\nRequestMessage = {msg.RequestMessage.ToString().Replace("\n", " ")}\nContent = {msg.Content}{log_sep}");
+        protected async void LogResponse(HttpResponseMessage msg)
+        {
+            string log_sep = "\n#####\n";
+            Debug.WriteLine($"{log_sep}Response:\nStatusCode = {msg.StatusCode}\nRequestMessage = {msg.RequestMessage.ToString().Replace("\n", " ")}\nContent = {await msg.Content.ReadAsStringAsync()}{log_sep}");
         }
 
         /// <summary>

@@ -15,7 +15,11 @@ namespace PartyTimeline
 {
 	public class RestClientImages : RestClient<EventImage>
 	{
-		public RestClientImages() : base("event_image")
+        const string EndpointEventImage = "event_image";
+        const string EndpointEventImages = "event_images";
+        const string EndpointUpload = "upload";
+
+        public RestClientImages() : base(EndpointEventImage)
 		{
 
 		}
@@ -47,14 +51,14 @@ namespace PartyTimeline
 			httpContent.Add(new StringContent("10206756772397816"), EventImage.UidEventMemberId);
 			httpContent.Add(new StringContent(quality), ImageQualities.UidImageQuality);
             
-			var result = await httpClient.PostAsync(UrlJoin(serverUrl, "upload"), httpContent);
-            LogResponse(result);
-			return result.IsSuccessStatusCode;
+			var response = await httpClient.PostAsync(UrlJoin(EndpointEventImage, EndpointUpload), httpContent);
+            LogResponse(response);
+			return response.IsSuccessStatusCode;
 		}
 
         public async Task<List<EventImage>> GetEventImages(long eventId)
         {
-            HttpResponseMessage response = await httpClient.GetAsync(BuildHttpQuery(
+            HttpResponseMessage response = await httpClient.GetAsync(EndpointEventImages + BuildHttpQuery(
                 EventImage.UidEventId, eventId.ToString(),
                 "projection", "InLineEventImage"
                 ));

@@ -19,7 +19,7 @@ namespace PartyTimeline
 
         public const string UidCaption = "caption";
 		public const string UidEventId = "event_id";
-		public const string UidEventMemberId = "userId";
+		public const string UidEventMemberId = "user_id";
         public const string UidPathSmall = "path_small";
         public const string UidPathOriginal = "path_original";
         public const string UidDateTaken = "date_taken";
@@ -41,7 +41,7 @@ namespace PartyTimeline
 			}
 		}
 
-		[JsonProperty(UidPathOriginal)]
+		[JsonIgnore]
 		[Column(UidPathOriginal), NotNull, Unique]
 		public string PathOriginal
 		{
@@ -61,7 +61,7 @@ namespace PartyTimeline
 			}
 		}
 
-        [JsonProperty(UidPathSmall)]
+        [JsonIgnore]
 		[Column(UidPathSmall), Unique]
 		public string PathSmall
 		{

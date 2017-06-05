@@ -41,7 +41,7 @@ namespace PartyTimeline
 			}
 		}
 
-		[JsonIgnore]
+		[JsonProperty(UidPathOriginal)]
 		[Column(UidPathOriginal), NotNull, Unique]
 		public string PathOriginal
 		{
@@ -61,7 +61,7 @@ namespace PartyTimeline
 			}
 		}
 
-        [JsonIgnore]
+        [JsonProperty(UidPathSmall)]
 		[Column(UidPathSmall), Unique]
 		public string PathSmall
 		{

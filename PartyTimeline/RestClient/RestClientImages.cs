@@ -69,7 +69,8 @@ namespace PartyTimeline
                 Debug.WriteLine($"ERROR: Failed getting the event images for event with ID {eventId}");
                 return null;
             }
-            var images_list = JObject.Parse(await response.Content.ReadAsStringAsync())["_embedded"];
+            var images_list = JObject.Parse(await response.Content.ReadAsStringAsync())["_embedded"]["event_images"];
+
             List<EventImage> event_images = JsonConvert.DeserializeObject<List<EventImage>>(images_list.ToString(), serializationSettings);
             return event_images;
         }

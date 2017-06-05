@@ -9,64 +9,56 @@
 	Title="Event Images"
 	ItemsSource="{Binding Images}"
 	>
-	
+
     <CarouselPage.ItemTemplate>
         <DataTemplate>
             <ContentPage>
-				
-				<ContentPage.Content>
+                <ContentPage.Content>
+                    <StackLayout Orientation="Vertical">
+                        <ScrollView
+                            VerticalOptions="StartAndExpand"
+                            >
+                            <ffimageloading:CachedImage
+                                CacheType="All"
+						        DownsampleToViewSize="True"
+						        LoadingPlaceholder="image_loading.png"
+						        ErrorPlaceholder="image_error.png"
+						        Source="{Binding PathOriginal}"
+						        >
+                            </ffimageloading:CachedImage>
+                        </ScrollView>
 
-	                <StackLayout Orientation="Vertical">
+                        <!--Text="{x:Static lr:AppResources.ImageCaption}"-->
+                        <!--TODO: get this assembly stuff fixed-->
 
-						<Image
-							Source="{Binding PathSmall}"
-							VerticalOptions="FillAndExpand"
-							/>
-						
-	                   <!-- <ffimageloading:CachedImage
-							AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
-							AbsoluteLayout.LayoutFlags="All"
-							Aspect="AspectFit"
-							DownsampleUseDipUnits="true"
-							DownsampleToViewSize="true"
-							LoadingPlaceholder="image_loading.png"
-							ErrorPlaceholder="image_error.png"
-							Source="{Binding Path}"
-							>
-	                    </ffimageloading:CachedImage>-->
-
-						<!--Text="{x:Static lr:AppResources.ImageCaption}"-->
-						<!--TODO: get this assembly stuff fixed-->
-						<StackLayout
-							Orientation="Horizontal"
-							HorizontalOptions="FillAndExpand">
-							<Label
+                        <StackLayout Orientation="Horizontal" VerticalOptions="FillAndExpand">
+                            <Label
 								Text="Caption"
+                                VerticalOptions="FillAndExpand"
+                                HorizontalOptions="StartAndExpand"
 								HorizontalTextAlignment="Start"
 								/>
-
-							<Label
+                            <Label
 								Text="{Binding CaptionLength}"
+                                HorizontalOptions="End"
 								HorizontalTextAlignment="End"
 								/>
-						</StackLayout>
-						
-	                    <Entry
+                        </StackLayout>
+
+                        <Entry
 							x:Name="LabelImageCaption"
-							VerticalOptions="Fill"
+							VerticalOptions="EndAndExpand"
 							Keyboard="Chat"
 							Text="{Binding Caption}"
 							Placeholder="Enter a caption here"
 							>
-							<Entry.Behaviors>
-								<l:EntryBehavior Command="{Binding OnCaptionEditCompletedCommand}" />
-							</Entry.Behaviors>
-						</Entry>
-						
-	                </StackLayout>
+                            <Entry.Behaviors>
+                                <l:EntryBehavior Command="{Binding OnCaptionEditCompletedCommand}" />
+                            </Entry.Behaviors>
+                        </Entry>
 
-				</ContentPage.Content>
-				
+                    </StackLayout>
+                </ContentPage.Content>
             </ContentPage>
         </DataTemplate>
     </CarouselPage.ItemTemplate>

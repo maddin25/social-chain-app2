@@ -68,7 +68,7 @@ namespace PartyTimeline
 
 		public async Task<List<Event>> GetEventHeaders()
 		{
-            Debug.WriteLine($"Getting Facebook event headers for {SessionInformationProvider.INSTANCE.CurrentUserEventMember.Name}");
+            Debug.WriteLine($"Facebook:GetEventHeaders for {SessionInformationProvider.INSTANCE.CurrentUserEventMember.Name}");
             List<Event> events = new List<Event>();
 
 			var initialRequest = new OAuth2Request(
@@ -90,7 +90,8 @@ namespace PartyTimeline
 			{
 				return;
 			}
-			List<Event> eventsInResponse = JObject.Parse(response).SelectToken("data").ToObject<List<Event>>();
+            var data = JObject.Parse(response).SelectToken("data");
+            List<Event> eventsInResponse = data.ToObject<List<Event>>();
 			DateTime toleranzeInPast = DateTime.Now.Subtract(EventService.LimitEventsInPast);
 			foreach (Event eventReference in eventsInResponse)
 			{

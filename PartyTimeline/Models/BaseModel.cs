@@ -26,7 +26,7 @@ namespace PartyTimeline
 		[Column(UidDateCreated), NotNull]
 		public DateTime DateCreated { get; set; }
 
-		[JsonProperty(UidDateModified, Required = Required.Always)]
+		[JsonProperty(UidDateModified)]
 		[Column(UidDateModified), NotNull]
 		public DateTime DateLastModified { get; set; }
 

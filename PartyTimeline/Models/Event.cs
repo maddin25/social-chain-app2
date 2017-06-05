@@ -27,6 +27,10 @@ namespace PartyTimeline
 		[Column("end_date")]
 		public DateTime EndDateTime { get; set; }
 
+        [JsonProperty("updated_time")]
+        [Ignore]
+        private DateTime UpdatedTime { set { DateLastModified = value; } }
+
 		[JsonProperty("cover")]
 		[Ignore]
 		public CoverImage Cover { get; set; }

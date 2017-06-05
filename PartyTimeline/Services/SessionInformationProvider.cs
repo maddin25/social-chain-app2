@@ -138,7 +138,7 @@ namespace PartyTimeline
 			EventService.INSTANCE.AddEventMember(CurrentUserEventMember);
 		}
 
-		public void AuthenticateUserIfRequired()
+		public async void AuthenticateUserIfRequired()
 		{
 			if (!ActiveSessionAvailable)
 			{

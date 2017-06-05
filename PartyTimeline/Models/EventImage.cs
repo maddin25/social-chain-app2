@@ -17,6 +17,7 @@ namespace PartyTimeline
 		private string pathOriginal;
 		private string pathSmall;
 
+        public const string UidCaption = "caption";
 		public const string UidEventId = "event_id";
 		public const string UidEventMemberId = "userId";
         public const string UidPathSmall = "path_small";
@@ -26,8 +27,8 @@ namespace PartyTimeline
         public const int CaptionCharacterLimit = 80;
 
 		// TODO: how to create unique EventImage ID?
-		[JsonProperty("caption")]
-		[Column("caption"), MaxLength(CaptionCharacterLimit)]
+		[JsonProperty(UidCaption)]
+		[Column(UidCaption), MaxLength(CaptionCharacterLimit)]
 		public string Caption
 		{
 			get { return caption; }

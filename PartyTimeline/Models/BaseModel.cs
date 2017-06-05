@@ -77,12 +77,6 @@ namespace PartyTimeline
 			return this.DateLastModified.Subtract(other.DateLastModified).Milliseconds;
 		}
 
-		// TODO: remove this
-		public bool ModifiedAfter(BaseModel other)
-		{
-			return CompareTo(other) > 0;
-		}
-
 		public virtual void Update(BaseModel update)
 		{
 			DateLastModified = update.DateLastModified;

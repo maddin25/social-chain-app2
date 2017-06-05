@@ -58,6 +58,7 @@ namespace PartyTimeline
                 EventImage.UidEventId, eventId.ToString(),
                 "projection", "InLineEventImage"
                 ));
+            LogResponse(response);
             if (!response.IsSuccessStatusCode)
             {
                 Debug.WriteLine($"ERROR: Failed getting the event images for event with ID {eventId}");

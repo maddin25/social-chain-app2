@@ -97,7 +97,6 @@ namespace PartyTimeline
 						+ SessionInformationProvider.INSTANCE.GetUserProperty(FacebookAccountProperties.Name) ?? string.Empty;
 					DependencyService.Get<FacebookInterface>().CloseLogin();
 				    IsAuthorizing = false;
-					// FIXME: if the facebook login page was initialized before, this call does not open a new event list page
 					Application.Current.MainPage.Navigation.PushAsync(new EventListPage());
 				}
 				else // authentication failure or user abort

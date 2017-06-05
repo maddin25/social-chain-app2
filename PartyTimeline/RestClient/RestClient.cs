@@ -35,7 +35,7 @@ namespace PartyTimeline
 		public RestClient(string endpoint)
 		{
 			this.endpoint = endpoint;
-			serverUrl = UrlJoin(serverBaseUrl, appName, appApiNode, apiVersion, this.endpoint);
+			serverUrl = UrlJoin(serverBaseUrl, appName, appApiNode, apiVersion, endpoint);
 			Debug.WriteLine($"Using server URL {serverUrl} for type {this.GetType().ToString()}");
 			httpClient = new HttpClient();
             httpClient.BaseAddress = new Uri(serverUrl);

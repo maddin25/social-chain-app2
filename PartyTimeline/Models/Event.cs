@@ -24,9 +24,16 @@ namespace PartyTimeline
 		[Column("end_date")]
 		public DateTime EndDateTime { get; set; }
 
+        /// <summary>
+        /// Indicates the date and time this event was last modified on Facebook. This variable is just a wrapper around DateLastModified.
+        /// </summary>
         [JsonProperty("updated_time")]
         [Ignore]
-        private DateTime UpdatedTime { set { DateLastModified = value; } }
+        private DateTime UpdatedTime
+        {
+            set { DateLastModified = value; }
+            get { return DateLastModified; }
+        }
 
 		[JsonProperty("cover")]
 		[Ignore]

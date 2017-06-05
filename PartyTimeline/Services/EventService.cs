@@ -195,11 +195,12 @@ namespace PartyTimeline
 		public async void AddImage(EventImage image)
 		{
 			Event e = EventList.FirstOrDefault((arg) => arg.Id == image.EventId);
-			Task postTask = clientImages.PostAsync(image);
+            // HACK: using static user id
+            image.EventMemberId = 10206756772397816L;
+            Task postTask = clientImages.PostAsync(image);
 			e?.Images.Add(image);
 			localDb.WriteEventImage(image);
 			SortEventImageList(e);
-			//DependencyService.Get<EventSyncInterface>().UploadNewImageLowRes(image);
 			await postTask;
 		}
 

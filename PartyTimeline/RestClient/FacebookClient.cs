@@ -79,7 +79,7 @@ namespace PartyTimeline
 			);
 			Response response = await initialRequest.GetResponseAsync();
 
-			await ParseEventQueryResponse(response?.GetResponseText(), events);
+			await ParseEventQueryResponse(response.GetResponseText(), events);
 
 			return events;
 		}

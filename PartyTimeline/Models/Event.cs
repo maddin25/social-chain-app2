@@ -1,10 +1,7 @@
 using System;
 using SQLite;
 
-using Xamarin.Forms;
-
 using Newtonsoft.Json;
-using Newtonsoft.Json.Schema;
 
 namespace PartyTimeline
 {
@@ -97,7 +94,7 @@ namespace PartyTimeline
 
 		public override string ToString()
 		{
-			return string.Format($"[Event: Name={Name}, StartDateTime={StartDateTime}, Id={Id}");
+            return JsonConvert.SerializeObject(this);
 		}
 	}
 }

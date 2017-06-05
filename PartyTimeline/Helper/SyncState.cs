@@ -1,4 +1,7 @@
 ﻿using System;
+
+using Newtonsoft.Json;
+
 namespace PartyTimeline
 {
 	public enum SyncServices
@@ -9,13 +12,16 @@ namespace PartyTimeline
 
 	public class SyncState : EventArgs
 	{
+		[JsonProperty("event_list_syncing")]
 		public bool EventListSyncing { get; set; }
+		[JsonProperty("event_details_syncing")]
 		public bool EventDetailsSyncing { get; set; }
+		[JsonProperty("event_id_syncing")]
 		public long EventIdSyncing { get; set; }
 
 		public override string ToString()
 		{
-			return string.Format("[SyncState: EventListSyncing={0}, EventDetailsSyncing={1}]", EventListSyncing, EventDetailsSyncing, EventIdSyncing);
+            return JsonConvert.SerializeObject(this);
 		}
 	}
 }

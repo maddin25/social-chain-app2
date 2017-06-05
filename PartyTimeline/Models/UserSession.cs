@@ -34,8 +34,7 @@ namespace PartyTimeline
 
 	    public override string ToString()
 	    {
-	        return $"{nameof(UserSession)} for {EventMemberId}: {BaseModel.UidId}={Id}, {UidExpiresOn}={ExpiresOn}, " +
-	               $"{UidDeviceOsVersion}={DeviceOsVersion}, {UidDevicePlatform}={DevicePlatform}, {UidDeviceModel}={DeviceModel}";
+            return JsonConvert.SerializeObject(this);
 	    }
 	}
 }

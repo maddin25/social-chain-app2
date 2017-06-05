@@ -135,7 +135,7 @@ namespace PartyTimeline
 			AccountStore.Create().Save(account, AppName);
 			CurrentUserAccount = account;
 			await clientSessions.Register(CurrentUserSession);
-			EventService.INSTANCE.AddEventMember(CurrentUserEventMember);
+			EventService.INSTANCE.PersistElementLocal(CurrentUserEventMember);
 		}
 
 		public async void AuthenticateUserIfRequired()

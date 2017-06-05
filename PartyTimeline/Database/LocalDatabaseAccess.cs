@@ -84,20 +84,10 @@ namespace PartyTimeline
 			dbConnection.InsertOrReplaceAsync(entry);
 		}
 
-		public void WriteEvent(Event eventReference)
+		public async void Persist(BaseModel element)
 		{
-			dbConnection.InsertAsync(eventReference);
-		}
-
-		public void WriteEventImage(EventImage eventImage)
-		{
-			// TODO: verify that all properties are set
-			dbConnection.InsertAsync(eventImage);
-		}
-
-		public void Update(BaseModel element)
-		{
-			dbConnection.InsertOrReplaceAsync(element);
+            Debug.WriteLine($"localDB: Persisting a {element.GetType()} with ID {element.Id}");
+			await dbConnection.InsertOrReplaceAsync(element);
 		}
 
 		public void WriteEventMember(EventMember member)

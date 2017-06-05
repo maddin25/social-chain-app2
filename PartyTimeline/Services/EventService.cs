@@ -124,8 +124,8 @@ namespace PartyTimeline
 
             foreach (EventImage sImg in await serverEventImages)
             {
-                bool notExistingOrOutdated = localEventImages.Find((img) => img.Equals(sImg))?.DateLastModified < sImg.DateLastModified;
-                if (notExistingOrOutdated)
+                bool existingAndUpToDate = localEventImages.Find((img) => img.Equals(sImg))?.DateLastModified >= sImg.DateLastModified;
+                if (!existingAndUpToDate)
                 {
                     PersistElementLocal(sImg);
                     AddToEventImageList(e, sImg, true);
@@ -148,7 +148,7 @@ namespace PartyTimeline
 
         public void PersistElementLocal(BaseModel element)
         {
-            localDb.Update(element);
+            localDb.Persist(element);
             // TODO: update changes on server as well if we implement a generic post interface
         }
 
@@ -191,7 +191,7 @@ namespace PartyTimeline
             image.EventMemberId = 10206756772397816L;
             Task postTask = clientImages.PostAsync(image);
             e?.Images.Add(image);
-            localDb.WriteEventImage(image);
+            PersistElementLocal(image);
             SortEventImageList(e);
             await postTask;
         }
@@ -201,11 +201,6 @@ namespace PartyTimeline
             PersistElementLocal(image);
             bool success = await clientImages.UploadImage(image, ImageQualities.SMALL);
             Debug.WriteLineIf(!success, $"Failed uploading small version of image '{image.PathSmall}'");
-        }
-
-        public void AddEventMember(EventMember member)
-        {
-            localDb.WriteEventMember(member);
         }
 
         public void Remove(Event eventReference)
@@ -259,26 +254,12 @@ namespace PartyTimeline
 
         private void SortEventList()
         {
-            try
-            {
-                EventList.SortDescending((e) => e.StartDateTime.ToFileTimeUtc());
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine($"{nameof(SortEventList)} failed: {e.Message}");
-            }
+            EventList.SortDescending((e) => e.StartDateTime.ToFileTimeUtc());
         }
 
         private void SortEventImageList(Event eventReference)
         {
-            try
-            {
-                eventReference.Images.SortDescending((image) => image.DateTaken.ToFileTimeUtc());
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine($"{nameof(SortEventImageList)} failed: {e.Message}");
-            }
+            eventReference.Images.SortDescending((image) => image.DateTaken.ToFileTimeUtc());
         }
     }
 }

@@ -148,7 +148,8 @@ namespace PartyTimeline
 			}
 			else
 			{
-				OnSessionStateChanged(new SessionState { IsAuthenticated = true });
+			    await clientSessions.Register(CurrentUserSession);
+                OnSessionStateChanged(new SessionState { IsAuthenticated = true });
 			}
 		}
 

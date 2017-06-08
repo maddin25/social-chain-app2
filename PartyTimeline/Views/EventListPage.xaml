@@ -7,7 +7,7 @@
     xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
 	Title="Event List"
 	>
-	
+
     <ContentPage.Content>
         <StackLayout Orientation="Vertical">
             <ListView
@@ -19,16 +19,16 @@
 				RowHeight="130"
 				SeparatorVisibility="None">
 
-				<ListView.Header>
-					<Label Text="Events" XAlign="Center" FontSize="30" />
-				</ListView.Header>
-				
-				<ListView.ItemTemplate>
+                <ListView.Header>
+                    <Label Text="Events" XAlign="Center" FontSize="30" />
+                </ListView.Header>
+
+                <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                         
+
                             <AbsoluteLayout HorizontalOptions="FillAndExpand">
-								<ffimageloading:CachedImage
+                                <ffimageloading:CachedImage
 									x:Name="EventPreviewImage"
 									AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
 									AbsoluteLayout.LayoutFlags="All"
@@ -38,8 +38,8 @@
 									ErrorPlaceholder="image_error.png"
 									Source="{Binding CoverUrl}"
 									/>
-								
-								<BoxView
+
+                                <BoxView
 									AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
 									AbsoluteLayout.LayoutFlags="All"
 									Color="{x:Static local:MyColors.OpaqueBlack}"
@@ -74,13 +74,20 @@
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
-               
+
+                <ListView.Footer>
+                    <StackLayout>
+                        <Label
+                            Text="{Binding Source={x:Static local:EventService.INSTANCE}, Path={LimitEventsInPastDays}, StringFormat=Hello n={0}}"
+                            />
+                    </StackLayout>
+                </ListView.Footer>
             </ListView>
         </StackLayout>
     </ContentPage.Content>
-	
-	<ContentPage.ToolbarItems>
-	    <ToolbarItem Name="Logout" Text="Logout" Order="Primary" Icon="logout.png" Priority="0" Command="{Binding LogoutCommand}"/>
-	</ContentPage.ToolbarItems>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Name="Logout" Text="Logout" Order="Primary" Icon="logout.png" Priority="0" Command="{Binding LogoutCommand}"/>
+    </ContentPage.ToolbarItems>
 
 </ContentPage>

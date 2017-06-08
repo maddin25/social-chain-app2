@@ -23,7 +23,8 @@ namespace PartyTimeline
 
         public SyncState CurrentSyncState { get; set; }
 
-        public static readonly TimeSpan LimitEventsInPast = TimeSpan.FromDays(180);
+        public static int LimitEventsInPastDays = 180;
+        public static readonly TimeSpan LimitEventsInPast = TimeSpan.FromDays(LimitEventsInPastDays);
         public SortableObservableCollection<Event> EventList { get; private set; }
 
         public static EventService INSTANCE
